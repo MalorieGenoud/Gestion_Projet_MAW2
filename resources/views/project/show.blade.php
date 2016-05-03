@@ -1,8 +1,5 @@
 @extends('layouts.app')
 
-@include('project.planning')
-@include('project.info')
-@include('project.file')
 
 @section('content')
     <div class="container">
@@ -24,18 +21,21 @@
             </div>
 
             <div class="col-md-10 col-md-offset-1">
-                <h1>Les taches</h1>
+                <h1>Les tâches de tout le projet</h1>
                 <ul>
                 @each('project.task', $project->tasksParent, 'task')
                 </ul>
             </div>
 
             <div class="col-md-6 col-md-offset-1">
-                @yield('project.info')
+                <h1>Vos tâches</h1>
+                <ul>
+                    @each('project.mytask', $project->tasksParent, 'task')
+                </ul>
             </div>
 
             <div class="col-md-6 col-md-offset-1">
-                @yield('project.file')
+            @yield('project.file')
             </div>
         </div>
     </div>
