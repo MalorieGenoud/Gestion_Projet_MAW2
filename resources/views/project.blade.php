@@ -14,7 +14,7 @@
                     </div>
 
 
-                    @foreach($project as $project)
+                    @foreach($projects as $project)
                         <div>
                         <h3><a href="{{route('project.index')}}/{{ $project->id }}">{{ $project->name }}</a></h3>
                         @foreach($project->users as $user)
@@ -22,7 +22,7 @@
                         @endforeach
                         </div>
                     @endforeach
-
+                    <a class="button" href="{{route('project.create')}}">Créer votre projet !</a>
                 </div>
             </div>
         </div>
