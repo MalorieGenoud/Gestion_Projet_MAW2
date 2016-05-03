@@ -23,15 +23,14 @@ Route::group(['middleware' => 'web'], function () {
     //Route::auth();
     Route::group(['middleware' => 'auth'], function(){
 
-        Route::get('/', function(){
-            return view('project');
-        });
+        
 
         Route::resource('project','ProjectController',
             ['parameters' => ['project' => 'id']], 
             ['only' => ['index']]
         );
 
+        Route::get('/', 'ProjectController@index');
 
         Route::get('project/{id}', 'ProjectController@show')->where('id', '[0-9]+');
         Route::get('project/{id}/task', 'ProjectController@task')->where('id', '[0-9]+');
