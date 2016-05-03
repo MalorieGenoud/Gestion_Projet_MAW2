@@ -14,7 +14,7 @@
                     </div>
 
 
-                    @foreach($projects as $project)
+                    @foreach($project as $project)
                         <div>
                         <h3><a href="{{route('project.index')}}/{{ $project->id }}">{{ $project->name }}</a></h3>
                         @foreach($project->users as $user)

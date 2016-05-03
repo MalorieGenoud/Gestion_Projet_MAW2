@@ -32,5 +32,11 @@ class Project extends Model {
         return $this->hasMany(\App\Models\Task::class, 'project_id', 'id');
     }
 
+    public function tasksParent() {
+        return $this->tasks()->whereNull('parent_id');
+    }
+
+
+
 
 }

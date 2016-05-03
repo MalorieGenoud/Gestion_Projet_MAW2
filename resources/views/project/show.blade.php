@@ -1,22 +1,8 @@
 @extends('layouts.app')
 
 @include('project.planning')
-@include('project.task')
 @include('project.info')
 @include('project.file')
-
-
-
-
-
-
-
-
-{{dd($project->tasks)}}
-
-
-
-
 
 @section('content')
     <div class="container">
@@ -32,14 +18,16 @@
             </div>
 
 
-
             <div class="col-md-10 col-md-offset-1">
                 <h1>Planning</h1>
                 @yield('planning.as')
             </div>
 
             <div class="col-md-10 col-md-offset-1">
-                @yield('project.task')
+                <h1>Les taches</h1>
+                <ul>
+                @each('project.task', $project->tasksParent, 'task')
+                </ul>
             </div>
 
             <div class="col-md-6 col-md-offset-1">

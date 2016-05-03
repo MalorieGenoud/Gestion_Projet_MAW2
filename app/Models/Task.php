@@ -21,16 +21,18 @@ class Task extends Model {
     }
 
     public function parent(){
-        return $this->belongsTo(\App\Models\Task::class, 'id', 'parent_id');
+        return $this->belongsTo(\App\Models\Task::class, 'parent_id');
     }
 
     public function children(){
-        return $this->hasMany(\App\Models\Task::class, 'parent_id', 'id');
+        return $this->hasMany(\App\Models\Task::class, 'parent_id');
     }
 
-    public function childrenRecursive(){
-        return $this->children()->with('');
+    public function allChildren(){
+        return $this->children()->with('allChildren');
     }
+
+
 
 
 }
