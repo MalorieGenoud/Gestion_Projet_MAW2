@@ -1,20 +1,16 @@
-@extends('layouts.app')
 
-@section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Création de projet</div>
+                    <div class="panel-heading">Nouvelle tâches </div>
 
                     <div class="panel-body">
 
                     </div>
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/project') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/tasks/'.$task->id.'/children') }}">
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Nom de votre projet</label>
+                            <label class="col-md-4 control-label">Nom de la tâche</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="name" value="{{ old('name') }}" required>
@@ -22,10 +18,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Description</label>
+                            <label class="col-md-4 control-label">Durée de la tâche</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="description" value="{{ old('description') }}" required>
+                                <input type="time" class="form-control" name="duration" value="{{ old('duration') }}" required>
                             </div>
                         </div>
 
@@ -33,7 +29,19 @@
                             <label class="col-md-4 control-label">Date de début</label>
 
                             <div class="col-md-6">
-                                <input type="date" class="form-control" name="date" value="{{ old('date') }}" required>
+                                <input type="date" class="form-control" name="date_jalon" value="{{ old('date_jalon') }}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <input type="hidden" class="form-control" name="project_id" value="{{ $task->project_id }}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <input type="hidden" class="form-control" name="parent_id" value="{{ $task->id }}" required>
                             </div>
                         </div>
 
@@ -46,8 +54,5 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
         </div>
     </div>
-@endsection
