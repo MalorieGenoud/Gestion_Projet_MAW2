@@ -4,16 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>Bones</title>
 
     <!-- Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet'
+          type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
 
     <!-- Styles -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
+    <link rel="stylesheet" href="{{ URL::asset('css/template.css') }}"/>
 
     <style>
         body {
@@ -84,16 +85,100 @@
         </div>
     </div>
 </nav>
-
-
+<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 
 @yield('content')
 
 
-        <!-- JavaScripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="{{ URL::asset('js/jquery.ntm.js') }}"></script>
+<script src="{{ URL::asset('js/bootbox.min.js') }}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+
+<script>
+    $(document).ready(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $('.demo').ntm();
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('.taskshow').click(function () {
+            var task = this.getAttribute('data-id');
+            $.get("{{ url('tasks') }}/" + task, {}, function (task) {
+                console.log(task);
+                $('#taskdetail').html(task);
+            });
+
+            /*$.ajax({
+             type : "POST",
+             url : "",
+             data : task,
+             success : function(task){
+             console.log(task);
+             $('#taskdetail').html(task);
+             }
+             });*/
+
+            $.get('', function (task) {
+                //console.log(task);
+            });
+        });
+
+        $('button.taskedit').click(function () {
+            var task = this.getAttribute('data-id');
+            $.get("{{ url('tasks') }}/" + task + "/edit", {}, function (task) {
+                $('#taskdetail').html(task);
+            });
+        });
+
+        $('button.taskplus').click(function () {
+            var task = this.getAttribute('data-id');
+            $.get("{{ url('tasks') }}/" + task + "/children/create", {}, function (task) {
+                $('#taskdetail').html(task);
+            });
+        });
+
+        $('.taskroot').click(function () {
+            var task = this.getAttribute('data-id');
+            $.get("{{ url('project') }}/"+ task + "/tasks/create", {}, function (task) {
+                $('#taskdetail').html(task);
+            });
+        });
+
+        $('button.taskdestroy').click(function () {
+            var task = this.getAttribute('data-id');
+            bootbox.confirm("Vous allez supprimer cette tâches ? ", function (result) {
+                //Example.show("Confirm result: "+result);
+                if (result) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "{{ url('tasks') }}/" + task + "/destroy",
+                        data: task,
+                        success: function (task) {
+                            location.reload();
+                            $('#taskdetail').html(task);
+                        }
+                    });
+                }
+            });
+
+        });
+    });
+</script>
+
 </body>
 </html>

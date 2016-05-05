@@ -1,8 +1,5 @@
 @extends('layouts.app')
 
-@include('project.planning')
-@include('project.info')
-@include('project.file')
 
 @section('content')
     <div class="container">
@@ -24,9 +21,12 @@
 
             <div class="col-md-10 col-md-offset-1">
                 <h1>Les tâches du projet</h1>
-                <ul>
-                @each('project.task', $project->tasksParent, 'task')
-                </ul>
+                <div class="tree-menu demo" id="tree-menu">
+                    <ul>
+                        @each('project.task', $project->tasksParent, 'task')
+                    </ul>
+                </div>
+                <a class="btn btn-warning taskroot" data-id="{{$project->id}}">Créer une tâche racine</a>
             </div>
 
             <div class="col-md-6 col-md-offset-1">
@@ -36,8 +36,15 @@
 
             <div class="col-md-6 col-md-offset-1">
                 <h1>Détail de la tâche</h1>
-                @include('project.taskdetail')
+                <div id="taskdetail"></div>
             </div>
+
+
         </div>
     </div>
 @endsection
+
+
+
+
+
