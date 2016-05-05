@@ -57,6 +57,16 @@
                     <li><a href="{{ url('/project/{id}/edit') }}">Modifier le projet</a></li>
 
                     <li><a href="{{ url('/project/create') }}">Nouveau projet</a></li>
+                    <li><a>|</a></li>
+                    <li>
+                        <a href="#">Invitation
+                            @if(true)
+                                <span class="badge">1</span>
+                            @else
+                                <span class="badge">0</span>
+                            @endif
+                        </a>
+                    </li>
                 </ul>
 
                 @else
@@ -116,6 +126,7 @@
 
     $(document).ready(function () {
 
+        // afficher détail de la tache
         $('.taskshow').click(function () {
             var task = this.getAttribute('data-id');
             $.get("{{ url('tasks') }}/" + task, {}, function (task) {
@@ -138,6 +149,7 @@
             });
         });
 
+        // Editer une tache
         $('button.taskedit').click(function () {
             var task = this.getAttribute('data-id');
             $.get("{{ url('tasks') }}/" + task + "/edit", {}, function (task) {
@@ -145,6 +157,7 @@
             });
         });
 
+        // Ajouter une classe parent
         $('button.taskplus').click(function () {
             var task = this.getAttribute('data-id');
             $.get("{{ url('tasks') }}/" + task + "/children/create", {}, function (task) {
@@ -152,13 +165,19 @@
             });
         });
 
+        // ajouter tache root
         $('.taskroot').click(function () {
             var task = this.getAttribute('data-id');
-            $.get("{{ url('project') }}/"+ task + "/tasks/create", {}, function (task) {
-                $('#taskdetail').html(task);
+            $.get("{{ url('project') }}/" + task + "/tasks/create", {}, function (task) {
+                bootbox.dialog({
+                    title: "Inviter une personne",
+                    message: task
+                });
+                //$('#taskdetail').html(task);
             });
         });
 
+        // supprimer la tache
         $('button.taskdestroy').click(function () {
             var task = this.getAttribute('data-id');
             bootbox.confirm("Vous allez supprimer cette tâches ? ", function (result) {
@@ -176,6 +195,50 @@
                 }
             });
 
+        });
+
+        // supprimer un utilisateur du projet
+        $('button.userprojectdestroy').click(function () {
+            var id = this.getAttribute('data-id');
+            var projectid = this.getAttribute('data-projectid');
+            bootbox.confirm("Voulez vous vraiment retirer l'utilisateur du projet ? ", function (result) {
+                //Example.show("Confirm result: "+result);
+                if (result) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "{{ url('project') }}/" + projectid + "/users/" + id + "/destroy",
+                        success: function (data) {
+                            //alert(data);
+                            bootbox.alert("Element supprimer avec succès");
+                            $('#taskdetail').html(data);
+                        }
+                    });
+                }
+            });
+
+        });
+
+
+        // inviter un utilisateur
+        $('a.invitation').click(function () {
+            var projectid = this.getAttribute('data-projectid');
+            $.get("{{ url('project') }}/" + projectid + "/invitations", function (projectid) {
+                bootbox.dialog({
+                    title: "Inviter une personne",
+                    message: projectid
+                });
+            });
+        });
+
+        // inviter un utilisateur
+        $('a.invitationwait').click(function () {
+            var projectid = this.getAttribute('data-projectid');
+            $.get("{{ url('project') }}/" + projectid + "/invitations/wait", function (projectid) {
+                bootbox.dialog({
+                    title: "Voir les invitations",
+                    message: projectid
+                });
+            });
         });
     });
 </script>

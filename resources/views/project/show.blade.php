@@ -15,8 +15,8 @@
             </div>
 
             <div class="col-md-10 col-md-offset-1">
-                <h1>Planning</h1>
-                @yield('planning.as')
+                <h1>Informations du projet</h1>
+                @include('project.info', ['project' => $project])
             </div>
 
             <div class="col-md-6 col-md-offset-1">

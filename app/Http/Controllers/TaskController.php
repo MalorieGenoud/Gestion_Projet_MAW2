@@ -58,9 +58,9 @@ class TaskController extends Controller
     function store(Task $task, Request $request)
     {
 
-        $updateTask = Task::find($task->id);
+        //$updateTask = Task::find($task->id);
 
-        $updateTask->update([
+        $task->update([
             'name' => $request->input('name'),
             'duration' => $request->input('duration'),
             'date_jalon' => $request->input('date_jalon'),
