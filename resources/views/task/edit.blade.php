@@ -1,11 +1,4 @@
 
-<div class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading">Editer la tâche </div>
-
-        <div class="panel-body">
-
-        </div>
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/tasks/'.$task->id) }}">
             {!! csrf_field() !!}
 
@@ -48,7 +41,7 @@
                 <label class="col-md-4 control-label">Parent id</label>
 
                 <div class="col-md-6">
-                    <input type="text" class="form-control" name="parent_id" value="{{ $task->parent_id }}" disabled>
+                    <input type="text" class="form-control" name="parent_id" value="{{ $task->parent_id }}">
                 </div>
             </div>
 
@@ -61,5 +54,3 @@
                 </div>
             </div>
         </form>
-    </div>
-</div>

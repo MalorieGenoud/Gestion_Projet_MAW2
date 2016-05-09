@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DurationsTask;
+use App\Models\UsersTask;
 use Illuminate\Http\Request;
 use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
+use DateTime;
 
 
 use App\Http\Requests;
@@ -23,7 +27,7 @@ class TaskController extends Controller
 
     }
 
-    function create(Task $task,Request $request)
+    function create(Task $task, Request $request)
     {
         dd($request);
         return view('task.create', ['task' => $task]);
@@ -69,6 +73,36 @@ class TaskController extends Controller
         ]);
 
         return redirect("project/" . $task->project_id);
+
+    }
+
+    public function play(Request $request)
+    {
+        $durationTask = new DurationsTask;
+        $durationTask->user_task_id = $request->task;
+        //dd($durationTask->Active($request->user));
+
+        return $durationTask->Active($request->user, Auth::user()->id);
+
+        /*if($durationTask->Active($request->user) == true){
+            echo "déja actif";
+            echo "Travail sur la tâche lancé -> =D ";
+        }else{
+            $durationTask->save();
+        }*/
+
+
+    }
+
+    public function stop(DurationsTask $durationsTask)
+    {
+
+
+        $now = new DateTime();
+        $durationsTask->update([
+            'ended_at' => $now,
+        ]);
+
 
     }
 

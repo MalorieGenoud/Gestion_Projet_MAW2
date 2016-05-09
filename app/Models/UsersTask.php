@@ -14,7 +14,7 @@ class UsersTask extends Model {
 
     public function task() {
         return $this->belongsTo(\App\Models\Task::class, 'task_id', 'id');
-    }
+}
 
     public function user() {
         return $this->belongsTo(\App\Models\User::class, 'user_id', 'id');

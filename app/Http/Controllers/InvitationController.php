@@ -59,4 +59,10 @@ class InvitationController extends Controller
         return view('invitation.wait', ['wait' => $wait]);
 
     }
+
+    public function edit(){
+
+        $invitations = Invitation::where("statut","=","wait")->where("guest_id", "=" ,Auth::user()->id)->get();
+        return view('invitation.edit',['invitations' => $invitations]);
+    }
 }

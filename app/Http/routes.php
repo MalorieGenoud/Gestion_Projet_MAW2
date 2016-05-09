@@ -29,6 +29,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('tasks/{task}/children/create', 'TaskController@createChildren')->where('task', '[0-9]+');
         Route::post('tasks/{task}/children/', 'TaskController@storeChildren')->where('task', '[0-9]+');
         Route::delete('tasks/{task}/destroy', 'TaskController@destroy')->where('task', '[0-9]+');
+        Route::get('tasks/{task}/play/{user}', 'TaskController@play')->where('task', '[0-9]+');
+        Route::get('tasks/{durationsTask}/stop/', 'TaskController@stop')->where('durationsTask', '[0-9]+');
         Route::get('tasks/{task}/edit', 'TaskController@edit')->where('task', '[0-9]+');
         Route::post('tasks/{task}', 'TaskController@store')->where('task', '[0-9]+');
 
@@ -49,10 +51,13 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('logout', 'SessionController@destroy');
 
 
-        /* INVITATION */
+        /* INVITATION PROJECTS */
         Route::get('project/{projectid}/invitations/', 'InvitationController@show')->where('projectid', '[0-9]+');
         Route::get('project/{projectid}/invitations/wait', 'InvitationController@wait')->where('projectid', '[0-9]+');
         Route::post('project/{projectid}/invitations/', 'InvitationController@store')->where('projectid', '[0-9]+');
+
+        Route::get('invitations','InvitationController@edit');
+
 
         /*
         Route::group(['prefix' => 'project'], function(){

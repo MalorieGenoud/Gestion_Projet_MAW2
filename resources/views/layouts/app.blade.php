@@ -54,17 +54,23 @@
                     <li><a href="{{ url('/') }}">Tout les projets</a></li>
 
                     <li><a href="{{ url('/project/{id}/show') }}">Le projet</a></li>
-                    <li><a href="{{ url('/project/{id}/edit') }}">Modifier le projet</a></li>
 
                     <li><a href="{{ url('/project/create') }}">Nouveau projet</a></li>
                     <li><a>|</a></li>
                     <li>
-                        <a href="#">Invitation
-                            @if(true)
-                                <span class="badge">1</span>
-                            @else
-                                <span class="badge">0</span>
+                        <a href="#" class="invitations">Invitation
+                            <?php $total = null; ?>
+                            @for($i = 0; $i < count($invitations); $i++)
+
+                                @if($invitations[$i]->guest_id == Auth::user()->id)
+                                    <?php $total = $total + 1; ?>
+                                @endif
+
+                            @endfor
+                            @if($total != null)
+                                <span class="badge">{{$total}}</span>
                             @endif
+
                         </a>
                     </li>
                 </ul>
@@ -117,7 +123,7 @@
     });
 
     $(document).ready(function () {
-        $('.demo').ntm();
+        $('.tree-menu').ntm();
     });
 
 </script>
@@ -153,7 +159,10 @@
         $('button.taskedit').click(function () {
             var task = this.getAttribute('data-id');
             $.get("{{ url('tasks') }}/" + task + "/edit", {}, function (task) {
-                $('#taskdetail').html(task);
+                bootbox.dialog({
+                    title: "Editer une tâche",
+                    message: task
+                });
             });
         });
 
@@ -161,7 +170,10 @@
         $('button.taskplus').click(function () {
             var task = this.getAttribute('data-id');
             $.get("{{ url('tasks') }}/" + task + "/children/create", {}, function (task) {
-                $('#taskdetail').html(task);
+                bootbox.dialog({
+                    title: "Créer une tâche enfant",
+                    message: task
+                });
             });
         });
 
@@ -170,7 +182,7 @@
             var task = this.getAttribute('data-id');
             $.get("{{ url('project') }}/" + task + "/tasks/create", {}, function (task) {
                 bootbox.dialog({
-                    title: "Inviter une personne",
+                    title: "Créer une tâche root",
                     message: task
                 });
                 //$('#taskdetail').html(task);
@@ -230,13 +242,67 @@
             });
         });
 
-        // inviter un utilisateur
+        // voir les invitations en cours
         $('a.invitationwait').click(function () {
             var projectid = this.getAttribute('data-projectid');
             $.get("{{ url('project') }}/" + projectid + "/invitations/wait", function (projectid) {
                 bootbox.dialog({
                     title: "Voir les invitations",
                     message: projectid
+                });
+            });
+        });
+
+        $('#main_body').on("click", "#but", function () {
+            alert("bla bla");
+        });
+
+        $('#app-layout').on('click', 'button.taskplay', function () {
+            console.log("sss");
+            var usertaskid = this.getAttribute('data-usertaskid');
+            $.ajax({
+                url: "{{ url('tasks') }}/" + usertaskid + "/play/@if (Auth::user()) {{Auth::user()->id}} @endif",
+                type: 'get',
+                success: function (data) {
+
+                    if (data == "false") {
+                        bootbox.dialog({
+                            title: "debug",
+                            message: data
+                        });
+                    } else {
+                        var test = $('button[data-usertaskid=' + usertaskid + ']');
+                        $(test).children().removeClass();
+                        test.children().addClass("glyphicon glyphicon-stop");
+                        test.removeClass();
+                        test.addClass("right btn taskstop btn-lg");
+                        test.attr("data-duration", data);
+                    }
+                }
+            });
+        });
+        $('#app-layout').on('click', 'button.taskstop', function () {
+            var duration = this.getAttribute('data-duration');
+            $.ajax({
+                url: "{{ url('tasks') }}/" + duration + "/stop",
+                type: 'get',
+                success: function (data) {
+                    var test = $('button[data-duration=' + duration + ']');
+                    $(test).children().removeClass();
+                    test.children().addClass("glyphicon glyphicon-play-circle");
+                    test.removeClass();
+                    test.addClass("right btn taskplay btn-lg");
+
+                }
+            });
+        });
+
+        // Appeler les invitations en wait
+        $('a.invitations').click(function () {
+            $.get("{{ url('invitations') }}", {}, function (invitations) {
+                bootbox.dialog({
+                    title: "Vos invitations en attentes",
+                    message: invitations
                 });
             });
         });
