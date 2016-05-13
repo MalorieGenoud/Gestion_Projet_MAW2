@@ -24,13 +24,20 @@ Route::group(['middleware' => 'web'], function () {
     Route::group(['middleware' => 'auth'], function(){
 
         /* TASK  */
-        Route::get('tasks/{task}', 'TaskController@show')->where('task', '[0-9]+');
-        Route::get('tasks/create', 'TaskController@create');
-        Route::get('tasks/{task}/children/create', 'TaskController@createChildren')->where('task', '[0-9]+');
-        Route::post('tasks/{task}/children/', 'TaskController@storeChildren')->where('task', '[0-9]+');
-        Route::delete('tasks/{task}/destroy', 'TaskController@destroy')->where('task', '[0-9]+');
-        Route::get('tasks/{task}/edit', 'TaskController@edit')->where('task', '[0-9]+');
+        Route::resource('tasks', 'TaskController',
+            ['parameters' => ['tasks' => 'task']]
+        );
+        Route::get('tasks/{task}/',['as' => 'tasks.show','uses' => 'TaskController@show'])->where('task', '[0-9]+');
+        Route::get('tasks/{task}/children/create', ['as' => 'tasks.createChildren','uses' => 'TaskController@createChildren'])->where('task', '[0-9]+');
+        Route::post('tasks/{task}/children/', ['as' => 'tasks.storeChildren','uses' => 'TaskController@storeChildren'])->where('task', '[0-9]+');
+        Route::post('tasks/{task}/play', ['as' => 'tasks.play', 'uses' => 'TaskController@play'])->where('task', '[0-9]+');
+        Route::get('tasks/{task}/users/', ['as' => 'tasks.users', 'uses' => 'TaskController@users'])->where('task', '[0-9]+');
+        Route::post('tasks/{durationsTask}/stop', ['as' => 'tasks.stop', 'uses' => 'TaskController@stop'])->where('durationsTask', '[0-9]+');
+        //Route::get('tasks/{task}', 'TaskController@show')->where('task', '[0-9]+');
+        //Route::get('tasks/create', 'TaskController@create');
+        //Route::get('tasks/{task}/edit', ['as' => 'tasks.edit', 'uses' => 'TaskController@edit'])->where('task', '[0-9]+');
         Route::post('tasks/{task}', 'TaskController@store')->where('task', '[0-9]+');
+        //Route::delete('tasks/{task}/destroy', 'TaskController@destroy')->where('task', '[0-9]+');
 
         /* PROJECT  */
         Route::resource('project','ProjectController',
@@ -49,10 +56,15 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('logout', 'SessionController@destroy');
 
 
-        /* INVITATION */
+        /* INVITATION PROJECTS */
         Route::get('project/{projectid}/invitations/', 'InvitationController@show')->where('projectid', '[0-9]+');
         Route::get('project/{projectid}/invitations/wait', 'InvitationController@wait')->where('projectid', '[0-9]+');
         Route::post('project/{projectid}/invitations/', 'InvitationController@store')->where('projectid', '[0-9]+');
+
+        Route::get('invitations','InvitationController@edit');
+        Route::post('invitations/{invitation}/accept',['as'=> 'invitations.accept','uses'=>'InvitationController@accept'])->where('invitation', '[0-9]+');;
+        Route::post('invitations/{invitation}/refuse',['as'=> 'invitations.refuse','uses'=>'InvitationController@refuse'])->where('invitation', '[0-9]+');;
+
 
         /*
         Route::group(['prefix' => 'project'], function(){

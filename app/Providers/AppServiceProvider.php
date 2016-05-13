@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use View;
+use App\Models\User;
+use App\Models\Invitation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +18,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        ;
+        View::composer('layouts/app', function($view){
+            $invitations = Invitation::where("statut","=","wait")->get();
+            $view->with('invitations', $invitations);
+        });
     }
 
     /**

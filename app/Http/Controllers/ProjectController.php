@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProjectsUser;
 use Illuminate\Http\Request;
+use App\Models\UsersTask;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Task;
@@ -65,24 +66,28 @@ class ProjectController extends Controller
     public function show(Request $request)
     {
 
-
-        //dd(Project::find($request->id));
-        //$tasks = Task::project();
         $project = Project::find($request->id);
+        $userTasks = UsersTask::where("user_id", "=", Auth::user()->id)->get();
+        $duration = null;
+        $task = null;
+        foreach ($userTasks as $userstask) {
+            foreach ($userstask->durationsTasks()->get() as $durationtask) {
+                if ($durationtask->ended_at == null) {
+                    $duration = $durationtask->id;
+                    $task = $userstask->task_id;
+                }
+            }
+        }
+        return view('project/show', ['project' => $project, 'request' => $request, 'duration' => $duration, 'taskactive' => $task]);
         //dd($project->tasks[0]->allChildren()->get());
-
         /*foreach($tasks as $child => $parent) {
             echo $child;
             echo $parent;
         }*/
-
-
         //dd($project->tasks[1]->parent);
-
         /*
         function buildtree($tasks)
         {
-
             $tree = array();
             echo "<ul>";
             foreach ($tasks as $task) {
@@ -95,11 +100,8 @@ class ProjectController extends Controller
             echo "</ul>";
             return $tree;
         }
-
         $tasksTree = buildtree($project->tasksParent);
         */
-
-        return view('project/show', ['project' => $project, 'request' => $request]);
     }
 
     public function files()

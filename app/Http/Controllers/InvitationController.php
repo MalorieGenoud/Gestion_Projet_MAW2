@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use App\Models\Invitation;
 use App\Models\Project;
+use App\Models\ProjectsUser;
 use App\Models\User;
 
 class InvitationController extends Controller
@@ -58,5 +59,33 @@ class InvitationController extends Controller
 
         return view('invitation.wait', ['wait' => $wait]);
 
+    }
+
+    public function edit()
+    {
+
+        $invitations = Invitation::where("guest_id", "=", Auth::user()->id)->get();
+        //$invitations = Invitation::where("statut","=","wait")->where("guest_id", "=" ,Auth::user()->id)->get();
+        return view('invitation.edit', ['invitations' => $invitations]);
+    }
+
+    public function accept(Invitation $invitation)
+    {
+
+        $invitation->update([
+            'statut' => 'Accept'
+        ]);
+
+        $liaison = new ProjectsUser();
+        $liaison->project_id = $invitation->project_id;
+        $liaison->user_id = Auth::user()->id;
+        $liaison->save();
+    }
+
+    public function refuse(Invitation $invitation)
+    {
+        $invitation->update([
+            'statut' => 'Refuse'
+        ]);
     }
 }
