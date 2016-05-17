@@ -66,14 +66,10 @@ class ProjectController extends Controller
     public function show(Request $request)
     {
 
-
-
         $project = Project::find($request->id);
         $userTasks = UsersTask::where("user_id", "=", Auth::user()->id)->get();
-
         $duration = null;
         $task = null;
-
         foreach ($userTasks as $userstask) {
             foreach ($userstask->durationsTasks()->get() as $durationtask) {
                 if ($durationtask->ended_at == null) {
@@ -82,24 +78,16 @@ class ProjectController extends Controller
                 }
             }
         }
-
         return view('project/show', ['project' => $project, 'request' => $request, 'duration' => $duration, 'taskactive' => $task]);
-
-
         //dd($project->tasks[0]->allChildren()->get());
-
         /*foreach($tasks as $child => $parent) {
             echo $child;
             echo $parent;
         }*/
-
-
         //dd($project->tasks[1]->parent);
-
         /*
         function buildtree($tasks)
         {
-
             $tree = array();
             echo "<ul>";
             foreach ($tasks as $task) {
@@ -112,10 +100,8 @@ class ProjectController extends Controller
             echo "</ul>";
             return $tree;
         }
-
         $tasksTree = buildtree($project->tasksParent);
         */
-
     }
 
     public function files()

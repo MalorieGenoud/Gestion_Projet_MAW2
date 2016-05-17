@@ -16,22 +16,17 @@ class TaskController extends Controller
 {
     function show(Task $task)
     {
-
         return view('task.show', ['task' => $task]);
-
     }
 
     function createChildren(Task $task)
     {
         return view('task.createChildren', ['task' => $task]);
-
     }
 
     function create(Task $task, Request $request)
     {
-        dd($request);
         return view('task.create', ['task' => $task]);
-
     }
 
     function storeChildren(Task $task, Request $request)
@@ -49,7 +44,6 @@ class TaskController extends Controller
 
     function destroy(Task $task)
     {
-
         $task->delete();
         return ("destroy" . $task);
     }
@@ -63,12 +57,11 @@ class TaskController extends Controller
     {
 
         //$updateTask = Task::find($task->id);
-
         $task->update([
             'name' => $request->input('name'),
             'duration' => $request->input('duration'),
             'date_jalon' => $request->input('date_jalon'),
-            'parent_id' => $request->input('parent_id'),
+            'parent_id' => $request->input('parent_id') == '' ? null : $request->input('parent_id'),
             'statut' => $request->input('statut'),
         ]);
 
@@ -82,28 +75,26 @@ class TaskController extends Controller
         $durationTask->user_task_id = $request->task;
         //dd($durationTask->Active($request->user));
 
-        return $durationTask->Active($request->user, Auth::user()->id);
+        $user = Auth::user();
+        if (!$user->getActiveTask()->isEmpty()) {
+            return "";
+        }
 
-        /*if($durationTask->Active($request->user) == true){
-            echo "déja actif";
-            echo "Travail sur la tâche lancé -> =D ";
-        }else{
-            $durationTask->save();
-        }*/
-
-
+        $durationTask->save();
+        return $durationTask->id;
     }
 
     public function stop(DurationsTask $durationsTask)
     {
-
-
         $now = new DateTime();
         $durationsTask->update([
             'ended_at' => $now,
         ]);
+    }
 
-
+    public function users(Task $task, Request $request){
+        $usersTasks = $task->usersTasks;
+        return view('task.users', ['task' => $task,'userstask' => $usersTasks]);
     }
 
 }

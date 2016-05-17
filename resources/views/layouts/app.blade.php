@@ -70,7 +70,6 @@
                             @if($total != null)
                                 <span class="badge">{{$total}}</span>
                             @endif
-
                         </a>
                     </li>
                 </ul>
@@ -158,7 +157,7 @@
         // Editer une tache
         $('button.taskedit').click(function () {
             var task = this.getAttribute('data-id');
-            $.get("{{ url('tasks') }}/" + task + "/edit", {}, function (task) {
+            $.get("{{ route('tasks.edit', '@') }}".replace('@', task), {}, function (task) {
                 bootbox.dialog({
                     title: "Editer une tâche",
                     message: task
@@ -189,6 +188,22 @@
             });
         });
 
+        // Appeler view pour ajouter utilisateur à la tache
+        $('#app-layout').on('click', 'button.taskuser', function () {
+            var task = this.getAttribute('data-id');
+            $.ajax({
+                url: "{{ route('tasks.users', '@') }}".replace('@', task),
+                type: 'get',
+                success: function (data) {
+                    bootbox.dialog({
+                        title: "Gestion des utilisateurs de la tâche",
+                        message: data
+                    });
+
+                }
+            });
+        });
+
         // supprimer la tache
         $('button.taskdestroy').click(function () {
             var task = this.getAttribute('data-id');
@@ -197,7 +212,7 @@
                 if (result) {
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ url('tasks') }}/" + task + "/destroy",
+                        url: "{{ url('tasks') }}/" + task,
                         data: task,
                         success: function (task) {
                             location.reload();
@@ -253,45 +268,46 @@
             });
         });
 
-        $('#main_body').on("click", "#but", function () {
+       /* $('#main_body').on("click", "#but", function () {
             alert("bla bla");
-        });
+        });*/
 
+        // lancer un rush sur la tache
         $('#app-layout').on('click', 'button.taskplay', function () {
-            console.log("sss");
             var usertaskid = this.getAttribute('data-usertaskid');
             $.ajax({
-                url: "{{ url('tasks') }}/" + usertaskid + "/play/@if (Auth::user()) {{Auth::user()->id}} @endif",
-                type: 'get',
+                url: "{{ route('tasks.play', '@') }}".replace('@', usertaskid),
+                type: 'post',
                 success: function (data) {
 
-                    if (data == "false") {
+                    if (data == "") {
                         bootbox.dialog({
                             title: "debug",
-                            message: data
+                            message: "Tache déja en cours"
                         });
                     } else {
-                        var test = $('button[data-usertaskid=' + usertaskid + ']');
-                        $(test).children().removeClass();
-                        test.children().addClass("glyphicon glyphicon-stop");
-                        test.removeClass();
-                        test.addClass("right btn taskstop btn-lg");
-                        test.attr("data-duration", data);
+                        var button = $('button[data-usertaskid=' + usertaskid + ']');
+                        $(button).children().removeClass();
+                        button.children().addClass("glyphicon glyphicon-stop");
+                        button.removeClass();
+                        button.addClass("right btn taskstop btn-lg");
+                        button.attr("data-duration", data);
                     }
                 }
             });
         });
+        // stopper un rush sur la tache
         $('#app-layout').on('click', 'button.taskstop', function () {
             var duration = this.getAttribute('data-duration');
             $.ajax({
-                url: "{{ url('tasks') }}/" + duration + "/stop",
-                type: 'get',
+                url: "{{ route('tasks.stop', '@') }}".replace('@', duration),
+                type: 'post',
                 success: function (data) {
-                    var test = $('button[data-duration=' + duration + ']');
-                    $(test).children().removeClass();
-                    test.children().addClass("glyphicon glyphicon-play-circle");
-                    test.removeClass();
-                    test.addClass("right btn taskplay btn-lg");
+                    var button = $('button[data-duration=' + duration + ']');
+                    $(button).children().removeClass();
+                    button.children().addClass("glyphicon glyphicon-play-circle");
+                    button.removeClass();
+                    button.addClass("right btn taskplay btn-lg");
 
                 }
             });
@@ -306,6 +322,35 @@
                 });
             });
         });
+        $('#app-layout').on('click', 'button.invitationaccept', function () {
+            var invitation = this.getAttribute('data-invitation');
+            $.ajax({
+                url: "{{ route('invitations.accept', '@') }}".replace('@', invitation),
+                type: 'post',
+                success: function (data) {
+                    bootbox.dialog({
+                        title: "Inviter une personne",
+                        message: data
+                    });
+
+                }
+            });
+        });
+        $('#app-layout').on('click', 'button.invitationrefuse', function () {
+            var invitation = this.getAttribute('data-invitation');
+            $.ajax({
+                url: "{{ route('invitations.refuse', '@') }}".replace('@', invitation),
+                type: 'post',
+                success: function (data) {
+                    bootbox.dialog({
+                        title: "Inviter une personne",
+                        message: data
+                    });
+
+                }
+            });
+        });
+
     });
 </script>
 

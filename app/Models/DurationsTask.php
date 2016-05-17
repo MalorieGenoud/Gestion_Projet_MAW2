@@ -28,7 +28,7 @@ class DurationsTask extends Model
             //dd($userstask->durationsTasks()->get());
             foreach ($userstask->durationsTasks()->get() as $durationtask) {
                 if ($durationtask->ended_at == null) {
-                    return "false";
+                    return false;
                 }
             }
 
