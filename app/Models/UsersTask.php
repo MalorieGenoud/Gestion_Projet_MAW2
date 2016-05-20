@@ -8,6 +8,7 @@ class UsersTask extends Model {
      * Generated
      */
 
+    public $timestamps = false;
     protected $table = 'users_tasks';
     protected $fillable = ['id', 'user_id', 'task_id'];
 

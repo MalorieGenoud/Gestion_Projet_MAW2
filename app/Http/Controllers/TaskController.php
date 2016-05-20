@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
+use App\Models\User;
+
 
 
 use App\Http\Requests;
@@ -93,8 +95,41 @@ class TaskController extends Controller
     }
 
     public function users(Task $task, Request $request){
+
         $usersTasks = $task->usersTasks;
-        return view('task.users', ['task' => $task,'userstask' => $usersTasks]);
+        $refuse = [];
+        foreach($task->project->users as $user){
+            foreach($task->usersTasks as $usertask){
+                if($usertask->user_id == $user->id){
+                    $refuse[] = $usertask->user_id;
+                }else{
+                }
+            }
+        }
+
+        return view('task.users', ['task' => $task,'userstask' => $usersTasks, 'project' => $task->project, 'refuse' => $refuse]);
     }
+
+    public function storeusers(Task $task, Request $request){
+
+        //$newUserTask = new UsersTask();
+
+        //dd($request->input('user'));
+
+        foreach($request->input('user') as $key => $value){
+            $newUserTask = new UsersTask();
+            $newUserTask->task_id = $request->task->id;
+            $newUserTask->user_id = $key;
+            $newUserTask->save();
+        }
+
+    }
+
+    public function usertaskdelete(UsersTask $usersTask, Request $request){
+
+        $usersTask->delete();
+    }
+
+
 
 }

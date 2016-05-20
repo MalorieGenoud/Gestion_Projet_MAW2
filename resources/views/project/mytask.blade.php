@@ -1,5 +1,11 @@
 @foreach ($task->usersTasks as $usertask)
+
     @if($usertask->user_id == Auth::user()->id)
+
+        @if($task->id == '30')
+            {{$task->id}}
+        @endif
+
         <li>
             <a>
                 <span class="taskshow" data-id="{{$task->id}}">

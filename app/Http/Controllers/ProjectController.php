@@ -78,6 +78,43 @@ class ProjectController extends Controller
                 }
             }
         }
+
+        function eachAllTasks($children)
+        {
+            echo "<ul>";
+            foreach ($children as $child) {
+
+                foreach($child->usersTasks as $usertask){
+                    //dd($usertask);
+                    foreach($usertask->durationsTasks as $durationTask){
+                        echo round(abs(strtotime($durationTask->ended_at) - strtotime($durationTask->created_at)) / 60). " ";
+                    }
+                }
+
+                echo "<li>id : {$child->id} | duration initial : {$child->duration}</li>";
+
+                if ($child->children->isEmpty()) {
+                    echo "<b>vide</b>";
+                } else {
+                    eachAllTasks($child->children);
+                }
+            }
+            echo "</ul>";
+        }
+        echo "<ul>";
+        foreach ($project->tasksParent as $taskparent) {
+
+            echo "<li>id : {$taskparent->id} | duration initial : {$taskparent->duration}</li>";
+
+            if($taskparent->children->isEmpty()){
+                echo "<b>vide</b>";
+            }else{
+                eachAllTasks($taskparent->children);
+            }
+        }
+        echo "</ul>";
+
+
         return view('project/show', ['project' => $project, 'request' => $request, 'duration' => $duration, 'taskactive' => $task]);
         //dd($project->tasks[0]->allChildren()->get());
         /*foreach($tasks as $child => $parent) {
