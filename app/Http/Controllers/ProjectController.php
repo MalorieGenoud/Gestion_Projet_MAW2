@@ -12,11 +12,12 @@ use App\Http\Requests;
 use App\Http\Middleware\ProjectControl;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Form;
-
+use Datetime;
 
 class ProjectController extends Controller
 {
     //
+
 
     public function __construct()
     {
@@ -79,66 +80,92 @@ class ProjectController extends Controller
             }
         }
 
-        function eachAllTasks($children)
+        $totaltask = null;
+        $totalparent = null;
+        $totalchild = null;
+
+        function eachAllTasks($children, $totalchild)
         {
+            //$totalchild = null;
             echo "<ul>";
+            //dd($child->children->isEmpty());
             foreach ($children as $child) {
 
-                foreach($child->usersTasks as $usertask){
-                    //dd($usertask);
-                    foreach($usertask->durationsTasks as $durationTask){
-                        echo round(abs(strtotime($durationTask->ended_at) - strtotime($durationTask->created_at)) / 60). " ";
+                if (!$child->usersTasks->isEmpty()) {
+                    foreach ($child->usersTasks as $usertask) {
+                        foreach ($usertask->durationsTasks as $durationTask) {
+                            $totalchild += strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
+                        }
                     }
                 }
-
-                echo "<li>id : {$child->id} | duration initial : {$child->duration}</li>";
-
+                echo "<li>id : {$child->id} | duration initial : {$child->duration} total : {$totalchild}</li>";
                 if ($child->children->isEmpty()) {
                     echo "<b>vide</b>";
                 } else {
-                    eachAllTasks($child->children);
+
+                    eachAllTasks($child->children,$totalchild); //dd($totalchild);
+                    $totalchild += 1;
                 }
+
             }
+
+
             echo "</ul>";
+            return $totalchild;
         }
+
         echo "<ul>";
         foreach ($project->tasksParent as $taskparent) {
 
-            echo "<li>id : {$taskparent->id} | duration initial : {$taskparent->duration}</li>";
-
-            if($taskparent->children->isEmpty()){
-                echo "<b>vide</b>";
-            }else{
-                eachAllTasks($taskparent->children);
+            foreach ($taskparent->usersTasks as $usertask) {
+                foreach ($usertask->durationsTasks as $durationTask) {
+                    $totalparent+= strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
+                }
             }
+
+            echo "<li>id : {$taskparent->id} | duration initial : {$taskparent->duration} total : {$totalparent}</li>";
+
+            if ($taskparent->children->isEmpty()) {
+                echo "<b>vide</b>";
+            } else {
+                // problème appel de fonction, récupérer total child
+                $final = eachAllTasks($taskparent->children,$totalchild);
+                //$totaltask += $totalchild;
+            }
+
+
         }
+
         echo "</ul>";
+        $master = $final + $totalparent;
+        echo "<p>final : ". $master ."</p>";
 
-
-        return view('project/show', ['project' => $project, 'request' => $request, 'duration' => $duration, 'taskactive' => $task]);
         //dd($project->tasks[0]->allChildren()->get());
         /*foreach($tasks as $child => $parent) {
             echo $child;
             echo $parent;
         }*/
         //dd($project->tasks[1]->parent);
-        /*
-        function buildtree($tasks)
-        {
-            $tree = array();
-            echo "<ul>";
-            foreach ($tasks as $task) {
-                echo "<li>" . $task->id . "</li>";
-                $tree[] = [
-                    'parent' => $task,
-                    'children' => buildtree($task->children)
-                ];
-            }
-            echo "</ul>";
-            return $tree;
-        }
-        $tasksTree = buildtree($project->tasksParent);
-        */
+
+//        function buildtree($tasks)
+//        {
+//            $tree = array();
+//            echo "<ul>";
+//            foreach ($tasks as $task) {
+//                echo "<li>" . $task->id . "</li>";
+//                $tree[] = [
+//                    'parent' => $task,
+//                    'children' => buildtree($task->children)
+//                ];
+//            }
+//            echo "</ul>";
+//            return $tree;
+//        }
+//        $tasksTree = buildtree($project->tasksParent);
+//        dd($tasksTree);
+
+        return view('project/show', ['project' => $project, 'request' => $request, 'duration' => $duration, 'taskactive' => $task]);
+
     }
 
     public function files()

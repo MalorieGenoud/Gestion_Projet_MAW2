@@ -28,7 +28,7 @@
                                 <td>{{$duration->created_at}}</td>
                                 <td>{{$duration->ended_at}}</td>
                                 <td>{{$duration->user_task_id}}</td>
-                                <td>{{round(abs(strtotime($duration->ended_at) - strtotime($duration->created_at)) / 60). " minute"}}</td>
+                                <td>{{round(abs(strtotime($duration->ended_at) - strtotime($duration->created_at))). " secondes"}}</td>
                             </tr>
                         @endif
 
