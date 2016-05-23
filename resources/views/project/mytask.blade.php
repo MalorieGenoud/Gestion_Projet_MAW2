@@ -9,7 +9,7 @@
         <li>
             <a>
                 <span class="taskshow" data-id="{{$task->id}}">
-                    <p>{{$task->id}} - {{$task->name}}</p>
+                    <p>ID : {{$task->id}} - {{$task->name}} - total enfant {{$task->getElapsedDuration()}}</p>
                 </span>
                 <button class="right btn btn-lg
                 @if($taskactive == null)

@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model {
+class Task extends Model
+{
 
     /**
      * Generated
@@ -12,27 +13,46 @@ class Task extends Model {
     protected $fillable = ['id', 'name', 'duration', 'date_jalon', 'statut', 'priority', 'project_id', 'parent_id'];
 
 
-    public function project() {
+    public function project()
+    {
         return $this->belongsTo(\App\Models\Project::class, 'project_id', 'id');
     }
 
-    public function usersTasks() {
+    public function usersTasks()
+    {
         return $this->hasMany(\App\Models\UsersTask::class, 'task_id', 'id');
     }
 
-    public function parent(){
+    public function parent()
+    {
         return $this->belongsTo(\App\Models\Task::class, 'parent_id');
     }
 
-    public function children(){
+    public function children()
+    {
         return $this->hasMany(\App\Models\Task::class, 'parent_id');
     }
 
-    public function allChildren(){
+    public function allChildren()
+    {
         return $this->children()->with('allChildren');
     }
 
+    public function getElapsedDuration()
+    {
+        $total = 0;
+        foreach ($this->usersTasks as $usertask) {
+            foreach ($usertask->durationsTasks as $durationTask) {
+                $total += strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
+            }
+        }
 
+        foreach ($this->children as $child) {
+            $total += $child->getElapsedDuration();
+        }
+
+        return $total;
+    }
 
 
 }

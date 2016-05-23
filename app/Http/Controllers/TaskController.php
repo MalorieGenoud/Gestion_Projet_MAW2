@@ -57,7 +57,7 @@ class TaskController extends Controller
 
     function store(Task $task, Request $request)
     {
-
+        //dd($request->input('duration')*60*60);
         //$updateTask = Task::find($task->id);
         $task->update([
             'name' => $request->input('name'),
