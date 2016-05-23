@@ -20,10 +20,6 @@ class Task extends Model {
         return $this->hasMany(\App\Models\UsersTask::class, 'task_id', 'id');
     }
 
-    public function usersNotIn(){
-
-    }
-
     public function parent(){
         return $this->belongsTo(\App\Models\Task::class, 'parent_id');
     }

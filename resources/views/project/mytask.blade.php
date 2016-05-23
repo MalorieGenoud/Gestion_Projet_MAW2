@@ -2,9 +2,9 @@
 
     @if($usertask->user_id == Auth::user()->id)
 
-        @if($task->id == '30')
-            {{$task->id}}
-        @endif
+        {{--@if($task->id == '30')--}}
+        {{--{{$task->id}}--}}
+        {{--@endif--}}
 
         <li>
             <a>
@@ -14,10 +14,11 @@
                 <button class="right btn btn-lg
                 @if($taskactive == null)
                         taskplay" data-usertaskid="{{$usertask->id}}"
-                @elseif($taskactive == $task->id)
-                        taskstop " data-usertaskid="{{$usertask->id}}" data-duration="{{$duration}}"
+                        @elseif($taskactive == $task->id)
+                        taskstop
+                " data-usertaskid="{{$usertask->id}}" data-duration="{{$duration}}"
                 @else
-                       taskplay" data-usertaskid="{{$usertask->id}}"
+                    taskplay" data-usertaskid="{{$usertask->id}}"
                 @endif
                 >
                 <span class="glyphicon
@@ -28,13 +29,13 @@
                   @else()
                         glyphicon-play-circle
                       @endif
-                     " aria-hidden="true"></span>
+                        " aria-hidden="true"></span>
                 </button>
             </a>
     @else
         <li>
-            @endif
-            @endforeach
+    @endif
+
 
             @if($task->children->isEmpty())
 
@@ -45,6 +46,7 @@
                     @endforeach
                 </ul>
             @endif
-        </li>
+    </li>
 
 
+        @endforeach

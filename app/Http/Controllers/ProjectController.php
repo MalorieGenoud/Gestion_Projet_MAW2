@@ -84,7 +84,7 @@ class ProjectController extends Controller
         $totalparent = null;
         $totalchild = null;
 
-        function eachAllTasks($children, $totalchild)
+        function eachAllTasks($children, $totalchildren = null)
         {
             //$totalchild = null;
             echo "<ul>";
@@ -94,32 +94,33 @@ class ProjectController extends Controller
                 if (!$child->usersTasks->isEmpty()) {
                     foreach ($child->usersTasks as $usertask) {
                         foreach ($usertask->durationsTasks as $durationTask) {
-                            $totalchild += strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
+                            $totalchild = strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
                         }
                     }
                 }
-                echo "<li>id : {$child->id} | duration initial : {$child->duration} total : {$totalchild}</li>";
+                echo "<li>id : {$child->id} | duration initial : {$child->duration} total de la tache : {$totalchild}</li>";
+                $totalchildren += $totalchild;
                 if ($child->children->isEmpty()) {
                     echo "<b>vide</b>";
                 } else {
 
-                    eachAllTasks($child->children,$totalchild); //dd($totalchild);
-                    $totalchild += 1;
+                    eachAllTasks($child->children,$totalchildren); //dd($totalchild);
                 }
 
             }
 
-
+            echo "total -> {$totalchildren}";
             echo "</ul>";
-            return $totalchild;
+            return $totalchildren;
         }
 
         echo "<ul>";
         foreach ($project->tasksParent as $taskparent) {
 
+            $totalparent = null;
             foreach ($taskparent->usersTasks as $usertask) {
                 foreach ($usertask->durationsTasks as $durationTask) {
-                    $totalparent+= strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
+                    $totalparent += strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
                 }
             }
 
@@ -129,16 +130,21 @@ class ProjectController extends Controller
                 echo "<b>vide</b>";
             } else {
                 // problème appel de fonction, récupérer total child
-                $final = eachAllTasks($taskparent->children,$totalchild);
-                //$totaltask += $totalchild;
+                $final = eachAllTasks($taskparent->children);
+                $debug[] = [
+                    'child' => $final,
+                ];
             }
+
+            $master = $final + $totalparent;
+            echo "<p>final de la tache : ". $master ."</p>";
 
 
         }
-
         echo "</ul>";
-        $master = $final + $totalparent;
-        echo "<p>final : ". $master ."</p>";
+        //dd($debug);
+
+
 
         //dd($project->tasks[0]->allChildren()->get());
         /*foreach($tasks as $child => $parent) {
