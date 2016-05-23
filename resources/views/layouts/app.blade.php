@@ -15,6 +15,8 @@
     <!-- Styles -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('css/template.css') }}"/>
+    <link rel="stylesheet" href="css/gantt.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
 
     <style>
         body {
@@ -51,11 +53,6 @@
             <!-- Authentication Links -->
             @if (Auth::user())
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/') }}">Tout les projets</a></li>
-
-                    <li><a href="{{ url('/project/{id}/show') }}">Le projet</a></li>
-
-                    <li><a href="{{ url('/project/create') }}">Nouveau projet</a></li>
                     <li><a>|</a></li>
                     <li>
                         <a href="#" class="invitations">Invitation
@@ -74,29 +71,37 @@
                     </li>
                 </ul>
 
-                @else
-
-                @endif
-
-                        <!-- Right Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- Authentication Links -->
-                    @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-
-                    @else
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
-                            </a>
-
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
-                            </ul>
-                        </li>
+                {{-- Takes the Route name and show the apropriate menu --}}
+                @if(Route::current() ->getName() === 'project.show')
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{ url('/') }}">Tout les projets</a></li>
+                        <li><a href="{{ url('/project/create') }}">Nouveau projet</a></li>
+                    </ul>
                     @endif
-                </ul>
+                    @else
+
+                    @endif
+
+                            <!-- Right Side Of Navbar -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <!-- Authentication Links -->
+                        @if (Auth::guest())
+                            <li><a href="{{ url('/login') }}">Login</a></li>
+
+                        @else
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-expanded="false">
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+                    </ul>
         </div>
     </div>
 </nav>
@@ -111,6 +116,10 @@
 <script src="{{ URL::asset('js/bootbox.min.js') }}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+<script src="{{ URL::asset('jsGantt/jquery.fn.gantt.js') }}"></script>
+<script src="{{ URL::asset('css/gantt.css') }}"></script>
+<script src="{{ URL::asset('css/style.css') }}"></script>
+
 
 <script>
     $(document).ready(function () {
@@ -268,9 +277,9 @@
             });
         });
 
-       /* $('#main_body').on("click", "#but", function () {
-            alert("bla bla");
-        });*/
+        /* $('#main_body').on("click", "#but", function () {
+         alert("bla bla");
+         });*/
 
         // lancer un rush sur la tache
         $('#app-layout').on('click', 'button.taskplay', function () {
@@ -353,6 +362,26 @@
 
     });
 </script>
+<!--
+<script>
+    // Gantt configuration
+    $(".selector").gantt({
+        source: "ajax/data.json",
+        scale: "weeks",
+        minScale: "weeks",
+        maxScale: "months",
+        onItemClick: function(data) {
+            alert("Item clicked - show some details");
+        },
+        onAddClick: function(dt, rowId) {
+            alert("Empty space clicked - add an item!");
+        },
+        onRender: function() {
+            console.log("chart rendered");
+        }
+    });
 
+</script>
+ -->
 </body>
 </html>

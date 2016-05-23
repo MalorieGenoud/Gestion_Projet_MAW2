@@ -39,13 +39,14 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('tasks/{task}', 'TaskController@store')->where('task', '[0-9]+');
         //Route::delete('tasks/{task}/destroy', 'TaskController@destroy')->where('task', '[0-9]+');
 
+
         /* PROJECT  */
         Route::resource('project','ProjectController',
             ['parameters' => ['project' => 'id']], 
             ['only' => ['index']]
         );
         Route::get('/', 'ProjectController@index');
-        Route::get('project/{id}', 'ProjectController@show')->where('id', '[0-9]+');
+        Route::get('project/{id}', ['as' => 'project.show', 'uses' => 'ProjectController@show' ])->where('id', '[0-9]+');
         Route::get('project/{id}/tasks/create', 'ProjectController@createTask')->where('id', '[0-9]+');
         Route::post('project/{id}/tasks', 'ProjectController@storeTask')->where('id', '[0-9]+');
         Route::get('project/{id}/files', 'ProjectController@files')->where('id', '[0-9]+');
@@ -66,6 +67,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('invitations/{invitation}/refuse',['as'=> 'invitations.refuse','uses'=>'InvitationController@refuse'])->where('invitation', '[0-9]+');;
 
 
+        /* PLANNING */
+        Route::get('project/{projectid}/planning', 'PlanningController@show')->where('projectid', '[0-9]+');
         /*
         Route::group(['prefix' => 'project'], function(){
 
