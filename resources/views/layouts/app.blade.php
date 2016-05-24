@@ -217,14 +217,17 @@
         $('button.taskdestroy').click(function () {
             var task = this.getAttribute('data-id');
             bootbox.confirm("Vous allez supprimer cette tâches ? ", function (result) {
-                //Example.show("Confirm result: "+result);
                 if (result) {
                     $.ajax({
                         type: "DELETE",
                         url: "{{ url('tasks') }}/" + task,
                         data: task,
                         success: function (task) {
-                            location.reload();
+                            //location.reload();
+                            $('#taskdetail').html(task);
+                        },
+                        error: function (task) {
+                            console.log(task);
                             $('#taskdetail').html(task);
                         }
                     });
@@ -323,39 +326,59 @@
         });
 
         // Appeler les invitations en wait
-        $('a.invitations').click(function () {
+        $('a.invitations').click(function(){
+            callinvitation();
+        });
+
+        function callinvitation(){
             $.get("{{ url('invitations') }}", {}, function (invitations) {
                 bootbox.dialog({
                     title: "Vos invitations en attentes",
                     message: invitations
                 });
             });
-        });
+        }
+
+
         $('#app-layout').on('click', 'button.invitationaccept', function () {
             var invitation = this.getAttribute('data-invitation');
             $.ajax({
                 url: "{{ route('invitations.accept', '@') }}".replace('@', invitation),
                 type: 'post',
                 success: function (data) {
-                    bootbox.dialog({
-                        title: "Inviter une personne",
-                        message: data
-                    });
-
+                    bootbox.hideAll();
+                    callinvitation();
                 }
             });
         });
+
         $('#app-layout').on('click', 'button.invitationrefuse', function () {
             var invitation = this.getAttribute('data-invitation');
             $.ajax({
                 url: "{{ route('invitations.refuse', '@') }}".replace('@', invitation),
                 type: 'post',
                 success: function (data) {
+                    bootbox.hideAll();
+                    callinvitation();
+                }
+            });
+        });
+
+        // Suppression usertask
+        $('#app-layout').on('click', 'button.usertaskdestroy', function () {
+            var usertaskdestroy = this.getAttribute('data-id');
+            $.ajax({
+                url: "{{ route('tasks.usertaskdelete', '@') }}".replace('@', usertaskdestroy),
+                type: 'delete',
+                success: function (data) {
                     bootbox.dialog({
                         title: "Inviter une personne",
                         message: data
                     });
+                },
+                error: function (data) {
 
+                    console.log(data);
                 }
             });
         });

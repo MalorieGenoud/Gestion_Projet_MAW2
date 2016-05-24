@@ -25,13 +25,17 @@ Route::group(['middleware' => 'web'], function () {
 
         /* TASK  */
         Route::resource('tasks', 'TaskController',
-            ['parameters' => ['tasks' => 'task']]
+            ['parameters' =>
+                ['tasks' => 'task']
+            ]
         );
         Route::get('tasks/{task}/',['as' => 'tasks.show','uses' => 'TaskController@show'])->where('task', '[0-9]+');
         Route::get('tasks/{task}/children/create', ['as' => 'tasks.createChildren','uses' => 'TaskController@createChildren'])->where('task', '[0-9]+');
         Route::post('tasks/{task}/children/', ['as' => 'tasks.storeChildren','uses' => 'TaskController@storeChildren'])->where('task', '[0-9]+');
         Route::post('tasks/{task}/play', ['as' => 'tasks.play', 'uses' => 'TaskController@play'])->where('task', '[0-9]+');
         Route::get('tasks/{task}/users/', ['as' => 'tasks.users', 'uses' => 'TaskController@users'])->where('task', '[0-9]+');
+        Route::post('tasks/{task}/users/', ['as' => 'tasks.storeusers', 'uses' => 'TaskController@storeusers'])->where('task', '[0-9]+');
+        Route::delete('tasks/{usersTask}/users/', ['as' => 'tasks.usertaskdelete', 'uses' => 'TaskController@usertaskdelete'])->where('usersTask', '[0-9]+');
         Route::post('tasks/{durationsTask}/stop', ['as' => 'tasks.stop', 'uses' => 'TaskController@stop'])->where('durationsTask', '[0-9]+');
         //Route::get('tasks/{task}', 'TaskController@show')->where('task', '[0-9]+');
         //Route::get('tasks/create', 'TaskController@create');

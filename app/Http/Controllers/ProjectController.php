@@ -12,11 +12,12 @@ use App\Http\Requests;
 use App\Http\Middleware\ProjectControl;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Form;
-
+use Datetime;
 
 class ProjectController extends Controller
 {
     //
+
 
     public function __construct()
     {
@@ -78,30 +79,99 @@ class ProjectController extends Controller
                 }
             }
         }
-        return view('project/show', ['project' => $project, 'request' => $request, 'duration' => $duration, 'taskactive' => $task]);
+
+//        $totaltask = null;
+//        $totalparent = null;
+//        $totalchild = null;
+
+//        function eachAllTasks($children, $totalchildren = null)
+//        {
+//            //$totalchild = null;
+//            echo "<ul>";
+//            //dd($child->children->isEmpty());
+//            foreach ($children as $child) {
+//
+//                if (!$child->usersTasks->isEmpty()) {
+//                    foreach ($child->usersTasks as $usertask) {
+//                        foreach ($usertask->durationsTasks as $durationTask) {
+//                            $totalchild = strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
+//                        }
+//                    }
+//                }
+//                echo "<li>id : {$child->id} | duration initial : {$child->duration} total de la tache : {$totalchild}</li>";
+//                $totalchildren += $totalchild;
+//                if ($child->children->isEmpty()) {
+//                    echo "<b>vide</b>";
+//                } else {
+//
+//                    eachAllTasks($child->children,$totalchildren); //dd($totalchild);
+//                }
+//
+//            }
+//
+//            echo "total -> {$totalchildren}";
+//            echo "</ul>";
+//            return $totalchildren;
+//        }
+//
+//        echo "<ul>";
+//        foreach ($project->tasksParent as $taskparent) {
+//
+//            $totalparent = null;
+//            foreach ($taskparent->usersTasks as $usertask) {
+//                foreach ($usertask->durationsTasks as $durationTask) {
+//                    $totalparent += strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
+//                }
+//            }
+//
+//            echo "<li>id : {$taskparent->id} | duration initial : {$taskparent->duration} total : {$totalparent}</li>";
+//
+//            if ($taskparent->children->isEmpty()) {
+//                echo "<b>vide</b>";
+//            } else {
+//                // problème appel de fonction, récupérer total child
+//                $final = eachAllTasks($taskparent->children);
+//                $debug[] = [
+//                    'child' => $final,
+//                ];
+//            }
+//
+//            $master = $final + $totalparent;
+//            echo "<p>final de la tache : ". $master ."</p>";
+//
+//
+//        }
+//        echo "</ul>";
+//        //dd($debug);
+
+
+
         //dd($project->tasks[0]->allChildren()->get());
         /*foreach($tasks as $child => $parent) {
             echo $child;
             echo $parent;
         }*/
         //dd($project->tasks[1]->parent);
-        /*
-        function buildtree($tasks)
-        {
-            $tree = array();
-            echo "<ul>";
-            foreach ($tasks as $task) {
-                echo "<li>" . $task->id . "</li>";
-                $tree[] = [
-                    'parent' => $task,
-                    'children' => buildtree($task->children)
-                ];
-            }
-            echo "</ul>";
-            return $tree;
-        }
-        $tasksTree = buildtree($project->tasksParent);
-        */
+
+//        function buildtree($tasks)
+//        {
+//            $tree = array();
+//            echo "<ul>";
+//            foreach ($tasks as $task) {
+//                echo "<li>" . $task->id . "</li>";
+//                $tree[] = [
+//                    'parent' => $task,
+//                    'children' => buildtree($task->children)
+//                ];
+//            }
+//            echo "</ul>";
+//            return $tree;
+//        }
+//        $tasksTree = buildtree($project->tasksParent);
+//        dd($tasksTree);
+
+        return view('project/show', ['project' => $project, 'request' => $request, 'duration' => $duration, 'taskactive' => $task]);
+
     }
 
     public function files()

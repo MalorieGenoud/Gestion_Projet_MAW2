@@ -3,6 +3,7 @@
 .tree-menu > ul { padding: 0; }
 
 .tree-menu a {
+    /*background: linear-gradient(90deg, #20DE13 52%, #efefef 27%);*/
     display: block;
     vertical-align: middle;
     text-decoration: none;
@@ -27,6 +28,14 @@
     -webkit-transition: background-color 0.1s linear;
     -o-transition: background-color 0.1s linear;
     transition: background-color 0.1s linear;
+}
+
+.tree-menu a button{
+    display: none;
+}
+
+.tree-menu a:hover > button{
+    display: block;
 }
 
 .tree-menu .active > a:hover,
