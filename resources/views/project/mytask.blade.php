@@ -9,7 +9,7 @@
         <li>
             <a>
                 <span class="taskshow" data-id="{{$task->id}}">
-                    <p>ID : {{$task->id}} - {{$task->name}} - total enfant {{$task->getElapsedDuration()}}</p>
+                    <p>{{$task->name}}</p>
                 </span>
                 <button class="right btn btn-lg
                 @if($taskactive == null)
@@ -32,6 +32,12 @@
                         " aria-hidden="true"></span>
                 </button>
             </a>
+            <div class="progression" style="background: linear-gradient(90deg, #20DE13 {{(($task->getElapsedDuration()*100/60/60)/$task->duration)}}%, #efefef 0%);">
+                <p style="text-align: left;">{{gmdate("H:i:s",$task->getElapsedDuration())}}</p>
+
+                <p style="text-align: right;margin-left: auto;">{{$task->duration}}h</p>
+
+            </div>
     @else
         <li>
     @endif
