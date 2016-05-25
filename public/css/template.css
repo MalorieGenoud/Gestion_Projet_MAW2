@@ -60,6 +60,7 @@
 .tree-menu .closed > a { background-image: url(../images/icon-expand.gif); }
 
 .tree-menu .opened > a { background-image: url(../images/icon-collapse.gif); }
+
 .right{
     float: right;
     padding: 3px 10px;
@@ -68,3 +69,27 @@
 .taskshow{
     display: inline-block;
 }
+
+.progression{
+    width: 100%;
+    background: #A78484;
+    height: 20px;
+    margin-top: -3px;
+    margin-bottom: 5px;
+
+
+    display: flex;
+    flex-direction: row;
+
+}
+
+.progression p{
+    padding: 0 4px;
+}
+
+/*****************************************************/
+
+
+
+
+

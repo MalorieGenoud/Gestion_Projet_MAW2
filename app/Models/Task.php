@@ -43,7 +43,9 @@ class Task extends Model
         $total = 0;
         foreach ($this->usersTasks as $usertask) {
             foreach ($usertask->durationsTasks as $durationTask) {
-                $total += strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
+                if($durationTask->ended_at){
+                    $total += strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
+                }
             }
         }
 

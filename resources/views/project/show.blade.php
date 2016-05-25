@@ -40,8 +40,6 @@
         <h1>Informations du projet</h1>
         @include('project.info', ['project' => $project])
 
-
-    </div>
     </div>
 @endsection
 
