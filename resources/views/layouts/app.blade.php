@@ -126,10 +126,6 @@
     });
 
 
-
-
-
-
 </script>
 
 <script type="text/javascript">
@@ -276,9 +272,9 @@
             });
         });
 
-       /* $('#main_body').on("click", "#but", function () {
-            alert("bla bla");
-        });*/
+        /* $('#main_body').on("click", "#but", function () {
+         alert("bla bla");
+         });*/
 
         // lancer un rush sur la tache
         $('#app-layout').on('click', 'button.taskplay', function () {
@@ -322,11 +318,11 @@
         });
 
         // Appeler les invitations en wait
-        $('a.invitations').click(function(){
+        $('a.invitations').click(function () {
             callinvitation();
         });
 
-        function callinvitation(){
+        function callinvitation() {
             $.get("{{ url('invitations') }}", {}, function (invitations) {
                 bootbox.dialog({
                     title: "Vos invitations en attentes",
@@ -336,18 +332,28 @@
         }
 
 
-
-        function callEvents(project){
+        function callEvents(project) {
 
             $.ajax({
                 url: "{{ route('project.events', '@') }}".replace('@', project),
                 type: 'get',
+                dataType: 'json',
                 success: function (data) {
-
+                    var content = $('#events');
                     //$('#events').html(data);
-                    $(data).each(function(){
-                        $('#events').text(data);
+                    console.log(data);
+
+                    content.append("<table class='table'> <thead> <tr> <th>Qui</th> <th>Description</th> <th>Created_at</th> </tr> </thead> <tbody>");
+                    $.each(data, function (key, data) {
+                        content
+                                .append("<tr>")
+                                .append("<td>" + this.user_id + "</td>")
+                                .append("<td>" + this.description + "</td>")
+                                .append("<td>" + this.created_at + "</td>")
+                                .append("</tr>");
                     });
+
+                    content.append("</tbody></table>");
 
                 }
             });
@@ -422,7 +428,6 @@
 
     });
 </script>
-
 
 
 </body>
