@@ -339,21 +339,21 @@
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {
-                    var content = $('#events');
+                    //var content = $('#events');
                     //$('#events').html(data);
                     console.log(data);
 
-                    content.append("<table class='table'> <thead> <tr> <th>Qui</th> <th>Description</th> <th>Created_at</th> </tr> </thead> <tbody>");
+                    var content = ("<table class='table'><thead><tr><th>Qui</th><th>Description</th><th>Created_at</th></tr></thead>");
                     $.each(data, function (key, data) {
-                        content
-                                .append("<tr>")
-                                .append("<td>" + this.user_id + "</td>")
-                                .append("<td>" + this.description + "</td>")
-                                .append("<td>" + this.created_at + "</td>")
-                                .append("</tr>");
+                        content += ("<tr>");
+                        content += ("<td>" + this.user_id + "</td>");
+                        content += ("<td>" + this.description + "</td>");
+                        content += ("<td>" + this.created_at + "</td>");
+                        content += ("</tr>");
                     });
 
-                    content.append("</tbody></table>");
+                    content += ("</table>");
+                    $('#events').append(content);
 
                 }
             });
