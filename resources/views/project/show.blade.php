@@ -39,8 +39,14 @@
 
         <h1>Informations du projet</h1>
         @include('project.info', ['project' => $project])
+        <h1>Evènements majeur</h1>
+        <div class="panel panel-default" id="events"></div>
 
     </div>
+@endsection
+
+@section('script')
+    callEvents({{$project->id}});
 @endsection
 
 

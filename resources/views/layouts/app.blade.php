@@ -27,7 +27,7 @@
     </style>
 </head>
 <body id="app-layout">
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-default navbar-static-top ">
     <div class="container">
         <div class="navbar-header">
 
@@ -46,11 +46,11 @@
             </a>
         </div>
 
-        <div class="collapse navbar-collapse" id="app-navbar-collapse">
+        <div class="collapse navbar-collapse " id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <!-- Authentication Links -->
             @if (Auth::user())
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav ">
                     <li><a href="{{ url('/') }}">Tout les projets</a></li>
 
                     <li><a href="{{ url('/project/{id}/show') }}">Le projet</a></li>
@@ -336,6 +336,24 @@
         }
 
 
+
+        function callEvents(project){
+
+            $.ajax({
+                url: "{{ route('project.events', '@') }}".replace('@', project),
+                type: 'get',
+                success: function (data) {
+
+                    //$('#events').html(data);
+                    $(data).each(function(){
+                        $('#events').text(data);
+                    });
+
+                }
+            });
+        }
+
+
         $('#app-layout').on('click', 'button.invitationaccept', function () {
             var invitation = this.getAttribute('data-invitation');
             $.ajax({
@@ -367,9 +385,10 @@
                 url: "{{ route('tasks.usertaskdelete', '@') }}".replace('@', usertaskdestroy),
                 type: 'delete',
                 success: function (data) {
+                    bootbox.hideAll();
                     bootbox.dialog({
-                        title: "Inviter une personne",
-                        message: data
+                        title: "Suppression participant à la tâche",
+                        message: "Participant bien retiré de la tâche"
                     });
                 },
                 error: function (data) {
@@ -379,8 +398,32 @@
             });
         });
 
+        $('#app-layout').on('click', 'button.validate', function () {
+            var taskvalidate = this.getAttribute('data-task');
+            $.ajax({
+                url: "{{ route('tasks.statut', '@') }}".replace('@', taskvalidate),
+                type: 'post',
+                success: function (data) {
+                    bootbox.dialog({
+                        title: "Validation de la tâche",
+                        message: data
+                    });
+                },
+                error: function (data) {
+                    bootbox.dialog({
+                        title: "Validation de la tâche",
+                        message: data
+                    });
+                }
+            });
+        });
+        @yield('script')
+
+
     });
 </script>
+
+
 
 </body>
 </html>

@@ -36,6 +36,10 @@ class User extends Authenticatable {
         return $this->hasMany(\App\Models\UsersTask::class, 'user_id', 'id');
     }
 
+    public function events(){
+        return $this->hasMany(\App\Models\Event::class);
+    }
+
     public function getActiveTask() {
 //        return false;
         return UsersTask::select()->where("users_tasks.user_id", "=", $this->id)->join('durations_tasks','users_tasks.id', '=', 'durations_tasks.user_task_id')->whereNull("durations_tasks.ended_at")->get();

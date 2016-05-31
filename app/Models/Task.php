@@ -56,5 +56,16 @@ class Task extends Model
         return $total;
     }
 
+    public function ifChildTaskNoValidate($isFirst = true){
+        if(!$isFirst && $this->statut != "Validate") return false;
+        $children_activated = true;
+        foreach ($this->children as $child){
+            if(!$child->ifChildTaskNoValidate(false)){
+                $children_activated = false;
+            }
+        }
+        return $children_activated;
+    }
+
 
 }

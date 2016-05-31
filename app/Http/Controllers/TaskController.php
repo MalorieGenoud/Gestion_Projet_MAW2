@@ -115,7 +115,6 @@ class TaskController extends Controller
         //$newUserTask = new UsersTask();
 
         //dd($request->input('user'));
-
         foreach($request->input('user') as $key => $value){
             $newUserTask = new UsersTask();
             $newUserTask->task_id = $request->task->id;
@@ -123,11 +122,25 @@ class TaskController extends Controller
             $newUserTask->save();
         }
 
+        return redirect("project/" . $task->project_id);
+
+
+
     }
 
     public function usertaskdelete(UsersTask $usersTask, Request $request){
-
         $usersTask->delete();
+    }
+
+    public function statut(Task $task, Request $request){
+
+        if(!$task->ifChildTaskNoValidate()){
+            dd("Peut pas etre validée");
+        }else{
+            dd("tache peut etre valide");
+
+        }
+
     }
 
 

@@ -9,12 +9,18 @@
             <td>{{$usertask->id}}</td>
             <td>{{$usertask->user_id}}</td>
             <td>
+                @if($usertask->durationsTasks->isEmpty())
                 <button class="right btn usertaskdestroy" data-id="{{$usertask->id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                @else
+                    <p>Suppression impossible</p>
+                @endif
             </td>
         </tr>
     @endforeach
 </table>
 
+<hr>
+<h4>Ajouter des participant à la tâche</h4>
 
 <form class="form-horizontal" role="form" method="POST" action="{{Route('tasks.storeusers',$task->id)}}">
     {!! csrf_field() !!}
@@ -31,11 +37,11 @@
         @endforeach
     </div>
 
-
+<br>
     <div class="form-group">
         <div class="col-md-6 col-md-offset-4">
             <button type="submit" class="btn btn-primary">
-                <i class="fa fa-btn fa-sign-in"></i>Ajouter un utilisateur
+                <i class="fa fa-btn fa-plus"></i>Ajouter un utilisateur
             </button>
         </div>
     </div>

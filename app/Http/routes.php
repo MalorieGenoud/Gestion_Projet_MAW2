@@ -33,6 +33,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('tasks/{task}/children/create', ['as' => 'tasks.createChildren','uses' => 'TaskController@createChildren'])->where('task', '[0-9]+');
         Route::post('tasks/{task}/children/', ['as' => 'tasks.storeChildren','uses' => 'TaskController@storeChildren'])->where('task', '[0-9]+');
         Route::post('tasks/{task}/play', ['as' => 'tasks.play', 'uses' => 'TaskController@play'])->where('task', '[0-9]+');
+        Route::post('tasks/{task}/statut', ['as' => 'tasks.statut', 'uses' => 'TaskController@statut'])->where('task', '[0-9]+');
         Route::get('tasks/{task}/users/', ['as' => 'tasks.users', 'uses' => 'TaskController@users'])->where('task', '[0-9]+');
         Route::post('tasks/{task}/users/', ['as' => 'tasks.storeusers', 'uses' => 'TaskController@storeusers'])->where('task', '[0-9]+');
         Route::delete('tasks/{usersTask}/users/', ['as' => 'tasks.usertaskdelete', 'uses' => 'TaskController@usertaskdelete'])->where('usersTask', '[0-9]+');
@@ -52,7 +53,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('project/{id}', 'ProjectController@show')->where('id', '[0-9]+');
         Route::get('project/{id}/tasks/create', 'ProjectController@createTask')->where('id', '[0-9]+');
         Route::post('project/{id}/tasks', 'ProjectController@storeTask')->where('id', '[0-9]+');
+        Route::post('project/{id}/events', ['as' => 'project.storeevents', 'uses' => 'ProjectController@storeEvents'])->where('id', '[0-9]+');
         Route::get('project/{id}/files', 'ProjectController@files')->where('id', '[0-9]+');
+        Route::get('project/{id}/events', ['as' => 'project.events', 'uses' => 'ProjectController@events'])->where('id', '[0-9]+');
         Route::delete('project/{id}/users/{user}/destroy', 'ProjectController@destroyUser')->where('id', '[0-9]+');
 
 

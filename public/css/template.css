@@ -30,8 +30,30 @@
     transition: background-color 0.1s linear;
 }
 
+.tree-menu li{
+    border: 1px solid #DDD;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    margin-top: 4px;
+}
+
+.tree-menu li:hover{
+    background: #FFFFF8;
+}
 .tree-menu a button{
     display: none;
+}
+
+.checkbox label, .radio label {
+    min-height: 20px;
+    padding-left: 26px;
+    margin-bottom: 0;
+    font-weight: 400;
+    cursor: pointer;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    padding: 5px 5px 5px 25px;
+    margin: 3px;
 }
 
 .tree-menu a:hover > button{
@@ -75,7 +97,7 @@
     background: #A78484;
     height: 20px;
     margin-top: -3px;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
 
 
     display: flex;

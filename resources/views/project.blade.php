@@ -2,26 +2,20 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Vos projets</div>
 
-                    <div class="panel-body">
-                        Vous êtes loggé ! Voilà vos projets !
-                    </div>
+        @foreach($projects as $project)
 
-                    @foreach($projects as $project)
-                        <div>
-                        <h3><a href="{{route('project.index')}}/{{ $project->id }}">{{ $project->name }}</a></h3>
-                        @foreach($project->users as $user)
-                           <p>Utilisateurs :  {{ $user->lastname }} {{ $user->firstname }}</p>
-                        @endforeach
-                        </div>
-                    @endforeach
-                    <a class="button" href="{{route('project.create')}}">Créer votre projet !</a>
-                </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h2><a href="{{route('project.index')}}/{{ $project->id }}">{{ $project->name }}</a></h2></div>
+            <div class="panel-body">
+                <h4>Membres : </h4>
+                @foreach($project->users as $user)
+                    <p>{{ $user->lastname }} {{ $user->firstname }}</p>
+                @endforeach
             </div>
         </div>
+        @endforeach
+        <a class="button btn btn-default" href="{{route('project.create')}}">Créer votre projet !</a>
+
     </div>
 @endsection
