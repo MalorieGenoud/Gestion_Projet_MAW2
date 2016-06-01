@@ -37,7 +37,7 @@ class User extends Authenticatable {
     }
 
     public function events(){
-        return $this->hasMany(\App\Models\Event::class);
+        return $this->hasMany(\App\Models\Event::class, 'user_id', 'id');
     }
 
     public function getActiveTask() {

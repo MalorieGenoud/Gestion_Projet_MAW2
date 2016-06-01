@@ -237,6 +237,8 @@ class ProjectController extends Controller
         $newTask->parent_id = NULL;
         $newTask->save();
 
+        (new EventController())->store($request->input('project_id'), "Créer une tâche parent");
+
         return redirect("project/" . $request->input('project_id'));
 
     }
@@ -247,18 +249,6 @@ class ProjectController extends Controller
         $destroyUser->delete();
     }
 
-    public function events(Project $project, Request $request){
-       // dd($project->events);
-        //dd(Project::find($request->id)->events);
-
-        $events = Project::find($request->id)->events;
-
-        return $events->toJson();
-    }
-
-    public function storeEvents(){
-
-    }
 
     /*public function getTask(Request $request){
 

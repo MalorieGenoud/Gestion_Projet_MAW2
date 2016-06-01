@@ -10,7 +10,7 @@ class Task extends Model
      */
 
     protected $table = 'tasks';
-    protected $fillable = ['id', 'name', 'duration', 'date_jalon', 'statut', 'priority', 'project_id', 'parent_id'];
+    protected $fillable = ['id', 'name', 'duration', 'date_jalon', 'statut', 'priority', 'project_id', 'parent_id', 'created_at'];
 
 
     public function project()

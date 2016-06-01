@@ -47,6 +47,9 @@ class TaskController extends Controller
     function destroy(Task $task)
     {
         $task->delete();
+
+        (new EventController())->store($request->input('project_id'), "Supprimer une tâche");
+
         return ("destroy" . $task);
     }
 
@@ -66,6 +69,8 @@ class TaskController extends Controller
             'parent_id' => $request->input('parent_id') == '' ? null : $request->input('parent_id'),
             'statut' => $request->input('statut'),
         ]);
+
+        //(new EventController())->store($request->input('project_id'), "Créer une tâche enfant");
 
         return redirect("project/" . $task->project_id);
 
@@ -123,8 +128,6 @@ class TaskController extends Controller
         }
 
         return redirect("project/" . $task->project_id);
-
-
 
     }
 

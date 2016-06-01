@@ -40,6 +40,8 @@ class InvitationController extends Controller
                         $invitation->statut = "Wait";
                         $invitation->save();
 
+                        (new EventController())->store($request->input('project_id'), "Inviter un utilisateur");
+
                         return redirect('project/' . $request->input('project_id'));
                     } else {
                         return "Utilisateur déja dans le projet";
@@ -77,6 +79,8 @@ class InvitationController extends Controller
             'statut' => 'Accept'
         ]);
 
+        (new EventController())->store($invitation->project_id, " accepter l'invitation");
+
         $liaison = new ProjectsUser();
         $liaison->project_id = $invitation->project_id;
         $liaison->user_id = Auth::user()->id;
@@ -88,5 +92,7 @@ class InvitationController extends Controller
         $invitation->update([
             'statut' => 'Refuse'
         ]);
+
+        (new EventController())->store($invitation->project_id, " refuser l'invitation");
     }
 }
