@@ -36,6 +36,10 @@ class Project extends Model {
         return $this->tasks()->whereNull('parent_id');
     }
 
+    public function events(){
+        return $this->hasMany(\App\Models\Event::class, 'project_id','id');
+    }
+
 
 
 

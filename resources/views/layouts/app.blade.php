@@ -29,7 +29,7 @@
     </style>
 </head>
 <body id="app-layout">
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-default navbar-static-top ">
     <div class="container">
         <div class="navbar-header">
 
@@ -48,11 +48,12 @@
             </a>
         </div>
 
-        <div class="collapse navbar-collapse" id="app-navbar-collapse">
+        <div class="collapse navbar-collapse " id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <!-- Authentication Links -->
             @if (Auth::user())
                 <ul class="nav navbar-nav">
+
                     <li><a>|</a></li>
                     <li>
                         <a href="#" class="invitations">Invitation
@@ -133,10 +134,6 @@
     $(document).ready(function () {
         $('.tree-menu').ntm();
     });
-
-
-
-
 
 
 </script>
@@ -331,16 +328,44 @@
         });
 
         // Appeler les invitations en wait
-        $('a.invitations').click(function(){
+        $('a.invitations').click(function () {
             callinvitation();
         });
 
-        function callinvitation(){
+        function callinvitation() {
             $.get("{{ url('invitations') }}", {}, function (invitations) {
                 bootbox.dialog({
                     title: "Vos invitations en attentes",
                     message: invitations
                 });
+            });
+        }
+
+
+        function callEvents(project) {
+
+            $.ajax({
+                url: "{{ route('project.events', '@') }}".replace('@', project),
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    //var content = $('#events');
+                    //$('#events').html(data);
+                    console.log(data);
+
+                    var content = ("<table class='table'><thead><tr><th>Qui</th><th>Description</th><th>Created_at</th></tr></thead>");
+                    $.each(data, function (key, data) {
+                        content += ("<tr>");
+                        content += ("<td>" + this.user_id + "</td>");
+                        content += ("<td>" + this.description + "</td>");
+                        content += ("<td>" + this.created_at + "</td>");
+                        content += ("</tr>");
+                    });
+
+                    content += ("</table>");
+                    $('#events').append(content);
+
+                }
             });
         }
 
@@ -376,9 +401,10 @@
                 url: "{{ route('tasks.usertaskdelete', '@') }}".replace('@', usertaskdestroy),
                 type: 'delete',
                 success: function (data) {
+                    bootbox.hideAll();
                     bootbox.dialog({
-                        title: "Inviter une personne",
-                        message: data
+                        title: "Suppression participant à la tâche",
+                        message: "Participant bien retiré de la tâche"
                     });
                 },
                 error: function (data) {
@@ -387,6 +413,28 @@
                 }
             });
         });
+
+        $('#app-layout').on('click', 'button.validate', function () {
+            var taskvalidate = this.getAttribute('data-task');
+            $.ajax({
+                url: "{{ route('tasks.statut', '@') }}".replace('@', taskvalidate),
+                type: 'post',
+                success: function (data) {
+                    bootbox.dialog({
+                        title: "Validation de la tâche",
+                        message: data
+                    });
+                },
+                error: function (data) {
+                    bootbox.dialog({
+                        title: "Validation de la tâche",
+                        message: data
+                    });
+                }
+            });
+        });
+        @yield('script')
+
 
     });
 </script>
@@ -408,7 +456,6 @@
             console.log("chart rendered");
         }
     });
-
 </script>
  -->
 </body>

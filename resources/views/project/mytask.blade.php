@@ -1,16 +1,12 @@
 @foreach ($task->usersTasks as $usertask)
+    <li>
+        @if($usertask->user_id == Auth::user()->id)
 
-    @if($usertask->user_id == Auth::user()->id)
-
-        {{--@if($task->id == '30')--}}
-        {{--{{$task->id}}--}}
-        {{--@endif--}}
-
-        <li>
             <a>
                 <span class="taskshow" data-id="{{$task->id}}">
                     <p>{{$task->name}}</p>
                 </span>
+
                 <button class="right btn btn-lg
                 @if($taskactive == null)
                         taskplay" data-usertaskid="{{$usertask->id}}"
@@ -24,36 +20,44 @@
                 <span class="glyphicon
                 @if($taskactive == null)
                         glyphicon-play-circle
-                      @elseif($taskactive == $task->id)
+                @elseif($taskactive == $task->id)
                         glyphicon-stop
-                  @else()
+                @else()
                         glyphicon-play-circle
-                      @endif
+                @endif
                         " aria-hidden="true"></span>
+                </button>
+                <button class="right btn btn-lg validate" data-task="{{$usertask->task_id}}">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 </button>
             </a>
             <div class="progression"
                  style="background: linear-gradient(90deg, #20DE13 {{(($task->getElapsedDuration()*100/60/60)/$task->duration)}}%, #efefef 0%);">
                 <p style="text-align: left;">{{gmdate("H:i:s",$task->getElapsedDuration())}}</p>
 
+                <p> | {{round(($task->getElapsedDuration()*100/60/60)/$task->duration,1)}}%</p>
+
                 <p style="text-align: right;margin-left: auto;">{{$task->duration}}h</p>
 
             </div>
+
+        @endif
+
+
+        @if($task->children->isEmpty())
+    </li>
     @else
-        <li>
-            @endif
+        <ul>
+            @foreach($task->children as $task)
+                @include('project.mytask', ['taskactive' => $taskactive, 'duration' => $duration])
+            @endforeach
+        </ul>
 
 
-            @if($task->children->isEmpty())
-
-            @else
-                <ul>
-                    @foreach($task->children as $task)
-                        @include('project.mytask', ['taskactive' => $taskactive, 'duration' => $duration])
-                    @endforeach
-                </ul>
-            @endif
-        </li>
+    @endif
+    </li>
 
 
-        @endforeach
+
+
+@endforeach

@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\Comment;
 use App\Models\User;
 use App\Models\Task;
+use App\Models\Event;
 use App\Http\Requests;
 use App\Http\Middleware\ProjectControl;
 use Illuminate\Support\Facades\Auth;
@@ -244,6 +245,19 @@ class ProjectController extends Controller
     {
         $destroyUser = ProjectsUser::where("project_id", "=", $request->id)->where("user_id", "=", $request->user)->get();
         $destroyUser->delete();
+    }
+
+    public function events(Project $project, Request $request){
+       // dd($project->events);
+        //dd(Project::find($request->id)->events);
+
+        $events = Project::find($request->id)->events;
+
+        return $events->toJson();
+    }
+
+    public function storeEvents(){
+
     }
 
     /*public function getTask(Request $request){
