@@ -7,7 +7,7 @@
                 <div class="panel-heading">Votre projet</div>
 
                 <div class="panel-body">
-                    Apercevez votre projet ici
+                    @include('planning.show', ['taskparent' => $project->tasksParent])
                 </div>
         </div>
 
