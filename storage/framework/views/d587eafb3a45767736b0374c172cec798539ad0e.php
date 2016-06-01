@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>"/>
+    <title>Bones</title>
+
+    <!-- Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet'
+          type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
+
+    <!-- Styles -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo e(URL::asset('css/template.css')); ?>"/>
+
+    <style>
+        body {
+            font-family: 'Lato';
+        }
+
+        .fa-btn {
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body id="app-layout">
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+
+            <!-- Collapsed Hamburger -->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#app-navbar-collapse">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Branding Image -->
+            <a class="navbar-brand" href="<?php echo e(url('/')); ?>">
+                Bones
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="app-navbar-collapse">
+            <!-- Left Side Of Navbar -->
+            <!-- Authentication Links -->
+            <?php if(Auth::user()): ?>
+                <ul class="nav navbar-nav">
+                    <li><a href="<?php echo e(url('/')); ?>">Tout les projets</a></li>
+
+                    <li><a href="<?php echo e(url('/project/{id}/show')); ?>">Le projet</a></li>
+
+                    <li><a href="<?php echo e(url('/project/create')); ?>">Nouveau projet</a></li>
+                    <li><a>|</a></li>
+                    <li>
+                        <a href="#" class="invitations">Invitation
+                            <?php $total = null; ?>
+                            <?php for($i = 0; $i < count($invitations); $i++): ?>
+
+                                <?php if($invitations[$i]->guest_id == Auth::user()->id): ?>
+                                    <?php $total = $total + 1; ?>
+                                <?php endif; ?>
+
+                            <?php endfor; ?>
+                            <?php if($total != null): ?>
+                                <span class="badge"><?php echo e($total); ?></span>
+                            <?php endif; ?>
+                        </a>
+                    </li>
+                </ul>
+
+                <?php else: ?>
+
+                <?php endif; ?>
+
+                        <!-- Right Side Of Navbar -->
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Authentication Links -->
+                    <?php if(Auth::guest()): ?>
+                        <li><a href="<?php echo e(url('/login')); ?>">Login</a></li>
+
+                    <?php else: ?>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">
+                                <?php echo e(Auth::user()->name); ?> <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="<?php echo e(url('/logout')); ?>"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+        </div>
+    </div>
+</nav>
+<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+
+
+<?php echo $__env->yieldContent('content'); ?>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="<?php echo e(URL::asset('js/jquery.ntm.js')); ?>"></script>
+<script src="<?php echo e(URL::asset('js/bootbox.min.js')); ?>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<?php /* <script src="<?php echo e(elixir('js/app.js')); ?>"></script> */ ?>
+
+<script>
+    $(document).ready(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $('.tree-menu').ntm();
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        // afficher détail de la tache
+        $('.taskshow').click(function () {
+            var task = this.getAttribute('data-id');
+            $.get("<?php echo e(url('tasks')); ?>/" + task, {}, function (task) {
+                console.log(task);
+                $('#taskdetail').html(task);
+            });
+
+            /*$.ajax({
+             type : "POST",
+             url : "",
+             data : task,
+             success : function(task){
+             console.log(task);
+             $('#taskdetail').html(task);
+             }
+             });*/
+
+            $.get('', function (task) {
+                //console.log(task);
+            });
+        });
+
+        // Editer une tache
+        $('button.taskedit').click(function () {
+            var task = this.getAttribute('data-id');
+            $.get("<?php echo e(route('tasks.edit', '@')); ?>".replace('@', task), {}, function (task) {
+                bootbox.dialog({
+                    title: "Editer une tâche",
+                    message: task
+                });
+            });
+        });
+
+        // Ajouter une classe parent
+        $('button.taskplus').click(function () {
+            var task = this.getAttribute('data-id');
+            $.get("<?php echo e(url('tasks')); ?>/" + task + "/children/create", {}, function (task) {
+                bootbox.dialog({
+                    title: "Créer une tâche enfant",
+                    message: task
+                });
+            });
+        });
+
+        // ajouter tache root
+        $('.taskroot').click(function () {
+            var task = this.getAttribute('data-id');
+            $.get("<?php echo e(url('project')); ?>/" + task + "/tasks/create", {}, function (task) {
+                bootbox.dialog({
+                    title: "Créer une tâche root",
+                    message: task
+                });
+                //$('#taskdetail').html(task);
+            });
+        });
+
+        // Appeler view pour ajouter utilisateur à la tache
+        $('#app-layout').on('click', 'button.taskuser', function () {
+            var task = this.getAttribute('data-id');
+            $.ajax({
+                url: "<?php echo e(route('tasks.users', '@')); ?>".replace('@', task),
+                type: 'get',
+                success: function (data) {
+                    bootbox.dialog({
+                        title: "Gestion des utilisateurs de la tâche",
+                        message: data
+                    });
+
+                }
+            });
+        });
+
+        // supprimer la tache
+        $('button.taskdestroy').click(function () {
+            var task = this.getAttribute('data-id');
+            bootbox.confirm("Vous allez supprimer cette tâches ? ", function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "<?php echo e(url('tasks')); ?>/" + task,
+                        data: task,
+                        success: function (task) {
+                            //location.reload();
+                            $('#taskdetail').html(task);
+                        },
+                        error: function (task) {
+                            console.log(task);
+                            $('#taskdetail').html(task);
+                        }
+                    });
+                }
+            });
+
+        });
+
+        // supprimer un utilisateur du projet
+        $('button.userprojectdestroy').click(function () {
+            var id = this.getAttribute('data-id');
+            var projectid = this.getAttribute('data-projectid');
+            bootbox.confirm("Voulez vous vraiment retirer l'utilisateur du projet ? ", function (result) {
+                //Example.show("Confirm result: "+result);
+                if (result) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "<?php echo e(url('project')); ?>/" + projectid + "/users/" + id + "/destroy",
+                        success: function (data) {
+                            //alert(data);
+                            bootbox.alert("Element supprimer avec succès");
+                            $('#taskdetail').html(data);
+                        }
+                    });
+                }
+            });
+
+        });
+
+
+        // inviter un utilisateur
+        $('a.invitation').click(function () {
+            var projectid = this.getAttribute('data-projectid');
+            $.get("<?php echo e(url('project')); ?>/" + projectid + "/invitations", function (projectid) {
+                bootbox.dialog({
+                    title: "Inviter une personne",
+                    message: projectid
+                });
+            });
+        });
+
+        // voir les invitations en cours
+        $('a.invitationwait').click(function () {
+            var projectid = this.getAttribute('data-projectid');
+            $.get("<?php echo e(url('project')); ?>/" + projectid + "/invitations/wait", function (projectid) {
+                bootbox.dialog({
+                    title: "Voir les invitations",
+                    message: projectid
+                });
+            });
+        });
+
+       /* $('#main_body').on("click", "#but", function () {
+            alert("bla bla");
+        });*/
+
+        // lancer un rush sur la tache
+        $('#app-layout').on('click', 'button.taskplay', function () {
+            var usertaskid = this.getAttribute('data-usertaskid');
+            $.ajax({
+                url: "<?php echo e(route('tasks.play', '@')); ?>".replace('@', usertaskid),
+                type: 'post',
+                success: function (data) {
+
+                    if (data == "") {
+                        bootbox.dialog({
+                            title: "debug",
+                            message: "Tache déja en cours"
+                        });
+                    } else {
+                        var button = $('button[data-usertaskid=' + usertaskid + ']');
+                        $(button).children().removeClass();
+                        button.children().addClass("glyphicon glyphicon-stop");
+                        button.removeClass();
+                        button.addClass("right btn taskstop btn-lg");
+                        button.attr("data-duration", data);
+                    }
+                }
+            });
+        });
+        // stopper un rush sur la tache
+        $('#app-layout').on('click', 'button.taskstop', function () {
+            var duration = this.getAttribute('data-duration');
+            $.ajax({
+                url: "<?php echo e(route('tasks.stop', '@')); ?>".replace('@', duration),
+                type: 'post',
+                success: function (data) {
+                    var button = $('button[data-duration=' + duration + ']');
+                    $(button).children().removeClass();
+                    button.children().addClass("glyphicon glyphicon-play-circle");
+                    button.removeClass();
+                    button.addClass("right btn taskplay btn-lg");
+
+                }
+            });
+        });
+
+        // Appeler les invitations en wait
+        $('a.invitations').click(function(){
+            callinvitation();
+        });
+
+        function callinvitation(){
+            $.get("<?php echo e(url('invitations')); ?>", {}, function (invitations) {
+                bootbox.dialog({
+                    title: "Vos invitations en attentes",
+                    message: invitations
+                });
+            });
+        }
+
+
+        $('#app-layout').on('click', 'button.invitationaccept', function () {
+            var invitation = this.getAttribute('data-invitation');
+            $.ajax({
+                url: "<?php echo e(route('invitations.accept', '@')); ?>".replace('@', invitation),
+                type: 'post',
+                success: function (data) {
+                    bootbox.hideAll();
+                    callinvitation();
+                }
+            });
+        });
+
+        $('#app-layout').on('click', 'button.invitationrefuse', function () {
+            var invitation = this.getAttribute('data-invitation');
+            $.ajax({
+                url: "<?php echo e(route('invitations.refuse', '@')); ?>".replace('@', invitation),
+                type: 'post',
+                success: function (data) {
+                    bootbox.hideAll();
+                    callinvitation();
+                }
+            });
+        });
+
+        // Suppression usertask
+        $('#app-layout').on('click', 'button.usertaskdestroy', function () {
+            var usertaskdestroy = this.getAttribute('data-id');
+            $.ajax({
+                url: "<?php echo e(route('tasks.usertaskdelete', '@')); ?>".replace('@', usertaskdestroy),
+                type: 'delete',
+                success: function (data) {
+                    bootbox.dialog({
+                        title: "Inviter une personne",
+                        message: data
+                    });
+                },
+                error: function (data) {
+
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+</script>
+
+</body>
+</html>
