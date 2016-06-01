@@ -43,6 +43,11 @@ class User extends Authenticatable {
 
 
     }
+    
+    public function comments()
+    {
+        return $this->hasMany(\App\Models\Comment::class, 'user_id');
+    }
 /*
 $userTasks = UsersTask::where("user_id", "=", $id)->get();
 foreach ($userTasks as $userstask) {

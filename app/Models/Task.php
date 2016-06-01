@@ -43,7 +43,7 @@ class Task extends Model
         $total = 0;
         foreach ($this->usersTasks as $usertask) {
             foreach ($usertask->durationsTasks as $durationTask) {
-                if($durationTask->ended_at){
+                if ($durationTask->ended_at) {
                     $total += strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
                 }
             }
@@ -57,4 +57,8 @@ class Task extends Model
     }
 
 
+    public function comments()
+    {
+        return $this->hasMany(\App\Models\Comment::class, 'task_id');
+    }
 }

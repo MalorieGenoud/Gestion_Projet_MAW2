@@ -73,6 +73,11 @@ Route::group(['middleware' => 'web'], function () {
 
         /* PLANNING */
         Route::get('project/{projectid}/planning', 'PlanningController@show')->where('projectid', '[0-9]+');
+
+        /* COMMENTS */
+        Route::get('tasks/{task}/comment',['as' => 'comment.show','uses' => 'CommentController@show'])->where('comment', '[0-9]+');
+        Route::post('tasks/{task}/comment', ['as' => 'comment.store', 'uses' => 'CommentController@store']) -> where('comment', '[0-9]+');
+
         /*
         Route::group(['prefix' => 'project'], function(){
 

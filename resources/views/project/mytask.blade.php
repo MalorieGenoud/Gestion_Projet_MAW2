@@ -32,7 +32,8 @@
                         " aria-hidden="true"></span>
                 </button>
             </a>
-            <div class="progression" style="background: linear-gradient(90deg, #20DE13 {{(($task->getElapsedDuration()*100/60/60)/$task->duration)}}%, #efefef 0%);">
+            <div class="progression"
+                 style="background: linear-gradient(90deg, #20DE13 {{(($task->getElapsedDuration()*100/60/60)/$task->duration)}}%, #efefef 0%);">
                 <p style="text-align: left;">{{gmdate("H:i:s",$task->getElapsedDuration())}}</p>
 
                 <p style="text-align: right;margin-left: auto;">{{$task->duration}}h</p>
@@ -40,7 +41,7 @@
             </div>
     @else
         <li>
-    @endif
+            @endif
 
 
             @if($task->children->isEmpty())
@@ -52,7 +53,7 @@
                     @endforeach
                 </ul>
             @endif
-    </li>
+        </li>
 
 
         @endforeach

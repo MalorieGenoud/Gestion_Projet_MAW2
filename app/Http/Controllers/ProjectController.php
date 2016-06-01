@@ -6,6 +6,7 @@ use App\Models\ProjectsUser;
 use Illuminate\Http\Request;
 use App\Models\UsersTask;
 use App\Models\Project;
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\Task;
 use App\Http\Requests;
@@ -66,7 +67,6 @@ class ProjectController extends Controller
 
     public function show(Request $request)
     {
-
         $project = Project::find($request->id);
         $userTasks = UsersTask::where("user_id", "=", Auth::user()->id)->get();
         $duration = null;
