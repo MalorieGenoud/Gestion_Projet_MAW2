@@ -9,8 +9,11 @@ class User extends Authenticatable {
      */
     public $timestamps = false;
     protected $table = 'users';
-    protected $fillable = ['firstname', 'lastname', 'mail', 'role_id', 'password'];
+    protected $fillable = ['firstname', 'lastname', 'mail', 'role_id', 'password', 'avatar'];
 
+    public function getFullnameAttribute(){
+        return $this->lastname." ".$this->firstname;
+    }
 
     public function role() {
         return $this->belongsTo(\App\Models\Role::class, 'role_id', 'id');
@@ -43,9 +46,6 @@ class User extends Authenticatable {
     public function getActiveTask() {
 //        return false;
         return UsersTask::select()->where("users_tasks.user_id", "=", $this->id)->join('durations_tasks','users_tasks.id', '=', 'durations_tasks.user_task_id')->whereNull("durations_tasks.ended_at")->get();
-
-
-
     }
 /*
 $userTasks = UsersTask::where("user_id", "=", $id)->get();

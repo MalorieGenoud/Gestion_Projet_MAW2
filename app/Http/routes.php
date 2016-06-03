@@ -67,10 +67,26 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('project/{projectid}/invitations/', 'InvitationController@show')->where('projectid', '[0-9]+');
         Route::get('project/{projectid}/invitations/wait', 'InvitationController@wait')->where('projectid', '[0-9]+');
         Route::post('project/{projectid}/invitations/', 'InvitationController@store')->where('projectid', '[0-9]+');
+        Route::get('project/{projectid}/target', ['as' => 'project.events', 'uses' => 'InvitationController@target'])->where('projectid', '[0-9]+');
+
 
         Route::get('invitations','InvitationController@edit');
         Route::post('invitations/{invitation}/accept',['as'=> 'invitations.accept','uses'=>'InvitationController@accept'])->where('invitation', '[0-9]+');;
         Route::post('invitations/{invitation}/refuse',['as'=> 'invitations.refuse','uses'=>'InvitationController@refuse'])->where('invitation', '[0-9]+');;
+
+
+        /* User */
+        Route::get('user/{user}', ['as'=> 'user.show','uses'=>'UserController@show'])->where('user', '[0-9]+');
+
+        Route::post('user/{user}/avatar',['as'=> 'user.avatar','uses'=>'UserController@storeAvatar']);
+//        Route::post('user/{user}/avatar',['as'=> 'user.avatar', function (){
+//            dd($_FILES);
+//        }])->where('user', '[0-9]+');;
+
+
+//        Route::get('salut/{name}-{id}', ['as' => 'salut',function($name, $id){
+//            return "Lien :" . route('salut',['name' => $name]);
+//        }])->where('name', '[a-z0-9\-]+')->where('id','[0-9]+');
 
 
         /*

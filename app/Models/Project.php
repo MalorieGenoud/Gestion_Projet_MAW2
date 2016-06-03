@@ -40,6 +40,10 @@ class Project extends Model {
         return $this->hasMany(\App\Models\Event::class, 'project_id','id');
     }
 
+    public function targets(){
+        return $this->hasMany(\App\Models\Target::class, 'project_id','id');
+    }
+
 
 
 

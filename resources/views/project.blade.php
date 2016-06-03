@@ -10,7 +10,7 @@
             <div class="panel-body">
                 <h4>Membres : </h4>
                 @foreach($project->users as $user)
-                    <p>{{ $user->lastname }} {{ $user->firstname }}</p>
+                    @include('user.avatar', ['user' => $user])
                 @endforeach
             </div>
         </div>

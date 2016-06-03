@@ -85,10 +85,11 @@
                         <li><a href="{{ url('/login') }}">Login</a></li>
 
                     @else
+                        <li><a href="{{route('user.show', Auth::user()->id)}}">{{Auth::user()->fullname}}</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
+                                <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
@@ -252,6 +253,17 @@
 
         // inviter un utilisateur
         $('a.invitation').click(function () {
+            var projectid = this.getAttribute('data-projectid');
+            $.get("{{ url('project') }}/" + projectid + "/invitations", function (projectid) {
+                bootbox.dialog({
+                    title: "Inviter une personne",
+                    message: projectid
+                });
+            });
+        });
+
+        // Ajouter un objectif
+        $('a.target').click(function () {
             var projectid = this.getAttribute('data-projectid');
             $.get("{{ url('project') }}/" + projectid + "/invitations", function (projectid) {
                 bootbox.dialog({

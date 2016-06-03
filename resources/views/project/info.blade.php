@@ -13,7 +13,7 @@
     <div class="panel-body">
         @foreach($project->users as $user)
             <p>
-                Utilisateurs : {{ $user->lastname }} {{ $user->firstname }}
+                @include('user.avatar', ['user' => $user])
                 <button class="right btn userprojectdestroy" data-id="{{$user->id}}" data-projectid="{{$project->id}}">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </button>
@@ -22,6 +22,17 @@
         <a class="btn btn-warning invitation" data-projectid="{{$project->id}}">Ajouter une personne</a>
         <a class="btn btn-warning invitationwait" data-projectid="{{$project->id}}">Voir les invitations en attente</a>
 
+    </div>
+
+    <div class="panel-heading">Objectifs du projet</div>
+
+
+
+    <div class="panel-body">
+        @foreach($project->targets as $target)
+            {{$target->description}}
+        @endforeach
+        <a class="btn btn-warning target" data-projectid="{{$project->id}}">Ajouter un objectif</a>
     </div>
 
 
