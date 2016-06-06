@@ -56,6 +56,19 @@ class Task extends Model
         return $total;
     }
 
+    public function getDurationTask(){
+
+        $total = 0;
+
+        $total += $this->duration;
+
+        foreach ($this->children as $child){
+            $total += $child->getDurationTask();
+        }
+
+        return $total;
+    }
+
     public function ifChildTaskNoValidate($isFirst = true){
         if(!$isFirst && $this->statut != "Validate") return false;
         $children_activated = true;

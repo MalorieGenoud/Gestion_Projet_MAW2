@@ -268,13 +268,14 @@
         });
 
         // Ajouter un objectif
-        $('a.target').click(function () {
+        $('#app-layout').on('click', 'a.target', function () {
             var projectid = this.getAttribute('data-projectid');
-            $.get("{{ url('project') }}/" + projectid + "/target", function (projectid) {
-                bootbox.dialog({
-                    title: "Ajouter un objectifs",
-                    message: projectid
-                });
+            $.ajax({
+                url: "{{ route('project.gettarget', '@') }}".replace('@', projectid),
+                type: 'get',
+                success: function (data) {
+                   console.log(data);
+                }
             });
         });
 

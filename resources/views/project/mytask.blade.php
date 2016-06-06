@@ -37,7 +37,7 @@
 
                 <p> | {{round(($task->getElapsedDuration()*100/60/60)/$task->duration,1)}}%</p>
 
-                <p style="text-align: right;margin-left: auto;">{{$task->duration}}h</p>
+                <p style="text-align: right;margin-left: auto;">{{$task->getDurationTask()}}h</p>
 
             </div>
 

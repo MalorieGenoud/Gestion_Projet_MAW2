@@ -253,6 +253,7 @@ class ProjectController extends Controller
 
     }
     public function getTarget(Request $request, Project $project){
+        dd($project);
         return view('target.store', ['project' => $project]);
     }
 
