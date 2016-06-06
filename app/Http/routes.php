@@ -58,6 +58,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('project/{id}/files', 'ProjectController@files')->where('id', '[0-9]+');
         Route::get('project/{id}/events', ['as' => 'project.events', 'uses' => 'EventController@eventsProject'])->where('id', '[0-9]+');
         Route::delete('project/{id}/users/{user}/destroy', 'ProjectController@destroyUser')->where('id', '[0-9]+');
+        Route::post('project/{projectid}/target', ['as' => 'project.storetarget', 'uses' => 'ProjectController@storeTarget'])->where('projectid', '[0-9]+');
+        Route::get('project/{projectid}/target', ['as' => 'project.gettarget', 'uses' => 'ProjectController@getTarget'])->where('projectid', '[0-9]+');
 
 
         /* APP */
@@ -68,7 +70,6 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('project/{projectid}/invitations/', 'InvitationController@show')->where('projectid', '[0-9]+');
         Route::get('project/{projectid}/invitations/wait', 'InvitationController@wait')->where('projectid', '[0-9]+');
         Route::post('project/{projectid}/invitations/', 'InvitationController@store')->where('projectid', '[0-9]+');
-        Route::get('project/{projectid}/target', ['as' => 'project.events', 'uses' => 'InvitationController@target'])->where('projectid', '[0-9]+');
 
 
         Route::get('invitations','InvitationController@edit');

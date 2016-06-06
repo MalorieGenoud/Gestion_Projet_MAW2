@@ -32,6 +32,7 @@
         @foreach($project->targets as $target)
             {{$target->description}}
         @endforeach
+        <br>
         <a class="btn btn-warning target" data-projectid="{{$project->id}}">Ajouter un objectif</a>
     </div>
 

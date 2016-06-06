@@ -116,7 +116,6 @@
 <script src="{{ URL::asset('js/bootbox.min.js') }}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
-<script src="{{ URL::asset('jsGantt/jquery.fn.gantt.js') }}"></script>
 
 
 <script>
@@ -271,9 +270,9 @@
         // Ajouter un objectif
         $('a.target').click(function () {
             var projectid = this.getAttribute('data-projectid');
-            $.get("{{ url('project') }}/" + projectid + "/invitations", function (projectid) {
+            $.get("{{ url('project') }}/" + projectid + "/target", function (projectid) {
                 bootbox.dialog({
-                    title: "Inviter une personne",
+                    title: "Ajouter un objectifs",
                     message: projectid
                 });
             });

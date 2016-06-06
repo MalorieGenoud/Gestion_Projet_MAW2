@@ -249,6 +249,13 @@ class ProjectController extends Controller
         $destroyUser->delete();
     }
 
+    public function storeTarget(Request $request){
+
+    }
+    public function getTarget(Request $request, Project $project){
+        return view('target.store', ['project' => $project]);
+    }
+
 
 
 
