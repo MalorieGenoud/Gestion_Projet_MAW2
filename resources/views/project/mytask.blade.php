@@ -40,7 +40,9 @@
                 <p style="text-align: right;margin-left: auto;">{{$task->duration}}h</p>
 
             </div>
+
         @endif
+
 
         @if($task->children->isEmpty())
     </li>
@@ -51,8 +53,10 @@
             @endforeach
         </ul>
 
+
     @endif
     </li>
+
 
 
 

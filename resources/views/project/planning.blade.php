@@ -8,6 +8,9 @@
 
                     <div class="panel-body">
                         Votre planning initial
+                        <div class="gantt">
+
+                        </div>
                     </div>
                 </div>
             </div>

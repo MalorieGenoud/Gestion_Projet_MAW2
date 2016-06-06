@@ -44,13 +44,14 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('tasks/{task}', 'TaskController@store')->where('task', '[0-9]+');
         //Route::delete('tasks/{task}/destroy', 'TaskController@destroy')->where('task', '[0-9]+');
 
+
         /* PROJECT  */
         Route::resource('project','ProjectController',
             ['parameters' => ['project' => 'id']], 
             ['only' => ['index']]
         );
         Route::get('/', 'ProjectController@index');
-        Route::get('project/{id}', 'ProjectController@show')->where('id', '[0-9]+');
+        Route::get('project/{id}', ['as' => 'project.show', 'uses' => 'ProjectController@show' ])->where('id', '[0-9]+');
         Route::get('project/{id}/tasks/create', 'ProjectController@createTask')->where('id', '[0-9]+');
         Route::post('project/{id}/tasks', 'ProjectController@storeTask')->where('id', '[0-9]+');
         Route::post('project/{id}/events', ['as' => 'project.storeevents', 'uses' => 'EventController@store'])->where('id', '[0-9]+');
@@ -88,6 +89,12 @@ Route::group(['middleware' => 'web'], function () {
 //            return "Lien :" . route('salut',['name' => $name]);
 //        }])->where('name', '[a-z0-9\-]+')->where('id','[0-9]+');
 
+        /* PLANNING */
+        Route::get('project/{projectid}/planning', 'PlanningController@show')->where('projectid', '[0-9]+');
+
+        /* COMMENTS */
+        Route::get('tasks/{task}/comment',['as' => 'comment.show','uses' => 'CommentController@show'])->where('comment', '[0-9]+');
+        Route::post('tasks/{task}/comment', ['as' => 'comment.store', 'uses' => 'CommentController@store']) -> where('comment', '[0-9]+');
 
         /*
         Route::group(['prefix' => 'project'], function(){

@@ -61,6 +61,7 @@ class InvitationController extends Controller
 
         return view('invitation.wait', ['wait' => $wait]);
 
+        
     }
 
     public function edit()

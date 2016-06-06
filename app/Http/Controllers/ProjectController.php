@@ -6,6 +6,7 @@ use App\Models\ProjectsUser;
 use Illuminate\Http\Request;
 use App\Models\UsersTask;
 use App\Models\Project;
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\Task;
 use App\Models\Event;

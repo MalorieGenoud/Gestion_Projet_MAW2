@@ -15,9 +15,6 @@
 
     </div>
 
-
-    <!---->
-
     @if($task->children->isEmpty())
 
     @else
