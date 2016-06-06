@@ -34,6 +34,6 @@ class Target extends Migration
      */
     public function down()
     {
-        Schema::drop('events');
+        Schema::drop('targets');
     }
 }
