@@ -18,7 +18,7 @@ class Target extends Migration
             $table->integer('project_id');
             $table->longText('description');
             $table->text('status');
-            $table->timestamps();
+            $table->timestamps(); // Creation the column "created_at" and "updated_at"
         });
 
         Schema::table('targets', function ($table) {

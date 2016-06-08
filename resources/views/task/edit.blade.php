@@ -29,7 +29,7 @@
         <label class="col-md-4 control-label">Statut</label>
 
         <div class="col-md-6">
-            <input type="text" class="form-control" name="statut" value="{{ $task->statut }}" required>
+            <input type="text" class="form-control" name="status" value="{{ $task->status }}" required>
         </div>
     </div>
 

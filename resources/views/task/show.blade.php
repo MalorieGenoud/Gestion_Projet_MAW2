@@ -18,9 +18,8 @@
                     <th>user_task_id</th>
                     <th>Durée</th>
                 </tr>
-
+                <!-- Display user rush about a task -->
                 @foreach($task->usersTasks as  $usertask)
-
                     @foreach($usertask->durationsTasks as $duration)
                         @if($duration->ended_at)
                             <tr>
@@ -31,9 +30,7 @@
                                 <td>{{round(abs(strtotime($duration->ended_at) - strtotime($duration->created_at))). " secondes"}}</td>
                             </tr>
                         @endif
-
                     @endforeach
-
                 @endforeach
             </table>
         </div>
@@ -48,7 +45,7 @@
                     <th>created_at</th>
                     <th>user_id</th>
                 </tr>
-
+                <!-- Display the comment for a task -->
                 @foreach($task->comments as  $comment)
                     <tr>
                         <td>{{$comment->id}}</td>
@@ -64,7 +61,7 @@
 
             <form class="form-horizontal" role="form" method="POST" action="{{route('comment.store', $task->id)}}">
                 {!! csrf_field() !!}
-                <textarea name="comment" rows="8" cols="45">Tappez votre commentaire ici</textarea>
+                <textarea name="comment" rows="8" cols="45" placeholder="Tapez votre commentaire ici"></textarea>
                 <button type="submit" class="btn btn-primary">
                     <i class="fa fa-btn fa-sign-in"></i>Envoyer
                 </button>

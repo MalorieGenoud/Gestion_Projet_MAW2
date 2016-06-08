@@ -9,7 +9,7 @@ class Invitation extends Model {
      */
 
     protected $table = 'invitations';
-    protected $fillable = ['token', 'statut', 'guest_id', 'host_id', 'project_id'];
+    protected $fillable = ['token', 'status', 'guest_id', 'host_id', 'project_id'];
 
 
     public function project() {

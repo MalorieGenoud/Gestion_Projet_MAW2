@@ -20,7 +20,7 @@
 <hr>
 <h4>Ajouter des participant à la tâche</h4>
 
-<form class="form-horizontal" role="form" method="POST" action="{{Route('tasks.storeusers',$task->id)}}">
+<form class="form-horizontal" role="form" method="POST" action="{{Route('tasks.storeUsers',$task->id)}}">
     {!! csrf_field() !!}
     <div class="checkbox">
         @foreach($project->users as $user)

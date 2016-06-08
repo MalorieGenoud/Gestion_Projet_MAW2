@@ -16,21 +16,25 @@ use App\Http\Requests;
 
 class TaskController extends Controller
 {
+    // Return the view task
     function show(Task $task)
     {
         return view('task.show', ['task' => $task]);
     }
 
+    // Return the view about the creation a children task
     function createChildren(Task $task)
     {
         return view('task.createChildren', ['task' => $task]);
     }
 
+    // Return the view about the creation a root task
     function create(Task $task, Request $request)
     {
         return view('task.create', ['task' => $task]);
     }
 
+    // Create a new task
     function storeChildren(Task $task, Request $request)
     {
         $newTask = new Task;
@@ -44,43 +48,43 @@ class TaskController extends Controller
         return redirect("project/" . $task->project_id);
     }
 
+    // Delete a task
     function destroy(Task $task)
     {
         $task->delete();
 
-        (new EventController())->store($request->input('project_id'), "Supprimer une tâche");
+        (new EventController())->store($request->input('project_id'), "Supprimer une tâche"); // Create an event
 
         return ("destroy" . $task);
     }
 
+    // Return the view about the edition
     function edit(Task $task, Request $request)
     {
         return view('task.edit', ['task' => $task]);
     }
 
+    //
     function store(Task $task, Request $request)
     {
-        //dd($request->input('duration')*60*60);
-        //$updateTask = Task::find($task->id);
         $task->update([
             'name' => $request->input('name'),
             'duration' => $request->input('duration'),
             'date_jalon' => $request->input('date_jalon'),
             'parent_id' => $request->input('parent_id') == '' ? null : $request->input('parent_id'),
-            'statut' => $request->input('statut'),
+            'status' => $request->input('status'),
         ]);
 
-        //(new EventController())->store($request->input('project_id'), "Créer une tâche enfant");
+        //(new EventController())->store($request->input('project_id'), "Créer une tâche enfant"); // Create an event
 
         return redirect("project/" . $task->project_id);
-
     }
 
+    // Start a task
     public function play(Request $request)
     {
         $durationTask = new DurationsTask;
         $durationTask->user_task_id = $request->task;
-        //dd($durationTask->Active($request->user));
 
         $user = Auth::user();
         if (!$user->getActiveTask()->isEmpty()) {
@@ -91,9 +95,12 @@ class TaskController extends Controller
         return $durationTask->id;
     }
 
+    // Stop a task
     public function stop(DurationsTask $durationsTask)
     {
-        $now = new DateTime();
+        $now = new DateTime(); // Add the current time in a variable $now
+
+        // Update the duration with the current time
         $durationsTask->update([
             'ended_at' => $now,
         ]);
@@ -115,11 +122,8 @@ class TaskController extends Controller
         return view('task.users', ['task' => $task,'userstask' => $usersTasks, 'project' => $task->project, 'refuse' => $refuse]);
     }
 
-    public function storeusers(Task $task, Request $request){
+    public function storeUsers(Task $task, Request $request){
 
-        //$newUserTask = new UsersTask();
-
-        //dd($request->input('user'));
         foreach($request->input('user') as $key => $value){
             $newUserTask = new UsersTask();
             $newUserTask->task_id = $request->task->id;
@@ -128,22 +132,23 @@ class TaskController extends Controller
         }
 
         return redirect("project/" . $task->project_id);
-
     }
 
-    public function usertaskdelete(UsersTask $usersTask, Request $request){
+    //
+    public function userTaskDelete(UsersTask $usersTask, Request $request){
         $usersTask->delete();
     }
 
-    public function statut(Task $task, Request $request){
 
-        if(!$task->ifChildTaskNoValidate()){
-            dd("Peut pas etre validée");
-        }else{
-            dd("tache peut etre valide");
+    // Verify the validity of task
+    public function status(Task $task, Request $request){
+
+        if(!$task->ifChildTaskNoValidate()){ // Return a error message
+            dd("La tâche ne peut pas être validée");
+        }else{ // Return a message
+            dd("La tâche peut être validée");
 
         }
-
     }
 
 

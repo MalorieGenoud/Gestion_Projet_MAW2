@@ -18,14 +18,13 @@ class Comment extends Migration
             $table->integer('user_id');
             $table->integer('task_id');
             $table->longText('comment');
-            $table->timestamps();
+            $table->timestamps(); // Creation the column "created_at" and "updated_at"
         });
 
         Schema::table('comments', function ($table) {
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('task_id')->references('id')->on('tasks');
         });
-
     }
 
     /**

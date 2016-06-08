@@ -15,12 +15,12 @@
         <tr>
             <td>{{$invitation->id}}</td>
             <td>{{$invitation->token}}</td>
-            <td>{{$invitation->statut}}</td>
+            <td>{{$invitation->status}}</td>
             <td>{{$invitation->guest_id}}</td>
             <td>{{$invitation->host_id}}</td>
             <td>{{$invitation->project_id}}</td>
             <td>{{$invitation->created_at}}</td>
-            @if($invitation->statut == 'Wait')
+            @if($invitation->status == 'Wait')
                 <td>
                     <button style="float: left;padding: 3px 6px;" class="left btn invitationaccept" data-invitation="{{$invitation->id}}"> <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> </button>
                     <button style="float: left;padding: 3px 6px;" class="left btn invitationrefuse" data-invitation="{{$invitation->id}}"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </button>
