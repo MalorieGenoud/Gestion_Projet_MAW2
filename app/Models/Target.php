@@ -8,7 +8,7 @@ class Target extends Model
 {
     //
     protected $table = 'targets';
-    protected $fillable = ['id','description', 'project_id', 'created_at'];
+    protected $fillable = ['id','description', 'project_id', 'created_at', 'status'];
 
     public function project()
     {

@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\ProjectsUser;
-use Auth;
-use Illuminate\Support\Facades\Input;
-use Storage;
-use Validator;
 
 use App\Http\Requests;
 
-class UserController extends Controller
+class FileController extends Controller
 {
-    public function show(User $user, Request $request)
-    {
-        //dd($request->file());
-        return view('user.show', ['user' => $user]);
+    public function show(){
+
     }
 
-    public function storeAvatar(User $user, Request $request)
+    public function store(Project $project, Request $request)
     {
 
         $file = Input::file('avatar');
@@ -29,7 +22,7 @@ class UserController extends Controller
 
         $fileArray = array('image' => $file);
 
-         $rules = array(
+        $rules = array(
             'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
         );
 

@@ -42,6 +42,12 @@
         <h1>Evènements majeur</h1>
         <div class="panel panel-default" id="events"></div>
 
+        <h1>Fichiers</h1>
+        <div class="panel panel-default" id="files">
+            <p>Fichier ici</p>
+        </div>
+
+
     </div>
 @endsection
 

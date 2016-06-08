@@ -15,6 +15,7 @@ use App\Http\Middleware\ProjectControl;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Form;
 use Datetime;
+use App\Models\Target;
 
 class ProjectController extends Controller
 {
@@ -24,7 +25,7 @@ class ProjectController extends Controller
     public function __construct()
     {
         $this->middleware('ProjectControl', ['except' => [
-            'index', 'create', 'store'
+            'index', 'create', 'store', 'valideTarget'
         ]]);
     }
 
@@ -243,18 +244,33 @@ class ProjectController extends Controller
 
     }
 
-    public function destroyUser(Request $request)
-    {
+    public function destroyUser(Request $request){
+
         $destroyUser = ProjectsUser::where("project_id", "=", $request->id)->where("user_id", "=", $request->user)->get();
         $destroyUser->delete();
     }
 
-    public function storeTarget(Request $request){
+    public function storeTarget(Request $request, $id){
+
+        $target = new Target;
+        $target->description = $request->input('description');
+        $target->project_id = $id;
+        $target->status = "Wait";
+        $target->save();
+
+        return redirect("project/" . $id);
+    }
+
+    public function valideTarget(Request $request, Target $target){
+
+        $target->update([
+            'status' => "Finished"
+        ]);
 
     }
-    public function getTarget(Request $request, Project $project){
-        dd($project);
-        return view('target.store', ['project' => $project]);
+
+    public function getTarget(Request $request, $id){
+        return view('target.store', ['project' => $id]);
     }
 
 

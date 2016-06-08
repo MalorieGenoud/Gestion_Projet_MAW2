@@ -112,6 +112,21 @@
 .well{
     margin: 0 0 5px 0;
 }
+
+.targets li{
+    width: 100%;
+    line-height: 28px;
+    float: left;
+    padding: 5px;
+}
+
+.targets li:hover{
+    background: #EFEFEF;
+}
+
+.targets .finished{
+    text-decoration: line-through;
+}
 /*****************************************************/
 
 

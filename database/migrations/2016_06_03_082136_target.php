@@ -17,6 +17,7 @@ class Target extends Migration
             $table->increments('id')->index();
             $table->integer('project_id');
             $table->longText('description');
+            $table->text('status');
             $table->timestamps();
         });
 

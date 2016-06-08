@@ -274,7 +274,10 @@
                 url: "{{ route('project.gettarget', '@') }}".replace('@', projectid),
                 type: 'get',
                 success: function (data) {
-                   console.log(data);
+                    bootbox.dialog({
+                        title: "Ajouter un objectif",
+                        message: data
+                    });
                 }
             });
         });
@@ -422,6 +425,8 @@
             });
         });
 
+
+        // valider task
         $('#app-layout').on('click', 'button.validate', function () {
             var taskvalidate = this.getAttribute('data-task');
             $.ajax({
@@ -441,30 +446,25 @@
                 }
             });
         });
+
+        // valider target
+        $('#app-layout').on('click', 'button.validetarget', function () {
+            var validetarget = this.getAttribute('data-targetid');
+            bootbox.confirm("Voulez-vous valider cet objectif ? ", function (result) {
+                $.ajax({
+                    url: "{{ route('project.validetarget', '@') }}".replace('@', validetarget),
+                    type: 'post',
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            });
+        });
         @yield('script')
 
 
     });
 </script>
-<!--
-<script>
-    // Gantt configuration
-    $(".selector").gantt({
-        source: "ajax/data.json",
-        scale: "weeks",
-        minScale: "weeks",
-        maxScale: "months",
-        onItemClick: function(data) {
-            alert("Item clicked - show some details");
-        },
-        onAddClick: function(dt, rowId) {
-            alert("Empty space clicked - add an item!");
-        },
-        onRender: function() {
-            console.log("chart rendered");
-        }
-    });
-</script>
- -->
+
 </body>
 </html>
