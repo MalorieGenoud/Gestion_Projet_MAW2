@@ -44,7 +44,29 @@
 
         <h1>Fichiers</h1>
         <div class="panel panel-default" id="files">
-            <p>Fichier ici</p>
+            <form enctype="multipart/form-data" action="{{route('files.store', $project->id)}}" method="post">
+                {!! csrf_field() !!}
+
+                Ajouter des fichiers<br>
+
+                <label class="col-md-4 control-label">Description du fichier</label>
+
+                <div class="col-md-6">
+                    <input type="texte" class="form-control" name="description" value="" required>
+                </div>
+
+                <label class="col-md-4 control-label">Description du fichier</label>
+
+                <div class="col-md-6">
+                    <input type="file" name="file">
+                </div>
+
+                <div class="col-md-6">
+                    <input type="submit" value="Envoyer">
+                </div>
+
+
+            </form>
         </div>
 
 

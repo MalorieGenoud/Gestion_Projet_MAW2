@@ -55,15 +55,15 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('project/{id}/tasks/create', 'ProjectController@createTask')->where('id', '[0-9]+');
         Route::post('project/{id}/tasks', 'ProjectController@storeTask')->where('id', '[0-9]+');
         Route::post('project/{id}/events', ['as' => 'project.storeevents', 'uses' => 'EventController@store'])->where('id', '[0-9]+');
-        Route::get('project/{id}/files', 'ProjectController@files')->where('id', '[0-9]+');
         Route::get('project/{id}/events', ['as' => 'project.events', 'uses' => 'EventController@eventsProject'])->where('id', '[0-9]+');
         Route::delete('project/{id}/users/{user}/destroy', 'ProjectController@destroyUser')->where('id', '[0-9]+');
         Route::post('project/{id}/target', ['as' => 'project.storetarget', 'uses' => 'ProjectController@storeTarget'])->where('projectid', '[0-9]+');
         Route::post('target/{target}/valide', ['as' => 'project.validetarget', 'uses' => 'ProjectController@valideTarget'])->where('target', '[0-9]+');
         Route::get('project/{id}/target', ['as' => 'project.gettarget', 'uses' => 'ProjectController@getTarget'])->where('id', '[0-9]+');
-        /* FILES */
-        Route::post('project/{id}/file', ['as' => 'files.store', 'uses' => 'FileController@store'])->where('id', '[0-9]+');
 
+        /* FILES */
+        Route::post('project/{id}/file', ['as' => 'files.store', 'uses' => 'FileController@store']);
+        Route::get('project/{id}/file', ['as' => 'files.show', 'uses' => 'FileController@show']);
 
 
         /* APP */
