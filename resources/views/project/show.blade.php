@@ -3,15 +3,13 @@
 
 @section('content')
     <div class="container">
-            <div class="panel panel-default">
-                <div class="panel-heading">Votre projet</div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Votre projet</div>
 
-                <div class="panel-body">
-                    @include('planning.show', ['taskparent' => $project->tasksParent])
-                </div>
+            <div class="panel-body">
+                @include('planning.show', ['taskparent' => $project->tasksParent])
+            </div>
         </div>
-
-
 
 
         <div class="row">
@@ -44,29 +42,46 @@
 
         <h1>Fichiers</h1>
         <div class="panel panel-default" id="files">
-            <form enctype="multipart/form-data" action="{{route('files.store', $project->id)}}" method="post">
-                {!! csrf_field() !!}
+            <div class="container">
+                <form enctype="multipart/form-data" action="{{route('files.store', $project->id)}}" method="post">
+                    {!! csrf_field() !!}
 
-                Ajouter des fichiers<br>
+                    Ajouter des fichiers<br>
 
-                <label class="col-md-4 control-label">Description du fichier</label>
+                    <label class="col-md-4 control-label">Description du fichier</label>
 
-                <div class="col-md-6">
-                    <input type="texte" class="form-control" name="description" value="" required>
-                </div>
+                    <div class="col-md-6">
+                        <input type="texte" class="form-control" name="description" value="" required>
+                    </div>
 
-                <label class="col-md-4 control-label">Description du fichier</label>
+                    <label class="col-md-4 control-label">Le fichier</label>
 
-                <div class="col-md-6">
-                    <input type="file" name="file">
-                </div>
+                    <div class="col-md-6">
+                        <input type="file" name="file">
+                    </div>
 
-                <div class="col-md-6">
-                    <input type="submit" value="Envoyer">
-                </div>
+                    <div class="col-md-6">
+                        <input type="submit" value="Envoyer">
+                    </div>
 
+                </form>
+            </div>
+        </div>
 
-            </form>
+        <div class="panel panel-default" id="files">
+            <div class="container">
+                <p>Fichiers du projet</p>
+                @foreach($project->files as $file)
+                    <a href="{{asset('files/'.$project->id.'/'.$file->url)}}" download="{{$file->name}}">
+                        <div class="file">
+                            <img class="" src="{{asset('images/icon/'.$file->mime.'.png')}}">
+                            <p>{{$file->name}}</p>
+                            <p>{{$file->description}}</p>
+                            <p>{{$file->size}}</p>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
         </div>
 
 
@@ -75,6 +90,9 @@
 
 @section('script')
     callEvents({{$project->id}});
+
+    var sizeInMB = (sizeInBytes / (1024*1024)).toFixed(2);
+    alert(sizeInMB + 'MB');
 @endsection
 
 

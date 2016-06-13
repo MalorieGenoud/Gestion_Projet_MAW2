@@ -127,6 +127,19 @@
 .targets .finished{
     text-decoration: line-through;
 }
+.file img{
+    max-width: 50px;
+}
+
+.file{
+    float: left;
+    padding: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 1px;
+    text-align: center;
+    margin: 5px;
+
+}
 /*****************************************************/
 
 

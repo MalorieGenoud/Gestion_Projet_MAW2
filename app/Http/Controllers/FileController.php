@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\File;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Auth;
 use Illuminate\Support\Facades\Input;
 use Storage;
@@ -23,12 +24,12 @@ class FileController extends Controller
 
         $file = Input::file('file');
 
-        $destinationPath = 'files/';
+        $destinationPath = 'files/'.$id.'/';
 
         $fileArray = array('files' => $file);
 
         $rules = array(
-            'files' => 'required|max:10000'
+            'files' => 'required|max:100000'
         );
 
         $validator = Validator::make($fileArray, $rules);
@@ -37,13 +38,19 @@ class FileController extends Controller
             return response()->json(['error' => $validator->errors()->getMessages()], 400);
         } else {
             $extension = $file->getClientOriginalExtension();
+            $hash = $file->hashName();
 //            dd($file->getClientOriginaName());
-            $fileName = md5(date('YmdHis') . rand(11111, 99999)) . '.' . $extension;
-            $file->move($destinationPath, $fileName);
+//            dd($file->getClientOriginalName());
+            //dd($file->getClientOriginalExtension());
+            $fileName = $file->getClientOriginalName();
+            $file->move($destinationPath, $hash);
             $store = new File;
-            $store->name = "test";
+            $store->name = $file->getClientOriginalName();
             $store->description = $request->input('description');
-            $store->url = $fileName;
+            $store->mime = $extension;
+            $store->size = $file->getClientSize();
+            $store->description = $request->input('description');
+            $store->url = $hash;
             $store->project_id = $id;
             $store->save();
         };
