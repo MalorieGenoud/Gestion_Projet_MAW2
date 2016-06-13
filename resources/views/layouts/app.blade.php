@@ -419,7 +419,6 @@
                     });
                 },
                 error: function (data) {
-
                     console.log(data);
                 }
             });
@@ -456,6 +455,22 @@
                     type: 'post',
                     success: function (data) {
                         location.reload();
+                    }
+                });
+            });
+        });
+        // Supprimer fichier
+        $('#app-layout').on('click', 'button.filedestroy', function () {
+            var file = this.getAttribute('data-id');
+            bootbox.confirm("Voulez-vous supprimer ce fichier ? ", function (result) {
+                $.ajax({
+                    url: "{{ route('files.destroy', '@') }}".replace('@', file),
+                    type: 'delete',
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (data){
+                        console.log(data);
                     }
                 });
             });

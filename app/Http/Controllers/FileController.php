@@ -29,7 +29,7 @@ class FileController extends Controller
         $fileArray = array('files' => $file);
 
         $rules = array(
-            'files' => 'required|max:100000'
+            'files' => 'required|max:1000000'
         );
 
         $validator = Validator::make($fileArray, $rules);
@@ -39,9 +39,6 @@ class FileController extends Controller
         } else {
             $extension = $file->getClientOriginalExtension();
             $hash = $file->hashName();
-//            dd($file->getClientOriginaName());
-//            dd($file->getClientOriginalName());
-            //dd($file->getClientOriginalExtension());
             $fileName = $file->getClientOriginalName();
             $file->move($destinationPath, $hash);
             $store = new File;
@@ -57,5 +54,11 @@ class FileController extends Controller
 
         return redirect("project/" . $id);
 
+    }
+
+    public function destroy(File $file){
+        //$file->delete();
+        dd($file);
+        return ("destroy" . $file);
     }
 }

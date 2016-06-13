@@ -72,14 +72,15 @@
             <div class="container">
                 <p>Fichiers du projet</p>
                 @foreach($project->files as $file)
-                    <a href="{{asset('files/'.$project->id.'/'.$file->url)}}" download="{{$file->name}}">
-                        <div class="file">
+                    <div class="file">
+                        <a href="{{asset('files/'.$project->id.'/'.$file->url)}}" download="{{$file->name}}">
                             <img class="" src="{{asset('images/icon/'.$file->mime.'.png')}}">
                             <p>{{$file->name}}</p>
                             <p>{{$file->description}}</p>
-                            <p>{{$file->size}}</p>
-                        </div>
-                    </a>
+                            <p>{{round($file->size / (1024*1024), 2)}} MB</p>
+                        </a>
+                        <button class="right btn filedestroy"  data-id="{{$file->id}}"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </button>
+                    </div>
                 @endforeach
             </div>
         </div>
@@ -91,8 +92,7 @@
 @section('script')
     callEvents({{$project->id}});
 
-    var sizeInMB = (sizeInBytes / (1024*1024)).toFixed(2);
-    alert(sizeInMB + 'MB');
+
 @endsection
 
 
