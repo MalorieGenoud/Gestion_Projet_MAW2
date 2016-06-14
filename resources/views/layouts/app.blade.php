@@ -195,6 +195,23 @@
             });
         });
 
+        //Appeler view pour ajouter utilisateur à la tache
+        $('#app-layout').on('click', 'a.events', function () {
+            var project = this.getAttribute('data-id');
+            //alert(project);
+            $.ajax({
+                url: "{{ route('project.formEvents', '@') }}".replace('@', project),
+                type: 'get',
+                success: function (data) {
+                    bootbox.dialog({
+                        title: "Créer un événement",
+                        message: data
+                    });
+
+                }
+            });
+        });
+
         // Appeler view pour ajouter utilisateur à la tache
         $('#app-layout').on('click', 'button.taskuser', function () {
             var task = this.getAttribute('data-id');
@@ -354,15 +371,15 @@
 
 
         function callEvents(project) {
-
             $.ajax({
                 url: "{{ route('project.events', '@') }}".replace('@', project),
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {
+
                     //var content = $('#events');
                     //$('#events').html(data);
-                    console.log(data);
+                    //console.log(data);
 
                     var content = ("<table class='table'><thead><tr><th>Qui</th><th>Description</th><th>Created_at</th></tr></thead>");
                     $.each(data, function (key, data) {
@@ -376,6 +393,9 @@
                     content += ("</table>");
                     $('#events').append(content);
 
+                },
+                error: function (data){
+                    console.log(data);
                 }
             });
         }
@@ -419,7 +439,6 @@
                     });
                 },
                 error: function (data) {
-
                     console.log(data);
                 }
             });
@@ -456,6 +475,22 @@
                     type: 'post',
                     success: function (data) {
                         location.reload();
+                    }
+                });
+            });
+        });
+        // Supprimer fichier
+        $('#app-layout').on('click', 'button.filedestroy', function () {
+            var file = this.getAttribute('data-id');
+            bootbox.confirm("Voulez-vous supprimer ce fichier ? ", function (result) {
+                $.ajax({
+                    url: "{{ route('files.destroy', '@') }}".replace('@', file),
+                    type: 'delete',
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (data){
+                        console.log(data);
                     }
                 });
             });

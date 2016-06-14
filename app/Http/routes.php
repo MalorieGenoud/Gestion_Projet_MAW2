@@ -9,15 +9,6 @@
 | It's a breeze. Simply tell Laravel the URIs it should respond to
 | and give it the controller to call when that URI is requested.
 |
-
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
-|
 */
 
 Route::group(['middleware' => 'web'], function () {
@@ -53,21 +44,20 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('project/{id}', ['as' => 'project.show', 'uses' => 'ProjectController@show' ])->where('id', '[0-9]+');
         Route::get('project/{id}/tasks/create', 'ProjectController@createTask')->where('id', '[0-9]+');
         Route::post('project/{id}/tasks', 'ProjectController@storeTask')->where('id', '[0-9]+');
-        Route::post('project/{id}/events', ['as' => 'project.storeEvents', 'uses' => 'EventController@store'])->where('id', '[0-9]+');
         Route::get('project/{id}/files', 'ProjectController@files')->where('id', '[0-9]+');
-        Route::get('project/{id}/events', ['as' => 'project.events', 'uses' => 'EventController@eventsProject'])->where('id', '[0-9]+');
         Route::delete('project/{id}/users/{user}/destroy', 'ProjectController@destroyUser')->where('id', '[0-9]+');
         Route::post('project/{id}/target', ['as' => 'project.storetarget', 'uses' => 'ProjectController@storeTarget'])->where('projectid', '[0-9]+');
         Route::post('target/{target}/valide', ['as' => 'project.validetarget', 'uses' => 'ProjectController@valideTarget'])->where('target', '[0-9]+');
         Route::get('project/{id}/target', ['as' => 'project.gettarget', 'uses' => 'ProjectController@getTarget'])->where('id', '[0-9]+');
         /* FILES */
-        Route::post('project/{id}/file', ['as' => 'files.store', 'uses' => 'FileController@store'])->where('id', '[0-9]+');
+        Route::post('project/{id}/file', ['as' => 'files.store', 'uses' => 'FileController@store']);
+        //Route::get('project/{id}/file', ['as' => 'files.show', 'uses' => 'FileController@show']);
+        Route::get('file/{file}', ['as' => 'files.destroy', 'uses' => 'FileController@destroy'])->where('file', '[0-9]+');
 
+        Route::post('project/{id}/file', ['as' => 'files.store', 'uses' => 'FileController@store'])->where('id', '[0-9]+');
 
         /* APP */
         Route::get('logout', 'SessionController@destroy');
-
-
 
         /* INVITATION PROJECTS */
         Route::get('project/{projectid}/invitations/', 'InvitationController@show')->where('projectid', '[0-9]+');
@@ -88,8 +78,11 @@ Route::group(['middleware' => 'web'], function () {
         /* COMMENTS */
         Route::get('tasks/{task}/comment',['as' => 'comment.show','uses' => 'CommentController@show'])->where('comment', '[0-9]+');
         Route::post('tasks/{task}/comment', ['as' => 'comment.store', 'uses' => 'CommentController@store']) -> where('comment', '[0-9]+');
-        
+
         /* EVENTS */
+        Route::get('project/{id}/events', ['as' => 'project.events', 'uses' => 'EventController@show'])->where('id', '[0-9]+');
+        Route::get('project/{id}/formEvents', ['as' => 'project.formEvents', 'uses' => 'EventController@formEvent'])->where('id', '[0-9]+');
+        Route::post('project/{id}/events', ['as' => 'project.storeEvents', 'uses' => 'EventController@store'])->where('id', '[0-9]+');
 
     });
 });

@@ -8,3 +8,5 @@ Homestead.json
 .session/
 .storage/
 auth.json
+public/files/
+public/avatar/

@@ -125,6 +125,7 @@ class ProjectController extends Controller
         $destroyUser->delete();
     }
 
+    // Create a target
     public function storeTarget(Request $request, $id){
 
         $target = new Target;
@@ -136,6 +137,7 @@ class ProjectController extends Controller
         return redirect("project/" . $id);
     }
 
+   // Validate a target
     public function valideTarget(Request $request, Target $target){
 
         $target->update([
@@ -144,6 +146,7 @@ class ProjectController extends Controller
 
     }
 
+    // Return the target view
     public function getTarget(Request $request, $id){
         return view('target.store', ['project' => $id]);
     }

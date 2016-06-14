@@ -6,7 +6,7 @@
         @foreach($projects as $project)
 
         <div class="panel panel-default">
-            <div class="panel-heading"><h2><a href="{{route('project.index')}}/{{ $project->id }}">{{ $project->name }}</a></h2></div>
+            <div class="panel-heading"><h2><a href="{{route('project.index')}}/{{ $project->id }}">{{ $project->name }}</a></h2></div><!-- Display the project name -->
             <div class="panel-body">
                 <h4>Membres : </h4>
                 <!-- Display all project members -->

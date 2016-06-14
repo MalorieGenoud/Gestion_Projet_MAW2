@@ -106,6 +106,7 @@ class TaskController extends Controller
         ]);
     }
 
+    // Display the users with a common task
     public function users(Task $task, Request $request){
 
         $usersTasks = $task->usersTasks;
@@ -122,6 +123,7 @@ class TaskController extends Controller
         return view('task.users', ['task' => $task,'userstask' => $usersTasks, 'project' => $task->project, 'refuse' => $refuse]);
     }
 
+    // Add one or more users for a task
     public function storeUsers(Task $task, Request $request){
 
         foreach($request->input('user') as $key => $value){
@@ -134,7 +136,7 @@ class TaskController extends Controller
         return redirect("project/" . $task->project_id);
     }
 
-    //
+    // Delete a user of task
     public function userTaskDelete(UsersTask $usersTask, Request $request){
         $usersTask->delete();
     }

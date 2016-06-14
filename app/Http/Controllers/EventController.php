@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class EventController extends Controller
 {
     // Display all project events
-    public function eventsProject(Project $project, Request $request)
+    public function show(Project $project, Request $request)
     {
         $events = Project::find($request->id)->events;
 
@@ -34,4 +34,9 @@ class EventController extends Controller
         $event->save();
     }
 
+    // Return view event form
+    public function formEvent($id)
+    {
+        return view('events.store', ['id' => $id]);
+    }
 }

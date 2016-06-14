@@ -12,7 +12,7 @@ use App\Models\User;
 
 class InvitationController extends Controller
 {
-    // Return the view invitation to the user connected
+    // Return the invitation view to the user connected
     public function show(Request $request)
     {
         return view('invitation.show', ['project' => $request->projectid, 'hostid' => Auth::user()->id]);
@@ -24,8 +24,7 @@ class InvitationController extends Controller
         if (User::find($request->input('guest_id'))) { //Verify if the user id exists
 
             $project = Project::find($request->input('project_id')); // Recover the id of projet in the variable $project
-            // Recover the information stored in the form
-            $checkinvite = Invitation::where('project_id', '=', $request->input('project_id'))->where('guest_id', '=', $request->input('guest_id'))->get();
+            $checkinvite = Invitation::where('project_id', '=', $request->input('project_id'))->where('guest_id', '=', $request->input('guest_id'))->get(); // Recover the information stored in the form
 
             if ($checkinvite->isEmpty()) { //Verify if
                 foreach ($project->users as $user) {
@@ -46,7 +45,7 @@ class InvitationController extends Controller
                         return "Utilisateur déja dans le projet";
                     }
                 }
-            } else { // Return a error message
+            } else { // Return a error message if the user is invited
                 return "Utilisateur déja invité";
             }
         } else { // Return a error message if the id user doesn't exists
@@ -61,7 +60,7 @@ class InvitationController extends Controller
         return view('invitation.wait', ['wait' => $wait]);
     }
 
-    // Return the view of edition
+    // Return the edition view
     public function edit()
     {
         $invitations = Invitation::where("guest_id", "=", Auth::user()->id)->get();

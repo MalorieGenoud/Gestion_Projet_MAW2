@@ -14,13 +14,13 @@ use App\Http\Requests;
 
 class UserController extends Controller
 {
-    // return the view user information
+    // Return the view user information
     public function show(User $user, Request $request)
     {
         return view('user.show', ['user' => $user]);
     }
 
-    // recover and spend the avatar
+    // Recover and spend the avatar
     public function storeAvatar(User $user, Request $request)
     {
         $file = Input::file('avatar');

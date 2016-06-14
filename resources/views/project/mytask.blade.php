@@ -1,3 +1,4 @@
+<!-- Display all tasks about user connected -->
 @foreach ($task->usersTasks as $usertask)
     <li>
         @if($usertask->user_id == Auth::user()->id)
@@ -34,15 +35,11 @@
             <div class="progression"
                  style="background: linear-gradient(90deg, #20DE13 {{(($task->getElapsedDuration()*100/60/60)/$task->duration)}}%, #efefef 0%);">
                 <p style="text-align: left;">{{gmdate("H:i:s",$task->getElapsedDuration())}}</p>
-
                 <p> | {{round(($task->getElapsedDuration()*100/60/60)/$task->duration,1)}}%</p>
-
                 <p style="text-align: right;margin-left: auto;">{{$task->getDurationTask()}}h</p>
-
             </div>
 
         @endif
-
 
         @if($task->children->isEmpty())
     </li>
@@ -52,12 +49,7 @@
                 @include('project.mytask', ['taskactive' => $taskactive, 'duration' => $duration])
             @endforeach
         </ul>
-
-
     @endif
     </li>
-
-
-
 
 @endforeach

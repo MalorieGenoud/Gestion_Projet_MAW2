@@ -7,6 +7,7 @@
         <tr>
             <td>@include('user.avatar', ['user' => $usertask->user])</td>
             <td style="text-align: center;">
+                <!-- If a user doesn't begin a task, he can be deleted -->
                 @if($usertask->durationsTasks->isEmpty())
                 <button class="btn usertaskdestroy" data-id="{{$usertask->id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                 @else
@@ -24,7 +25,7 @@
     {!! csrf_field() !!}
     <div class="checkbox">
         @foreach($project->users as $user)
-
+            <!-- Display all users which aren't in the project -->
             @if(!in_array($user->id,$refuse))
                 <label>
                     <input type="checkbox" name="user[{{$user->id}}]">

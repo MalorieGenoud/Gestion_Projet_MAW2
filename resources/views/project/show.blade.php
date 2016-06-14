@@ -10,6 +10,7 @@
             </div>
         </div>
 
+
         <div class="row">
             <div class="col-md-6">
                 <h1>Vos tâches</h1>
@@ -38,20 +39,62 @@
         <h1>Informations du projet</h1>
         <!-- Display all project informations like the members, a description and so on -->
         @include('project.info', ['project' => $project])
-        <h1>Evènements majeur</h1>
+        
+        <h1>Evénements majeur</h1>
         <div class="panel panel-default" id="events"></div>
+        <a class="btn btn-warning events" data-id="{{$project->id}}">Créer un événement</a>
 
         <h1>Fichiers</h1>
         <div class="panel panel-default" id="files">
-            <p>Fichier ici</p>
+            <div class="container">
+                <form enctype="multipart/form-data" action="{{route('files.store', $project->id)}}" method="post">
+                    {!! csrf_field() !!}
+
+                    Ajouter des fichiers<br>
+
+                    <label class="col-md-4 control-label">Description du fichier</label>
+
+                    <div class="col-md-6">
+                        <input type="texte" class="form-control" name="description" value="" required>
+                    </div>
+
+                    <label class="col-md-4 control-label">Le fichier</label>
+
+                    <div class="col-md-6">
+                        <input type="file" name="file">
+                    </div>
+
+                    <div class="col-md-6">
+                        <input type="submit" value="Envoyer">
+                    </div>
+
+                </form>
+            </div>
         </div>
 
-
+        <div class="panel panel-default" id="files">
+            <div class="container">
+                <p>Fichiers du projet</p>
+                @foreach($project->files as $file)
+                    <div class="file">
+                        <a href="{{asset('files/'.$project->id.'/'.$file->url)}}" download="{{$file->name}}">
+                            <img class="" src="{{asset('images/icon/'.$file->mime.'.png')}}">
+                            <p>{{$file->name}}</p>
+                            <p>{{$file->description}}</p>
+                            <p>{{round($file->size / (1024*1024), 2)}} MB</p>
+                        </a>
+                        <button class="right btn filedestroy"  data-id="{{$file->id}}"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </button>
+                    </div>
+                @endforeach
+            </div>
+        </div>
     </div>
 @endsection
 
 @section('script')
     callEvents({{$project->id}});
+
+
 @endsection
 
 

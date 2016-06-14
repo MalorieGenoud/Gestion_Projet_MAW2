@@ -2,6 +2,7 @@
     <div class="panel-heading">Informations projet</div>
 
     <div class="panel-body">
+        <!-- Display the information about project -->
         <p>Nom : {{$project->name}}</p>
         <p>Date de début : {{$project->startdate}}</p>
         <p>Description : {{$project->description}}</p>
@@ -25,8 +26,6 @@
     </div>
 
     <div class="panel-heading">Objectifs du projet</div>
-
-
 
     <div class="panel-body">
         <!-- Display all project objectives -->
