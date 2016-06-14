@@ -64,7 +64,7 @@ Route::group(['middleware' => 'web'], function () {
         /* FILES */
         Route::post('project/{id}/file', ['as' => 'files.store', 'uses' => 'FileController@store']);
         //Route::get('project/{id}/file', ['as' => 'files.show', 'uses' => 'FileController@show']);
-        Route::get('file/{file}', ['as' => 'files.destroy', 'uses' => 'FileController@destroy'])->where('file', '[0-9]+');
+        Route::delete('project/{id}/file/{file}', ['as' => 'files.destroy', 'uses' => 'FileController@destroy']);
 
 
         /* APP */

@@ -79,7 +79,7 @@
                             <p>{{$file->description}}</p>
                             <p>{{round($file->size / (1024*1024), 2)}} MB</p>
                         </a>
-                        <button class="right btn filedestroy"  data-id="{{$file->id}}"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </button>
+                        <button class="right btn filedestroy"  data-project="{{$project->id}}" data-id="{{$file->id}}"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </button>
                     </div>
                 @endforeach
             </div>

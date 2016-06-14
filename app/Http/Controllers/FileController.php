@@ -6,9 +6,10 @@ use App\Models\Project;
 use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\File as Filestorage;
 use Auth;
 use Illuminate\Support\Facades\Input;
-use Storage;
 use Validator;
 use App\Http\Requests;
 
@@ -56,9 +57,19 @@ class FileController extends Controller
 
     }
 
-    public function destroy(File $file){
-        //$file->delete();
-        dd($file);
-        return ("destroy" . $file);
+    public function destroy($id,File $file){
+        //dd($file->id);
+
+
+        if(Storage::disk('local')->exists('public/files/'.$id.'/'.$file->url)){
+
+            Storage::delete('public/files/'.$id.'/'.$file->url);
+            File::where('id','=',$file->id)->delete();
+//            return ("destroy" . $file);
+        }else{
+            echo "File not exist";
+        }
+
+
     }
 }

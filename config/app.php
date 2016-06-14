@@ -159,9 +159,9 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        'Way\Generators\GeneratorsServiceProvider',
-        'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
-        'User11001\EloquentModelGenerator\EloquentModelGeneratorProvider',
+        Way\Generators\GeneratorsServiceProvider::class,
+        Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
+        User11001\EloquentModelGenerator\EloquentModelGeneratorProvider::class,
 
 
     ],

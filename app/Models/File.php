@@ -16,4 +16,9 @@ class File extends Model {
         return $this->belongsTo(\App\Models\Project::class, 'project_id', 'id');
     }
 
+
+    public function delete(){
+
+    }
+
 }

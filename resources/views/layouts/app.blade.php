@@ -462,12 +462,13 @@
         // Supprimer fichier
         $('#app-layout').on('click', 'button.filedestroy', function () {
             var file = this.getAttribute('data-id');
+            var project = this.getAttribute('data-project');
             bootbox.confirm("Voulez-vous supprimer ce fichier ? ", function (result) {
                 $.ajax({
-                    url: "{{ route('files.destroy', '@') }}".replace('@', file),
+                    url: "{{ route('files.destroy', ['@', '#']) }}".replace('@', project).replace('#', file),
                     type: 'delete',
                     success: function (data) {
-                        console.log(data);
+                        location.reload();
                     },
                     error: function (data){
                         console.log(data);
