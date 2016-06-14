@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Target extends Migration
+class Projects extends Migration
 {
     /**
      * Run the migrations.
@@ -12,20 +12,12 @@ class Target extends Migration
      */
     public function up()
     {
-
-        Schema::create('targets', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->increments('id')->index();
-            $table->integer('project_id');
+            $table->string('name', 45);
             $table->longText('description');
-            $table->text('status');
-            $table->timestamps();
+            $table->timestamps(); // Creation the column "created_at" and "updated_at"
         });
-
-        Schema::table('targets', function ($table) {
-            $table->foreign('project_id')->references('id')->on('projects');
-        });
-
-
     }
 
     /**
@@ -35,6 +27,6 @@ class Target extends Migration
      */
     public function down()
     {
-        Schema::drop('targets');
+        Schema::drop('projects');
     }
 }

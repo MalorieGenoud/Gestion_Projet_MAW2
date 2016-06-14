@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
         //
         ;
         View::composer('layouts/app', function($view){
-            $invitations = Invitation::where("statut","=","wait")->get();
+            $invitations = Invitation::where("status","=","wait")->get();
             $view->with('invitations', $invitations);
         });
     }

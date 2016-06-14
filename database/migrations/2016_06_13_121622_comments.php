@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Comment extends Migration
+class Comments extends Migration
 {
     /**
      * Run the migrations.
@@ -15,17 +15,16 @@ class Comment extends Migration
 
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id')->index();
-            $table->integer('user_id');
-            $table->integer('task_id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('task_id')->unsigned();
             $table->longText('comment');
-            $table->timestamps();
+            $table->timestamps(); // Creation the column "created_at" and "updated_at"
         });
 
         Schema::table('comments', function ($table) {
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('task_id')->references('id')->on('tasks');
         });
-
     }
 
     /**

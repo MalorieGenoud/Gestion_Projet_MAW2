@@ -2,7 +2,7 @@
     <div class="panel-heading">Informations projet</div>
 
     <div class="panel-body">
-        <p>Id :{{$project->id}}</p>
+        <!-- Display the information about project -->
         <p>Nom : {{$project->name}}</p>
         <p>Date de début : {{$project->startdate}}</p>
         <p>Description : {{$project->description}}</p>
@@ -13,6 +13,7 @@
     <div class="panel-body">
         @foreach($project->users as $user)
             <p>
+                <!-- Display all project members -->
                 @include('user.avatar', ['user' => $user])
                 <button class="right btn userprojectdestroy" data-id="{{$user->id}}" data-projectid="{{$project->id}}">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -26,9 +27,8 @@
 
     <div class="panel-heading">Objectifs du projet</div>
 
-
-
     <div class="panel-body">
+        <!-- Display all project objectives -->
         <ol class="targets">
         @foreach($project->targets as $target)
             <li class="@if($target->status == 'Finished'){{'finished'}}@endif">{{$target->description}}

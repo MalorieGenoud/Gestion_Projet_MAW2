@@ -16,17 +16,15 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
-
-    public function eventsProject(Project $project, Request $request)
+    // Display all project events
+    public function show(Project $project, Request $request)
     {
-        // dd($project->events);
-        //dd(Project::find($request->id)->events);
-
         $events = Project::find($request->id)->events;
 
-        return $events->toJson();
+        return $events->toJson();// Return the events as a json array
     }
 
+    // Create an event
     public function store($project, $desc)
     {
         $event = new Event;
@@ -34,7 +32,11 @@ class EventController extends Controller
         $event->project_id = $project;
         $event->description = $desc;
         $event->save();
-
     }
 
+    // Return view event form
+    public function formEvent($id)
+    {
+        return view('events.store', ['id' => $id]);
+    }
 }

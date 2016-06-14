@@ -188,10 +188,27 @@
             var task = this.getAttribute('data-id');
             $.get("{{ url('project') }}/" + task + "/tasks/create", {}, function (task) {
                 bootbox.dialog({
-                    title: "Créer une tâche root",
+                    title: "Créer une tâche racine",
                     message: task
                 });
                 //$('#taskdetail').html(task);
+            });
+        });
+
+        //Appeler view pour ajouter utilisateur à la tache
+        $('#app-layout').on('click', 'a.events', function () {
+            var project = this.getAttribute('data-id');
+            //alert(project);
+            $.ajax({
+                url: "{{ route('project.formEvents', '@') }}".replace('@', project),
+                type: 'get',
+                success: function (data) {
+                    bootbox.dialog({
+                        title: "Créer un événement",
+                        message: data
+                    });
+
+                }
             });
         });
 
@@ -354,15 +371,15 @@
 
 
         function callEvents(project) {
-
             $.ajax({
                 url: "{{ route('project.events', '@') }}".replace('@', project),
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {
+
                     //var content = $('#events');
                     //$('#events').html(data);
-                    console.log(data);
+                    //console.log(data);
 
                     var content = ("<table class='table'><thead><tr><th>Qui</th><th>Description</th><th>Created_at</th></tr></thead>");
                     $.each(data, function (key, data) {
@@ -376,6 +393,9 @@
                     content += ("</table>");
                     $('#events').append(content);
 
+                },
+                error: function (data){
+                    console.log(data);
                 }
             });
         }
@@ -409,7 +429,7 @@
         $('#app-layout').on('click', 'button.usertaskdestroy', function () {
             var usertaskdestroy = this.getAttribute('data-id');
             $.ajax({
-                url: "{{ route('tasks.usertaskdelete', '@') }}".replace('@', usertaskdestroy),
+                url: "{{ route('tasks.userTaskDelete', '@') }}".replace('@', usertaskdestroy),
                 type: 'delete',
                 success: function (data) {
                     bootbox.hideAll();
@@ -429,7 +449,7 @@
         $('#app-layout').on('click', 'button.validate', function () {
             var taskvalidate = this.getAttribute('data-task');
             $.ajax({
-                url: "{{ route('tasks.statut', '@') }}".replace('@', taskvalidate),
+                url: "{{ route('tasks.status', '@') }}".replace('@', taskvalidate),
                 type: 'post',
                 success: function (data) {
                     bootbox.dialog({

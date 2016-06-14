@@ -10,7 +10,7 @@ class Task extends Model
      */
 
     protected $table = 'tasks';
-    protected $fillable = ['id', 'name', 'duration', 'date_jalon', 'statut', 'priority', 'project_id', 'parent_id', 'created_at'];
+    protected $fillable = ['id', 'name', 'duration', 'date_jalon', 'status', 'priority', 'project_id', 'parent_id', 'created_at'];
 
 
     public function project()
@@ -70,7 +70,7 @@ class Task extends Model
     }
 
     public function ifChildTaskNoValidate($isFirst = true){
-        if(!$isFirst && $this->statut != "Validate") return false;
+        if(!$isFirst && $this->status != "Validate") return false;
         $children_activated = true;
         foreach ($this->children as $child){
             if(!$child->ifChildTaskNoValidate(false)){
