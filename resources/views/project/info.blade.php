@@ -4,7 +4,7 @@
     <div class="panel-body">
         <!-- Display the information about project -->
         <p>Nom : {{$project->name}}</p>
-        <p>Date de début : {{$project->startdate}}</p>
+        <p>Date de début : {{$project->startDate}}</p>
         <p>Description : {{$project->description}}</p>
     </div>
 
