@@ -29,11 +29,20 @@ class ProjectController extends Controller
 
     public function index()
     {
-        if (Auth::user()) {
+        // If the user has a role like "Eleve", he can access student view and he only can see his projects
+        if (Auth::user()->role->name == "Eleve") {
 
             $projects = Auth::user()->projects()->get();
 
-            return view('project', ['projects' => $projects]);
+            return view('student', ['projects' => $projects]);
+
+        }
+        // If the user has a role like "Prof", he can access teacher view ans he can see all projects
+        elseif(Auth::user()->role->name == "Prof"){
+
+            $projects = Project::all();
+
+            return view('teacher', ['projects' => $projects]);
         }
     }
 
@@ -87,7 +96,7 @@ class ProjectController extends Controller
         $relation = new ProjectsUser;
         $newProject->name = $request->input('name');
         $newProject->description = $request->input('description');
-        $newProject->startdate = $request->input('date');
+        $newProject->startDate = $request->input('date');
         $newProject->save();
 
         $relation->project_id = $newProject->id;

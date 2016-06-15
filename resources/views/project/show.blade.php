@@ -38,7 +38,7 @@
 
         <h1>Informations du projet</h1>
         <!-- Display all project informations like the members, a description and so on -->
-        @include('project.info', ['project' => $project])
+        @include('project.info', ['student' => $project])
         
         <h1>Evénements majeur</h1>
         <div class="panel panel-default" id="events"></div>

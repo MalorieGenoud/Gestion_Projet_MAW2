@@ -16,6 +16,7 @@ class Projects extends Migration
             $table->increments('id')->index();
             $table->string('name', 45);
             $table->longText('description');
+            $table->dateTime('startDate');
             $table->timestamps(); // Creation the column "created_at" and "updated_at"
         });
     }

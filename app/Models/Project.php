@@ -9,7 +9,7 @@ class Project extends Model {
      */
 
     protected $table = 'projects';
-    protected $fillable = ['name', 'startdate', 'description'];
+    protected $fillable = ['name', 'startDate', 'description'];
 
 
     public function users() {
