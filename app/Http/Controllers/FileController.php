@@ -62,14 +62,12 @@ class FileController extends Controller
 
 
         if(Storage::disk('local')->exists('public/files/'.$id.'/'.$file->url)){
-
             Storage::delete('public/files/'.$id.'/'.$file->url);
-            File::where('id','=',$file->id)->delete();
-//            return ("destroy" . $file);
         }else{
             echo "File not exist";
         }
 
+        File::where('id','=',$file->id)->delete();
 
     }
 }

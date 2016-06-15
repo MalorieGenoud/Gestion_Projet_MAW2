@@ -146,8 +146,16 @@ class TaskController extends Controller
     public function status(Task $task, Request $request){
 
         if(!$task->ifChildTaskNoValidate()){ // Return a error message
+
+
             dd("La tâche ne peut pas être validée");
+
         }else{ // Return a message
+
+            $task->update([
+                'status' => 'validate',
+            ]);
+
             dd("La tâche peut être validée");
 
         }

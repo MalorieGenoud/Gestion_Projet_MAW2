@@ -6,7 +6,7 @@
             <div class="panel-heading">Votre projet</div>
             <div class="panel-body">
                 <!-- Include the plugin for the planning -->
-                @include('planning.show', ['taskparent' => $project->tasksParent])
+                {{--@include('planning.show', ['taskparent' => $project->tasksParent])--}}
             </div>
         </div>
 

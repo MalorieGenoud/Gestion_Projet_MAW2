@@ -70,7 +70,7 @@ class Task extends Model
     }
 
     public function ifChildTaskNoValidate($isFirst = true){
-        if(!$isFirst && $this->status != "Validate") return false;
+        if(!$isFirst && $this->status != "validate") return false;
         $children_activated = true;
         foreach ($this->children as $child){
             if(!$child->ifChildTaskNoValidate(false)){

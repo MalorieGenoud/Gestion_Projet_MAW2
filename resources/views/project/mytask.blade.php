@@ -43,13 +43,13 @@
 
         @if($task->children->isEmpty())
     </li>
-    @else
+        @else
         <ul>
             @foreach($task->children as $task)
                 @include('project.mytask', ['taskactive' => $taskactive, 'duration' => $duration])
             @endforeach
         </ul>
-    @endif
+        @endif
     </li>
 
 @endforeach

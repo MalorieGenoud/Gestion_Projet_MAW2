@@ -394,7 +394,7 @@
                     $('#events').append(content);
 
                 },
-                error: function (data){
+                error: function (data) {
                     console.log(data);
                 }
             });
@@ -448,21 +448,23 @@
         // valider task
         $('#app-layout').on('click', 'button.validate', function () {
             var taskvalidate = this.getAttribute('data-task');
-            $.ajax({
-                url: "{{ route('tasks.status', '@') }}".replace('@', taskvalidate),
-                type: 'post',
-                success: function (data) {
-                    bootbox.dialog({
-                        title: "Validation de la tâche",
-                        message: data
-                    });
-                },
-                error: function (data) {
-                    bootbox.dialog({
-                        title: "Validation de la tâche",
-                        message: data
-                    });
-                }
+            bootbox.confirm("Voulez-vous valider cette tâche ? ", function (result) {
+                $.ajax({
+                    url: "{{ route('tasks.status', '@') }}".replace('@', taskvalidate),
+                    type: 'post',
+                    success: function (data) {
+                        bootbox.dialog({
+                            title: "Validation de la tâche",
+                            message: data
+                        });
+                    },
+                    error: function (data) {
+                        bootbox.dialog({
+                            title: "Validation de la tâche",
+                            message: data
+                        });
+                    }
+                });
             });
         });
 
@@ -490,7 +492,7 @@
                     success: function (data) {
                         location.reload();
                     },
-                    error: function (data){
+                    error: function (data) {
                         console.log(data);
                     }
                 });
