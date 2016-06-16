@@ -147,7 +147,6 @@ class TaskController extends Controller
 
         if(!$task->ifChildTaskNoValidate()){ // Return a error message
 
-
             dd("La tâche ne peut pas être validée");
 
         }else{ // Return a message

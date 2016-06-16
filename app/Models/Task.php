@@ -18,6 +18,10 @@ class Task extends Model
         return $this->belongsTo(\App\Models\Project::class, 'project_id', 'id');
     }
 
+    public function getUser(){
+        return $this->hasManyThrough('App\Models\User','App\Models\UsersTask', 'task_id','id');
+    }
+
     public function usersTasks()
     {
         return $this->hasMany(\App\Models\UsersTask::class, 'task_id', 'id');

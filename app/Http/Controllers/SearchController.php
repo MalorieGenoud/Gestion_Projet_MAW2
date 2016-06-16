@@ -20,12 +20,12 @@ class SearchController extends Controller
     // return the view of the result in another page
     public function store(Request $request, Task $task, Comment $comment, $id)
     {
-        $task = Task::SearchInAvailableProperty($request->input('search'), $id)->get();
+        $tasks = Task::SearchInAvailableProperty($request->input('search'), $id)->get();
 
         $comment = Comment::SearchInAvailableProperty($request->input('search'), $id)->get();
 
 //        dd($comment);
-        return view('search.show', ['task'=> $task,'comment'=>$comment]);
+        return view('search.show', ['tasks'=> $tasks,'comment'=>$comment]);
     }
 
 }

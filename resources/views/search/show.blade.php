@@ -30,7 +30,7 @@
             <div class="panel-body">
                 <table class="table">
 
-                    @if(!$task->isEmpty())
+                    @if(!$tasks->isEmpty())
                         <tr>
                             <th>id</th>
                             <th>Nom de la tâche</th>
@@ -38,9 +38,10 @@
                             <th>Mis à jour le</th>
                             <th>Date du jalon</th>
                             <th>durée</th>
+                            <th>Membres</th>
                         </tr>
 
-                        @foreach($task as $task)
+                        @foreach($tasks as $task)
                             <tr>
                                 <td>{{$task->id}}</td>
                                 <td>{{$task->name}}</td>
@@ -48,6 +49,14 @@
                                 <td>{{$task->updated_at}}</td>
                                 <td>{{$task->date_jalon}}</td>
                                 <td>{{$task->duration}}</td>
+                                <td>
+                                    @foreach($task->usersTasks()->get() as $usertask)
+                                        <p>
+                                            <!-- Display all project members -->
+                                            @include('user.avatar', ['user' => $usertask->user()->get()[0]])
+                                        </p>
+                                    @endforeach
+                                </td>
                             </tr>
                         @endforeach
                     @else
