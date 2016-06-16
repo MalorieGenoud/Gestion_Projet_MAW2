@@ -56,7 +56,7 @@ Il y a divers buts que nous devons atteindre. Il devra permettre:
   - Les tâches sont modifiables/supprimables que par les élèves et les profs même en cours du projet (planification).
   - Les tâches et le projet ne seront pas visibles par les autres groupes de personnes.
   - Il existera donc 2 types d’utilisateurs :
-    - Elèves
+    - Élèves
     - Professeurs
   - Le professeur devra pouvoir voir en temps réel comment les élèves activent et désactivent leur tâches comme un historique. On retrouvera donc le nom de l’élève et sa tâche avec la durée.
 
@@ -234,39 +234,50 @@ Nous avons créé pour chaque table un fichier de **Migration** afin de nous fac
 Nous avons différentes vues:
 
   - La vue d'authentification d'un utilisateur
-  - La vue qui affiche tous les projets ainsi que les utilisateurs associés à un ou plusieurs projets
+  - La vue qui affiche tous les projets ainsi que les utilisateurs associés
   - La vue de création d'un projet
-  - La vue des invitations en attente de l'utilisateur connecté
+  - La vue des invitations en attente de l'utilisateur connecté avec la possibilité d'accepter ou de refuser un invitation
+  - La vue des informations propre à l'utilisateur avec l'ajout d'un avatar.
   - La vue d'un des projet de l'utilisateur connecté comportant:
     - Le planning
-    - Les tâches associées à l'utilisateur contenant:
-      - L'option **Terminé**
-      - L'option **Commencer**/**Stopper**
+    - Les tâches associées à l'utilisateur avec la possibilité de terminer, de commencer ou de stopper une tâche
     - La liste des tâches du projet contenant:
       - La création d'une tâche racine
       - L'ajout d'une tâche enfant à une tâche parente
       - L'édition d'une tâche
       - La suppression d'une tâche
-      - L'ajout d'un utilisateur à une tâche
+      - L'ajout d'un ou plusieurs utilisateurs à une tâche
     - Les détails d'une tâche contenant:
       - La durée initiale
       - La date du jalon
-      - Les différents rush
-      - La liste des commentaires
+      - Les différents rush avec les informations suivantes:
+        - L'affichage de la date de création du rush
+        - L'affichage de la date de fin du rush
+        - Le nom de l'utilisateur qui a effectué le rush
+        - La durée du rush
+      - La liste des commentaires avec les informations suivantes:
+        - Le commentaire
+        - La date de création du commentaire
+        - Le nom de l'utilisateur qui a écrit le commentaire
       - L'ajout d'un commentaire
     - Les information du projet contenant:
-      - Le nom
-      - la date de début
+      - Le nom du projet
+      - La date de début
       - Une description
       - Les membres du projet avec:
+        - Les informations des membres comme le nom et prénom aisni que l'e-mail
         - L'ajout d'un membre
         - La suppression d'un membre
-        - Voir les invitation en attente
-    - La liste des évènements majeurs
+        - Voir les invitations en attente, accetpées ou refusées
+    - La liste des événements majeurs ainsi que l'ajout d'un événement manuellement contenant:
+      - Le nom de celui qui a créé l'événement
+      - Le nom de l'événement
+      - La date de création
+    - La liste des fichiers ajoutés ainsi que la possibilité d'ajouter des fichiers
 
 ### Plugin planning
 
-Pour l'affichage du planning, nous avons utilisé le plugin de Google Charts.
+Pour l'affichage du planning, nous avons utilisé un plugin de Google Charts (voir **Références**).
 
 ## Liste des tests à effectuer
 
@@ -323,7 +334,7 @@ Pour l'affichage du planning, nous avons utilisé le plugin de Google Charts.
       - La suppression d'un membre
       - L'ajout d'un membre non présent dans le projet mais avec une invitation en attente ou qui n'a pas encore été invité ou qui aurait pu refusé involontairement l'invitation
       - L'affichage des invitations du projet ayant pour statut *en attente*, *refusée* ou *acceptée*
-    - Dans la partie **Evènement majeur**
+    - Dans la partie **Événements majeurs**
       - L'affichage des événements avec:
         - La liste des événements
         - La description de l'évènement
@@ -344,8 +355,8 @@ Pour l'affichage du planning, nous avons utilisé le plugin de Google Charts.
     - L'affichage correcte de son avatar (s'il l'a déjà ajouté)
     - La recherche d'un avatar depuis le bouton **Parcourir...**
     - L'ajout d'un avatar depuis le bouton **Envoyer**
-    - L'affichage de l'email de l'utilisateur
-    - L'affichage du rôle de l'utilisateur (**Elève** ou **Prof**) 
+    - L'affichage de l'e-mail de l'utilisateur
+    - L'affichage du rôle de l'utilisateur (**Élève** ou **Prof**) 
 
 
 ## Résultats des tests
@@ -401,15 +412,15 @@ Pour l'affichage du planning, nous avons utilisé le plugin de Google Charts.
       - L'affichage de la description du projet => **FONCTIONNELLE À 100%**
       - L'affichage des différents membres du projet => **FONCTIONNELLE À 100%**
       - L'ajout d'un membre non présent dans le projet mais avec une invitation en attente ou qui n'a pas encore été invité ou qui aurait pu refusé involontairement l'invitation => **FONCTIONNELLE À 100%**
-      - L'ajout d'un membre => **FONCTIONNELLE À 50%** 
+      - L'ajout d'un membre => **FONCTIONNELLE À 100%** 
       - L'affichage des invitations du projet ayant pour statut *en attente*, *refusée* ou *acceptée* => **FONCTIONNELLE à 100%**
-    - Dans la partie **Evènement majeur**
+    - Dans la partie **Événements majeurs**
       - L'affichage des événements avec:
         - La liste des événements => **FONCTIONNELLE À 100%**
         - La description de l'évènement => **FONCTIONNELLE À 100%**
         - La date de création => **FONCTIONNELLE À 100%**
       - L'ajout d'un événement manuellement => **FONCTIONNELLE À 50%**
-    - Le champ de recherche d'un commentaire ou d'une tâche => **FONCTIONNELLE À 50%**
+    - Le champ de recherche d'un commentaire ou d'une tâche => **FONCTIONNELLE À 100%**
     - Dans la partie **Fichiers**
       - La possibilité d'entrer un nom pour le fichier => **FONCTIONNELLE À 100%**
       - La possibilité de choisir tout type de fichiers => **FONCTIONNELLE À 100%**
@@ -424,8 +435,8 @@ Pour l'affichage du planning, nous avons utilisé le plugin de Google Charts.
     - L'affichage correcte de son avatar (s'il l'a déjà ajouté) => **FONCTIONNELLE À 100%**
     - La recherche d'un avatar depuis le bouton **Parcourir...** => **FONCTIONNELLE à 100%**
     - L'ajout d'un avatar depuis le bouton **Envoyer** => **FONCTIONNELLE À 100%**
-    - L'affichage de l'email de l'utilisateur => **FONCTIONNELLE à 100%**
-    - L'affichage du rôle de l'utilisateur (**Elève** ou **Prof**) => **FONCTIONNELLE À 100%**
+    - L'affichage de l'e-mail de l'utilisateur => **FONCTIONNELLE à 100%**
+    - L'affichage du rôle de l'utilisateur (**Élève** ou **Prof**) => **FONCTIONNELLE À 100%**
 
 
 ## Erreurs restantes
@@ -433,12 +444,11 @@ Pour l'affichage du planning, nous avons utilisé le plugin de Google Charts.
 Voici la liste des erreurs restantes:
 
   - L'affichage correcte du planning
+    - Concernant le plugin pour le planning, nous avons au début utilisé le plugin de Google Charts (voir dans **Références**), cependant, celui-ci n'intégrait pas la gestion du temps des tâches. Nous avons donc décidé de laisser ce plugin de côté et de corriger le reste des bugs restants et de terminer les fonctionnalités restantes.
   - La possibilité de valider la fin d'une tâche
+    - Pour la possibilité de valider une tâche, nous n'avons fait qu'un message pop-up s'affiche pour savoir si l'on peut valider ou non la tâche, notamment dans le cas où si les tâches enfants d'une tâche parente ne sont pas finis, l'utilisateur ne peut pas valider la tâche parente.
   - L'ajout d'un événement manuellement
-
-Concernant le plugin pour le planning, nous avons au début utilisé le plugin de Google Charts, cependant, celui-ci n'intégrait pas correctement la gestion du temps des tâches. Nous avons donc décidé de laisser ce lugin de côté et de corriger le reste des bugs restants.
-
-Pour l'ajout d'un événement manuellement, nous nous sommes rendu compte que nous avions besoin d'un **Observer** afin de pouvoir gérer le fait que non-seulement des événements s'ajoutent lorsque l'on crée une tâche par exemple, mais aussi de pouvoir les ajouter manuellement. Nous avons donc décidé de laissez seulement l'ajout d'évenement lorsque l'on crée une tâche car nous nous sommes rendus compte trop tard de ce que nous avions besoin et nous avons préféré corriger les quelques bugs que nous avions
+    - Pour l'ajout d'un événement manuellement, nous nous sommes rendu compte que nous avions besoin d'un **Observer** afin de pouvoir gérer le fait que non-seulement des événements s'ajoutent, par exemple lorsque l'on crée une tâche, mais aussi de pouvoir les ajouter manuellement. Nous avons donc décidé de laissez seulement l'ajout d'événement lorsque l'on crée une tâche car nous nous sommes rendus compte trop tard de ce que nous avions besoin et nous avons préféré corriger les quelques bugs que nous avions
 
 ## Fonctionnalités accomplies
 
@@ -455,21 +465,36 @@ Pour l'ajout d'un événement manuellement, nous nous sommes rendu compte que no
 
 ### Fonctionnalités secondaires
 
-  - Les tâches sont modifiables/supprimables que par les élèves et les profs même en cours du projet (planification).
+  - Les tâches sont modifiables/supprimables que par les élèves et les profs même en cours du projet (planification). => **ACCOMPLIES À 100%**
   - Les tâches et le projet ne seront pas visibles par les autres groupes de personnes => **ACCOMPLIE À 100%**
-  - Il existera donc 2 types d’utilisateurs : => **PAS FAITE**
-    - Elèves
+  - Il existera donc 2 types d’utilisateurs : => **ACCOMPLIE À 100%**
+    - Élèves
     - Professeurs
-  - Le professeur devra pouvoir voir en temps réel comment les élèves activent et désactivent leur tâches comme un historique. On retrouvera donc le nom de l’élève et sa tâche avec la durée. => **PAS FAITE**
+  - Le professeur devra pouvoir voir en temps réel comment les élèves activent et désactivent leur tâches comme un historique. On retrouvera donc le nom de l’élève et sa tâche avec la durée. => **ACCOMPLIES À 50%**
 
 ### Fonctionnalités supplémentaires
 
-  - Une liste d’objectifs généraux. Chaque objectif général est constitué d’un énoncé, accompagné d’une checklist de critères qui permettront de dire si l’objectif est atteint ou non => **ACCOMPLIE À 100%**
-  - Un journal de bord, qui contient les événements marquants du projet. Il est éditable (ajout uniquement) par n’importe quel membre du projet => **ACCOMPLIE À 80%**
+  - Une liste d’objectifs généraux. Chaque objectif général est constitué d’un énoncé, accompagné d’une checklist de critères qui permettront de dire si l’objectif est atteint ou non. => **ACCOMPLIE À 100%**
+  - Un journal de bord, qui contient les événements marquants du projet. Il est éditable (ajout uniquement) par n’importe quel membre du projet. => **ACCOMPLIE À 50%**
 
-### Résumé des fonctionnalités non-accomplies
+### Résumé des fonctionnalités pas ou quasi accomplies
 
 #### Fonctionnalités principales
+
+  - Dans le journal de travail on récoltera le nom de la tâche, la durée par le planning et sa véritable durée pour permettre de comparer.
+    - Nous n'avons pas fait cette fonctionnalités car nous avons préféré terminer le reste des fonctionnalités que nous avons jugé plus importante que celle-ci.
+  - L’élève peut avoir un historique de ses tâches pour voir par exemple les dernières tâches effectuées, il ne peut pas les modifier, s'il veut les modifier il doit demander au professeur.
+    - Nous nous sommes occupés seulement de la partie affichage des différents rush sur une tâche, car nous avons décidé de mettre de côté la gestion des droits et de les gérer seulement dans le cas où le reste des fonctionnalités seraient finies.
+    
+ #### Fonctionnalités secondaires
+ 
+  - Le professeur devra pouvoir voir en temps réel comment les élèves activent et désactivent leur tâches comme un historique. On retrouvera donc le nom de l’élève et sa tâche avec la durée.
+    - Il est possible de voir les différents rush des élèves, cependant on ne peut pas les voir en temps réel car pour les voir il faut cliquer sur chaque tâche pour voir les rush.
+ 
+ #### Fonctionnalités supplémentaires
+ 
+   - Un journal de bord, qui contient les événements marquants du projet. Il est éditable (ajout uniquement) par n’importe quel membre du projet.
+    - Comme dit dans la partie **Erreurs restantes**, nous avons besoin d'un **Observer** afin de pouvoir gérer la partie de l'ajout manuellement. Seule la partie des ajouts automatiques des événements fonctionne.
 
 # Pré-requis
 
@@ -479,8 +504,8 @@ Voici la marche à suivre pour l'installation du projet:
       -   Wamp ou Xampp pour l'hébergement du site ainsi que de la base de données
       -   Github pour faire un clone du repository
   2.  Allez Dans le dossier **www** ou **htdocs**, faîtes un clique droit -> Git Bash here -> `git clone https://github.com/MalorieGenoud/Gestion_Projet_MAW2.git`
-  3. Faîtes un `git checkout documentation` puis allez dans le dossier **Documentation** -> **MCD_MLD** -> et importez le fichier **bones.sql** sur votre serveur.
-  4. Faîtes ensuite `git checkout developement` afin d'accéder au site. Faîtes un `composer update` afin d'être sûr que tout soit à jour par rapport au framework Laravel.
+  3. Faîtes un `php artisan migrate -seed` afin de faire l'installation de la base de données. Vous pouvez aussi utiliser le fichier **bones.sql** et l'importer dans votre serveur.
+  4. Faîtes ensuite `git checkout developement` afin d'accéder au site. Faîtes un `composer update` afin d'être sûr que tout soit à jour par rapport au Framework Laravel.
   5. Vous pouvez maintenant utiliser le site. 
       1.  Login et mot de passe des utilisateurs avec pour rôle **Eleve**:
           - Mickaël Lacombe : **lacombe@cpnv.cv** ;  **lacombe123**
@@ -488,9 +513,8 @@ Voici la marche à suivre pour l'installation du projet:
           - Malorie Genoud : **genoud@cpnv.ch** ; **genoud123**
       2.  Login et mot de passe des utilisateurs avec pour rôle **Prof**:      
           - Pascal Hurni : **hurni@cpnv.ch** ; **hurni123**
-          - Yann Saison : **saison@cpnv.ch** : **saison123**
       
-Toutefois, si vous constatez des erreurs liés à la base de données, supprimez-la, faîtes un `php artisan migrate` via GitHub là où se situe votre projet (exemple **C:\\xampp\\htdocs\\Gestion_Projet_MAW2**), puis importez le fichier **insertion.sql** afin de récupérer les données de base.
+Toutefois, si vous constatez des erreurs liés à la base de données, supprimez-la, faîtes un `php artisan migrate` sans la méthode `-seed` via GitHub là où se situe votre projet (exemple **C:\\xampp\\htdocs\\Gestion_Projet_MAW2**), puis importez le fichier **insertion.sql** afin de récupérer les données de base.
 
 Si vous ne pouvez pas ajouter de fichiers, allez dans le fichier **php.ini** de Wamp ou Xampp, décommentez la ligne `extension=php_fileinfo.dll` (pour Windows) ou `php_value extension fileinfo.so` (pour Mac ou Linux). Pensez à redémarrer votre serveur pour prendre en compte les changements.
 
@@ -502,7 +526,11 @@ Si d'autres soucis se présentent, vous pouvez prendre contact avec:
   
 # Conclusion
 
+Nous avons accompli en grande partie la quasi totalité des fonctionnalités comme la création d'un projet ainsi que de tâches, l'ajout de plusieurs utilisateurs pour une tâche, ainsi de suite.
 
+Concernant les objectifs que nous nous étions fixés, il y a seulement un seul que nous n'avons pas pu atteindre. C'est celui concernant l'affichage du planning. Comme dit plus haut, ceci est dû au fait que nous avions utilisé un plugin pas adapté à nos besoins et que nous avions préféré mettre ceci de côté et de se concentrer sur le reste.
+
+Concernant le projet de manière général, nous avons eu quelques difficultés au départ à savoir comment nous allions organiser tout notre affichage afin que tout soit un minimum ergonomique étant donné que nous n'avons qu'un simple design de base.
 
 # Références
 
