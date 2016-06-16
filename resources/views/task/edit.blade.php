@@ -13,7 +13,7 @@
         <label class="col-md-4 control-label">Durée de la tâche</label>
 
         <div class="col-md-6">
-            <input type="number" class="form-control" name="duration" min="1" max="200" value="{{$task->duration}}" required>
+            <input type="number" class="form-control" name="duration" min="00:30" max="200" value="{{$task->duration}}" required>
         </div>
     </div>
 
@@ -29,7 +29,7 @@
         <label class="col-md-4 control-label">Statut</label>
 
         <div class="col-md-6">
-            <input type="text" class="form-control" name="status" value="{{ $task->status }}" required>
+            <input type="text" class="form-control" name="status" value="{{ $task->status }}">
         </div>
     </div>
 

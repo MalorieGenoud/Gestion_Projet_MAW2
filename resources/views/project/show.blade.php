@@ -5,7 +5,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">Votre planning</div>
             <div class="panel-body">
-                @include('planning.show', ['taskparent' => $project->tasksParent])
+{{--                @include('planning.show', ['taskparent' => $project->tasksParent])--}}
             </div>
         </div>
 

@@ -226,12 +226,10 @@
                         url: "{{ url('tasks') }}/" + task,
                         data: task,
                         success: function (task) {
-                            //location.reload();
-                            $('#taskdetail').html(task);
+                            location.reload();
                         },
                         error: function (task) {
-                            console.log(task);
-                            $('#taskdetail').html(task);
+                            location.reload();
                         }
                     });
                 }

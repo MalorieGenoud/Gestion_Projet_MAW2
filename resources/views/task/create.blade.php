@@ -11,15 +11,15 @@
         </div>
 
         <div class="form-group">
-            <label class="col-md-4 control-label">Durée de la tâche</label>
+            <label class="col-md-4 control-label">Durée de la tâche (h)</label>
 
             <div class="col-md-6">
-                <input type="time" class="form-control" name="duration" value="{{ old('duration') }}" required>
+                <input type="number" class="form-control" name="duration" min="1" value="{{ old('duration') }}" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-md-4 control-label">Date de début</label>
+            <label class="col-md-4 control-label">Date du jalon</label>
 
             <div class="col-md-6">
                 <input type="date" class="form-control" name="date_jalon" value="{{ old('date_jalon') }}" required>

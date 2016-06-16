@@ -10,3 +10,4 @@ Homestead.json
 auth.json
 public/files/
 public/avatar/
+!public/avatar/default.png

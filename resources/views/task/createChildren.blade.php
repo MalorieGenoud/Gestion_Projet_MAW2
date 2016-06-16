@@ -10,10 +10,10 @@
     </div>
 
     <div class="form-group">
-        <label class="col-md-4 control-label">Durée de la tâche</label>
+        <label class="col-md-4 control-label">Durée de la tâche (h)</label>
 
         <div class="col-md-6">
-            <input type="time" class="form-control" name="duration" value="{{ old('duration') }}" required>
+            <input type="number" class="form-control" min="1" name="duration" value="{{ old('duration') }}" required>
         </div>
     </div>
 
