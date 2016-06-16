@@ -81,6 +81,10 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('tasks/{task}/comment',['as' => 'comment.show','uses' => 'CommentController@show'])->where('comment', '[0-9]+');
         Route::post('tasks/{task}/comment', ['as' => 'comment.store', 'uses' => 'CommentController@store']) -> where('comment', '[0-9]+');
 
+        /* SEARCH */
+        Route::get('project/{id}/search', ['as' => 'search.show', 'uses' => 'SearchController@show']);
+        Route::post('project/{id}/search', ['as' => 'search.store', 'uses' => 'SearchController@store']);
+
         /*
         Route::group(['prefix' => 'project'], function(){
 

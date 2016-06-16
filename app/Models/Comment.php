@@ -19,5 +19,12 @@ class Comment extends Model
         return $this->belongsTo(\App\Models\Task::class, 'task_id', 'id');
     }
 
-    
+    public static function scopeSearchInAvailableProperty($query, $q, $id)
+    {
+        return $query->join('tasks', 'tasks.id', '=', 'comments.task_id')
+            ->join('projects', 'projects.id', '=','tasks.project_id')
+            ->where('comment', 'like', "%{$q}%")
+            ->where('tasks.project_id', '=', $id);
+    }
+
 }

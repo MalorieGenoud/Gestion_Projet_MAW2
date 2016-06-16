@@ -56,11 +56,12 @@ class Task extends Model
         return $total;
     }
 
-    public function ifChildTaskNoValidate($isFirst = true){
-        if(!$isFirst && $this->statut != "Validate") return false;
+    public function ifChildTaskNoValidate($isFirst = true)
+    {
+        if (!$isFirst && $this->statut != "Validate") return false;
         $children_activated = true;
-        foreach ($this->children as $child){
-            if(!$child->ifChildTaskNoValidate(false)){
+        foreach ($this->children as $child) {
+            if (!$child->ifChildTaskNoValidate(false)) {
                 $children_activated = false;
             }
         }
@@ -71,5 +72,13 @@ class Task extends Model
     public function comments()
     {
         return $this->hasMany(\App\Models\Comment::class, 'task_id');
+    }
+
+    // do a scope to analyse if t
+    //he task if like the entry of the input q with a value before or after
+    // do a second where, to do the search for the project and not another
+    public static function scopeSearchInAvailableProperty($query, $q, $id)
+    {
+        return $query->where('name', 'like', "%{$q}%")->where('project_id', '=', "{$id}");
     }
 }

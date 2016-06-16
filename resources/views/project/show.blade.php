@@ -3,15 +3,28 @@
 
 @section('content')
     <div class="container">
-            <div class="panel panel-default">
-                <div class="panel-heading">Votre projet</div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Votre projet</div>
 
-                <div class="panel-body">
-                    @include('planning.show', ['taskparent' => $project->tasksParent])
-                </div>
+            <div class="panel-body">
+                @include('planning.show', ['taskparent' => $project->tasksParent])
+            </div>
         </div>
 
+        <div>
 
+            {{--<h3>Entrez votre recherche : </h3>--}}
+            {{--<input type="search" placeholder="Entrez votre tâche ou commentaire" name="search">--}}
+
+            <form id="search" method="POST" action="{{ route('search.store', $project->id) }}">
+                {!! csrf_field() !!}
+                <input name="search" type="text" placeholder="Mots-Clefs..." />
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-btn fa-sign-in"></i>Chercher
+                </button>
+
+            </form>
+        </div>
 
 
         <div class="row">
