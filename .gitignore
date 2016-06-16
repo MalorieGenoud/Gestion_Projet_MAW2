@@ -9,5 +9,5 @@ Homestead.json
 .storage/
 auth.json
 public/files/
-public/avatar/
+public/avatar/*
 !public/avatar/default.png
