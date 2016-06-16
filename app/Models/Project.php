@@ -9,7 +9,7 @@ class Project extends Model {
      */
 
     protected $table = 'projects';
-    protected $fillable = ['name', 'startdate', 'description'];
+    protected $fillable = ['name', 'startDate', 'description'];
 
 
     public function users() {
@@ -38,6 +38,10 @@ class Project extends Model {
 
     public function events(){
         return $this->hasMany(\App\Models\Event::class, 'project_id','id');
+    }
+
+    public function targets(){
+        return $this->hasMany(\App\Models\Target::class, 'project_id','id');
     }
 
 

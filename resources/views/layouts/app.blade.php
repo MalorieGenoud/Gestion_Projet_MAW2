@@ -15,8 +15,6 @@
     <!-- Styles -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('css/template.css') }}"/>
-    <link rel="stylesheet" href="css/gantt.css"/>
-    <link rel="stylesheet" href="css/style.css"/>
 
     <style>
         body {
@@ -56,7 +54,7 @@
 
                     <li><a>|</a></li>
                     <li>
-                        <a href="#" class="invitations">Invitation
+                        <a href="#" class="invitations">Invitations
                             <?php $total = null; ?>
                             @for($i = 0; $i < count($invitations); $i++)
 
@@ -72,14 +70,14 @@
                     </li>
                 </ul>
 
+
                 {{-- Takes the Route name and show the apropriate menu --}}
                 @if(Route::current() ->getName() === 'project.show')
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ url('/') }}">Tout les projets</a></li>
+                        <li><a href="{{ url('/') }}">Tous les projets</a></li>
                         <li><a href="{{ url('/project/create') }}">Nouveau projet</a></li>
                     </ul>
                     @endif
-                    @else
 
                     @endif
 
@@ -90,6 +88,7 @@
                             <li><a href="{{ url('/login') }}">Login</a></li>
 
                         @else
+                            <li><a href="{{route('user.show', Auth::user()->id)}}">{{Auth::user()->fullname}}</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false">
@@ -117,9 +116,6 @@
 <script src="{{ URL::asset('js/bootbox.min.js') }}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
-<script src="{{ URL::asset('jsGantt/jquery.fn.gantt.js') }}"></script>
-<script src="{{ URL::asset('css/gantt.css') }}"></script>
-<script src="{{ URL::asset('css/style.css') }}"></script>
 
 
 <script>
@@ -192,10 +188,27 @@
             var task = this.getAttribute('data-id');
             $.get("{{ url('project') }}/" + task + "/tasks/create", {}, function (task) {
                 bootbox.dialog({
-                    title: "Créer une tâche root",
+                    title: "Créer une tâche racine",
                     message: task
                 });
                 //$('#taskdetail').html(task);
+            });
+        });
+
+        //Appeler view pour ajouter utilisateur à la tache
+        $('#app-layout').on('click', 'a.events', function () {
+            var project = this.getAttribute('data-id');
+            //alert(project);
+            $.ajax({
+                url: "{{ route('project.formEvents', '@') }}".replace('@', project),
+                type: 'get',
+                success: function (data) {
+                    bootbox.dialog({
+                        title: "Créer un événement",
+                        message: data
+                    });
+
+                }
             });
         });
 
@@ -271,6 +284,21 @@
             });
         });
 
+        // Ajouter un objectif
+        $('#app-layout').on('click', 'a.target', function () {
+            var projectid = this.getAttribute('data-projectid');
+            $.ajax({
+                url: "{{ route('project.gettarget', '@') }}".replace('@', projectid),
+                type: 'get',
+                success: function (data) {
+                    bootbox.dialog({
+                        title: "Ajouter un objectif",
+                        message: data
+                    });
+                }
+            });
+        });
+
         // voir les invitations en cours
         $('a.invitationwait').click(function () {
             var projectid = this.getAttribute('data-projectid');
@@ -343,15 +371,15 @@
 
 
         function callEvents(project) {
-
             $.ajax({
                 url: "{{ route('project.events', '@') }}".replace('@', project),
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {
+
                     //var content = $('#events');
                     //$('#events').html(data);
-                    console.log(data);
+                    //console.log(data);
 
                     var content = ("<table class='table'><thead><tr><th>Qui</th><th>Description</th><th>Created_at</th></tr></thead>");
                     $.each(data, function (key, data) {
@@ -365,6 +393,9 @@
                     content += ("</table>");
                     $('#events').append(content);
 
+                },
+                error: function (data) {
+                    console.log(data);
                 }
             });
         }
@@ -398,7 +429,7 @@
         $('#app-layout').on('click', 'button.usertaskdestroy', function () {
             var usertaskdestroy = this.getAttribute('data-id');
             $.ajax({
-                url: "{{ route('tasks.usertaskdelete', '@') }}".replace('@', usertaskdestroy),
+                url: "{{ route('tasks.userTaskDelete', '@') }}".replace('@', usertaskdestroy),
                 type: 'delete',
                 success: function (data) {
                     bootbox.hideAll();
@@ -408,29 +439,63 @@
                     });
                 },
                 error: function (data) {
-
                     console.log(data);
                 }
             });
         });
 
+
+        // valider task
         $('#app-layout').on('click', 'button.validate', function () {
             var taskvalidate = this.getAttribute('data-task');
-            $.ajax({
-                url: "{{ route('tasks.statut', '@') }}".replace('@', taskvalidate),
-                type: 'post',
-                success: function (data) {
-                    bootbox.dialog({
-                        title: "Validation de la tâche",
-                        message: data
-                    });
-                },
-                error: function (data) {
-                    bootbox.dialog({
-                        title: "Validation de la tâche",
-                        message: data
-                    });
-                }
+            bootbox.confirm("Voulez-vous valider cette tâche ? ", function (result) {
+                $.ajax({
+                    url: "{{ route('tasks.status', '@') }}".replace('@', taskvalidate),
+                    type: 'post',
+                    success: function (data) {
+                        bootbox.dialog({
+                            title: "Validation de la tâche",
+                            message: data
+                        });
+                    },
+                    error: function (data) {
+                        bootbox.dialog({
+                            title: "Validation de la tâche",
+                            message: data
+                        });
+                    }
+                });
+            });
+        });
+
+        // valider target
+        $('#app-layout').on('click', 'button.validetarget', function () {
+            var validetarget = this.getAttribute('data-targetid');
+            bootbox.confirm("Voulez-vous valider cet objectif ? ", function (result) {
+                $.ajax({
+                    url: "{{ route('project.validetarget', '@') }}".replace('@', validetarget),
+                    type: 'post',
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            });
+        });
+        // Supprimer fichier
+        $('#app-layout').on('click', 'button.filedestroy', function () {
+            var file = this.getAttribute('data-id');
+            var project = this.getAttribute('data-project');
+            bootbox.confirm("Voulez-vous supprimer ce fichier ? ", function (result) {
+                $.ajax({
+                    url: "{{ route('files.destroy', ['@', '#']) }}".replace('@', project).replace('#', file),
+                    type: 'delete',
+                    success: function (data) {
+                        location.reload();
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
             });
         });
         @yield('script')
@@ -438,25 +503,6 @@
 
     });
 </script>
-<!--
-<script>
-    // Gantt configuration
-    $(".selector").gantt({
-        source: "ajax/data.json",
-        scale: "weeks",
-        minScale: "weeks",
-        maxScale: "months",
-        onItemClick: function(data) {
-            alert("Item clicked - show some details");
-        },
-        onAddClick: function(dt, rowId) {
-            alert("Empty space clicked - add an item!");
-        },
-        onRender: function() {
-            console.log("chart rendered");
-        }
-    });
-</script>
- -->
+
 </body>
 </html>

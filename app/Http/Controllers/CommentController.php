@@ -11,11 +11,13 @@ use App\Http\Requests;
 
 class CommentController extends Controller
 {
+    // Return the view comments
     function show(Comment $comment)
     {
         return view('comment.show', ['comment' => $comment]);
     }
-
+    
+    // Create a new comment for a task
     function store(Request $request, Task $task)
     {
         $newComment = new Comment;
@@ -25,7 +27,5 @@ class CommentController extends Controller
         $newComment->save();
 
         return redirect("project/" . $request->task->project_id);
-
     }
-
 }

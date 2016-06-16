@@ -15,57 +15,38 @@ use App\Http\Middleware\ProjectControl;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Form;
 use Datetime;
+use App\Models\Target;
 
 class ProjectController extends Controller
 {
-    //
-
-
     public function __construct()
     {
         $this->middleware('ProjectControl', ['except' => [
-            'index', 'create', 'store'
+            'index', 'create', 'store', 'valideTarget'
         ]]);
     }
 
 
     public function index()
-    { // tout les projets
-
-        // var_dump(Project::find(1));
-        //$usertest = Project::where();
-        //echo $usertest->users->first()->firstname;
-
-        //Auth::user()->projectsUsers;
-
-        if (Auth::user()) {
+    {
+        // If the user has a role like "Eleve", he can access student view and he only can see his projects
+        if (Auth::user()->role->name == "Eleve") {
 
             $projects = Auth::user()->projects()->get();
 
-            return view('project', ['projects' => $projects]);
+            return view('student', ['projects' => $projects]);
 
-            /*
-            //dd(Project::all()[0]);
-            foreach($projects as $project){
+        }
+        // If the user has a role like "Prof", he can access teacher view ans he can see all projects
+        elseif(Auth::user()->role->name == "Prof"){
 
-                /*$totuser = count(Project::find($project->id)->users);
-                $totuser = $totuser -1;*/
+            $projects = Project::all();
 
-            //$projetnom[$project->id] = Project::find($project->id)->name;
-
-            //$data[] = [Project::find($project->id), Project::find($project->id)->users];
-
-            /*for($i = 0; $i <= $totuser ; $i++ ){
-                echo Project::find($project->id)->users[$i]->firstname." ";
-                echo Project::find($project->id)->users[$i]->lastname." ";
-                $utilisateur[] = Project::find($project->id)->users[$i]->firstname;
-                echo "<br>";
-            }*/
-
+            return view('teacher', ['projects' => $projects]);
         }
     }
 
-
+    // Display all informations like the user's tasks connected, all project tasks, and so on
     public function show(Request $request)
     {
         $project = Project::find($request->id);
@@ -81,130 +62,41 @@ class ProjectController extends Controller
             }
         }
 
-//        $totaltask = null;
-//        $totalparent = null;
-//        $totalchild = null;
-
-//        function eachAllTasks($children, $totalchildren = null)
-//        {
-//            //$totalchild = null;
-//            echo "<ul>";
-//            //dd($child->children->isEmpty());
-//            foreach ($children as $child) {
-//
-//                if (!$child->usersTasks->isEmpty()) {
-//                    foreach ($child->usersTasks as $usertask) {
-//                        foreach ($usertask->durationsTasks as $durationTask) {
-//                            $totalchild = strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
-//                        }
-//                    }
-//                }
-//                echo "<li>id : {$child->id} | duration initial : {$child->duration} total de la tache : {$totalchild}</li>";
-//                $totalchildren += $totalchild;
-//                if ($child->children->isEmpty()) {
-//                    echo "<b>vide</b>";
-//                } else {
-//
-//                    eachAllTasks($child->children,$totalchildren); //dd($totalchild);
-//                }
-//
-//            }
-//
-//            echo "total -> {$totalchildren}";
-//            echo "</ul>";
-//            return $totalchildren;
-//        }
-//
-//        echo "<ul>";
-//        foreach ($project->tasksParent as $taskparent) {
-//
-//            $totalparent = null;
-//            foreach ($taskparent->usersTasks as $usertask) {
-//                foreach ($usertask->durationsTasks as $durationTask) {
-//                    $totalparent += strtotime($durationTask->ended_at) - strtotime($durationTask->created_at);
-//                }
-//            }
-//
-//            echo "<li>id : {$taskparent->id} | duration initial : {$taskparent->duration} total : {$totalparent}</li>";
-//
-//            if ($taskparent->children->isEmpty()) {
-//                echo "<b>vide</b>";
-//            } else {
-//                // problème appel de fonction, récupérer total child
-//                $final = eachAllTasks($taskparent->children);
-//                $debug[] = [
-//                    'child' => $final,
-//                ];
-//            }
-//
-//            $master = $final + $totalparent;
-//            echo "<p>final de la tache : ". $master ."</p>";
-//
-//
-//        }
-//        echo "</ul>";
-//        //dd($debug);
-
-
-
-        //dd($project->tasks[0]->allChildren()->get());
-        /*foreach($tasks as $child => $parent) {
-            echo $child;
-            echo $parent;
-        }*/
-        //dd($project->tasks[1]->parent);
-
-//        function buildtree($tasks)
-//        {
-//            $tree = array();
-//            echo "<ul>";
-//            foreach ($tasks as $task) {
-//                echo "<li>" . $task->id . "</li>";
-//                $tree[] = [
-//                    'parent' => $task,
-//                    'children' => buildtree($task->children)
-//                ];
-//            }
-//            echo "</ul>";
-//            return $tree;
-//        }
-//        $tasksTree = buildtree($project->tasksParent);
-//        dd($tasksTree);
-
         return view('project/show', ['project' => $project, 'request' => $request, 'duration' => $duration, 'taskactive' => $task]);
-
     }
 
+    // Return the view about files -> not yet made
     public function files()
     {
         return view('project/show');
     }
 
+    // Return the view to editing projects
     public function edit()
     {
         return view('project/edit');
     }
 
+    // Return the view about tasks
     public function task()
     {
         return view('project/task');
     }
 
+    // Return the view to creating projects
     public function create()
     {
         return view('project/edition/create');
     }
 
+    // Create a task
     public function store(Request $request)
     {
-        //dd($request->input('date'),$request->input('name'),$request->input('description'));
-        //$newproject = Project::create($request->input('date'),$request->input('name'),$request->input('description'));
-
         $newProject = new Project;
         $relation = new ProjectsUser;
         $newProject->name = $request->input('name');
         $newProject->description = $request->input('description');
-        $newProject->startdate = $request->input('date');
+        $newProject->startDate = $request->input('date');
         $newProject->save();
 
         $relation->project_id = $newProject->id;
@@ -212,23 +104,17 @@ class ProjectController extends Controller
         $relation->save();
 
         return redirect()->route('project.index');
-
-        //return view('project/edition/create');
     }
 
-    public function destroy(Request $request, $id)
-    {
-
-    }
-
+    // Return te view to creating tasks
     public function createTask($id)
     {
         return view('task.create', ['project' => $id]);
     }
 
+    // Edit a task
     public function storeTask(Request $request)
     {
-
         $newTask = new Task;
         $newTask->name = $request->input('name');
         $newTask->duration = $request->input('duration');
@@ -237,17 +123,44 @@ class ProjectController extends Controller
         $newTask->parent_id = NULL;
         $newTask->save();
 
-        (new EventController())->store($request->input('project_id'), "Créer une tâche parent");
+        (new EventController())->store($request->input('project_id'), "Créer une tâche parent"); // Create an event
 
         return redirect("project/" . $request->input('project_id'));
-
     }
 
-    public function destroyUser(Request $request)
-    {
+    // Delete one or more users for a project
+    public function destroyUser(Request $request){
         $destroyUser = ProjectsUser::where("project_id", "=", $request->id)->where("user_id", "=", $request->user)->get();
         $destroyUser->delete();
     }
+
+    // Create a target
+    public function storeTarget(Request $request, $id){
+
+        $target = new Target;
+        $target->description = $request->input('description');
+        $target->project_id = $id;
+        $target->status = "Wait";
+        $target->save();
+
+        return redirect("project/" . $id);
+    }
+
+   // Validate a target
+    public function valideTarget(Request $request, Target $target){
+
+        $target->update([
+            'status' => "Finished"
+        ]);
+
+    }
+
+    // Return the target view
+    public function getTarget(Request $request, $id){
+        return view('target.store', ['project' => $id]);
+    }
+
+
 
 
     /*public function getTask(Request $request){

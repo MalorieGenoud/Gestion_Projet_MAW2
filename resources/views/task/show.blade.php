@@ -12,28 +12,23 @@
         <div class="panel-body">
             <table class="table">
                 <tr>
-                    <th>id</th>
-                    <th>created_at</th>
-                    <th>ended_at</th>
-                    <th>user_task_id</th>
+                    <th>Créer le</th>
+                    <th>Fin le</th>
+                    <th>Nom de l'utilisateur</th>
                     <th>Durée</th>
                 </tr>
-
+                <!-- Display user rush about a task -->
                 @foreach($task->usersTasks as  $usertask)
-
                     @foreach($usertask->durationsTasks as $duration)
                         @if($duration->ended_at)
                             <tr>
-                                <td>{{$duration->id}}</td>
                                 <td>{{$duration->created_at}}</td>
                                 <td>{{$duration->ended_at}}</td>
-                                <td>{{$duration->user_task_id}}</td>
+                                <td>{{$usertask->user->fullName}}</td>
                                 <td>{{round(abs(strtotime($duration->ended_at) - strtotime($duration->created_at))). " secondes"}}</td>
                             </tr>
                         @endif
-
                     @endforeach
-
                 @endforeach
             </table>
         </div>
@@ -43,18 +38,16 @@
         <div class="panel-body">
             <table class="table">
                 <tr>
-                    <th>id</th>
                     <th>Commentaire</th>
-                    <th>created_at</th>
-                    <th>user_id</th>
+                    <th>Crée le</th>
+                    <th>Nom de l'utilisateur</th>
                 </tr>
-
+                <!-- Display the comment for a task -->
                 @foreach($task->comments as  $comment)
                     <tr>
-                        <td>{{$comment->id}}</td>
                         <td>{{$comment->comment}}</td>
                         <td>{{$comment->created_at}}</td>
-                        <td>{{$comment->user_id}}</td>
+                        <td>{{$comment->user->fullName}}</td>
                     </tr>
                 @endforeach
             </table>
@@ -64,7 +57,7 @@
 
             <form class="form-horizontal" role="form" method="POST" action="{{route('comment.store', $task->id)}}">
                 {!! csrf_field() !!}
-                <textarea name="comment" rows="8" cols="45">Tappez votre commentaire ici</textarea>
+                <textarea name="comment" rows="8" cols="45" placeholder="Tapez votre commentaire ici"></textarea>
                 <button type="submit" class="btn btn-primary">
                     <i class="fa fa-btn fa-sign-in"></i>Envoyer
                 </button>

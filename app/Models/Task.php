@@ -10,7 +10,7 @@ class Task extends Model
      */
 
     protected $table = 'tasks';
-    protected $fillable = ['id', 'name', 'duration', 'date_jalon', 'statut', 'priority', 'project_id', 'parent_id', 'created_at'];
+    protected $fillable = ['id', 'name', 'duration', 'date_jalon', 'status', 'priority', 'project_id', 'parent_id', 'created_at'];
 
 
     public function project()
@@ -56,9 +56,22 @@ class Task extends Model
         return $total;
     }
 
-    public function ifChildTaskNoValidate($isFirst = true)
-    {
-        if (!$isFirst && $this->statut != "Validate") return false;
+
+    public function getDurationTask(){
+
+        $total = 0;
+
+        $total += $this->duration;
+
+        foreach ($this->children as $child){
+            $total += $child->getDurationTask();
+        }
+
+        return $total;
+    }
+
+    public function ifChildTaskNoValidate($isFirst = true){
+        if(!$isFirst && $this->status != "validate") return false;
         $children_activated = true;
         foreach ($this->children as $child) {
             if (!$child->ifChildTaskNoValidate(false)) {
@@ -74,8 +87,7 @@ class Task extends Model
         return $this->hasMany(\App\Models\Comment::class, 'task_id');
     }
 
-    // do a scope to analyse if t
-    //he task if like the entry of the input q with a value before or after
+    // he task if like the entry of the input q with a value before or after
     // do a second where, to do the search for the project and not another
     public static function scopeSearchInAvailableProperty($query, $q, $id)
     {

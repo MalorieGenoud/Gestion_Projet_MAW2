@@ -109,6 +109,37 @@
     padding: 0 4px;
 }
 
+.well{
+    margin: 0 0 5px 0;
+}
+
+.targets li{
+    width: 100%;
+    line-height: 28px;
+    float: left;
+    padding: 5px;
+}
+
+.targets li:hover{
+    background: #EFEFEF;
+}
+
+.targets .finished{
+    text-decoration: line-through;
+}
+.file img{
+    max-width: 50px;
+}
+
+.file{
+    float: left;
+    padding: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 1px;
+    text-align: center;
+    margin: 5px;
+
+}
 /*****************************************************/
 
 
