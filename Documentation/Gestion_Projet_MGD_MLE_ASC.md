@@ -504,7 +504,7 @@ Voici la marche à suivre pour l'installation du projet:
       -   Wamp ou Xampp pour l'hébergement du site ainsi que de la base de données
       -   Github pour faire un clone du repository
   2.  Allez Dans le dossier **www** ou **htdocs**, faîtes un clique droit -> Git Bash here -> `git clone https://github.com/MalorieGenoud/Gestion_Projet_MAW2.git`
-  3. Faîtes un `php artisan migrate -seed` afin de faire l'installation de la base de données. Vous pouvez aussi utiliser le fichier **bones.sql** et l'importer dans votre serveur.
+  3. Faîtes un `php artisan migrate --seed` afin de faire l'installation de la base de données. Vous pouvez aussi utiliser le fichier **bones.sql** et l'importer dans votre serveur.
   4. Faîtes ensuite `git checkout developement` afin d'accéder au site. Faîtes un `composer update` afin d'être sûr que tout soit à jour par rapport au Framework Laravel.
   5. Vous pouvez maintenant utiliser le site. 
       1.  Login et mot de passe des utilisateurs avec pour rôle **Eleve**:
@@ -514,7 +514,7 @@ Voici la marche à suivre pour l'installation du projet:
       2.  Login et mot de passe des utilisateurs avec pour rôle **Prof**:      
           - Pascal Hurni : **hurni@cpnv.ch** ; **hurni123**
       
-Toutefois, si vous constatez des erreurs liés à la base de données, supprimez-la, faîtes un `php artisan migrate` sans la méthode `-seed` via GitHub là où se situe votre projet (exemple **C:\\xampp\\htdocs\\Gestion_Projet_MAW2**), puis importez le fichier **insertion.sql** afin de récupérer les données de base.
+Toutefois, si vous constatez des erreurs liés à la base de données, supprimez-la, faîtes un `php artisan migrate` sans la méthode `--seed` via GitHub là où se situe votre projet (exemple **C:\\xampp\\htdocs\\Gestion_Projet_MAW2**), puis importez le fichier **insertion.sql** afin de récupérer les données de base.
 
 Si vous ne pouvez pas ajouter de fichiers, allez dans le fichier **php.ini** de Wamp ou Xampp, décommentez la ligne `extension=php_fileinfo.dll` (pour Windows) ou `php_value extension fileinfo.so` (pour Mac ou Linux). Pensez à redémarrer votre serveur pour prendre en compte les changements.
 
