@@ -10,14 +10,14 @@
                     @if(!$comment->isEmpty())
                         <tr>
                             <th>commentaire</th>
-                            <th>crée le</th>
-                            <th>id user</th>
+                            <th>Créé le</th>
+                            <th>Nom de l'utilisateur</th>
                         </tr>
                         @foreach($comment as $comment)
                             <tr>
                                 <td>{{$comment->comment}}</td>
                                 <td>{{$comment->created_at}}</td>
-                                <td>{{$comment->user_id}}</td>
+                                <td>{{$comment->user->fullName}}</td>
                             </tr>
                         @endforeach
                     @else
@@ -33,12 +33,10 @@
                     @if(!$task->isEmpty())
                         <tr>
                             <th>id</th>
-                            <th>tâche</th>
-                            <th>crée le</th>
-                            <th>mis à jour le</th>
-                            <th>terminée le</th>
-                            <th>date jalon</th>
-                            <th>user_task_id</th>
+                            <th>Nom de la tâche</th>
+                            <th>Créé le</th>
+                            <th>Mis à jour le</th>
+                            <th>Date du jalon</th>
                             <th>durée</th>
                         </tr>
 
@@ -48,9 +46,7 @@
                                 <td>{{$task->name}}</td>
                                 <td>{{$task->created_at}}</td>
                                 <td>{{$task->updated_at}}</td>
-                                <td>{{$task->ended_at}}</td>
                                 <td>{{$task->date_jalon}}</td>
-                                <td>{{$task->user_task_id}}</td>
                                 <td>{{$task->duration}}</td>
                             </tr>
                         @endforeach

@@ -130,15 +130,13 @@
     $(document).ready(function () {
         $('.tree-menu').ntm();
     });
-
-
 </script>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
 
-        // afficher détail de la tache
+        // Display details for a task
         $('.taskshow').click(function () {
             var task = this.getAttribute('data-id');
             $.get("{{ url('tasks') }}/" + task, {}, function (task) {
@@ -146,22 +144,12 @@
                 $('#taskdetail').html(task);
             });
 
-            /*$.ajax({
-             type : "POST",
-             url : "",
-             data : task,
-             success : function(task){
-             console.log(task);
-             $('#taskdetail').html(task);
-             }
-             });*/
-
             $.get('', function (task) {
                 //console.log(task);
             });
         });
 
-        // Editer une tache
+        // Edit a task
         $('button.taskedit').click(function () {
             var task = this.getAttribute('data-id');
             $.get("{{ route('tasks.edit', '@') }}".replace('@', task), {}, function (task) {
@@ -172,7 +160,7 @@
             });
         });
 
-        // Ajouter une classe parent
+        // Add a parent task
         $('button.taskplus').click(function () {
             var task = this.getAttribute('data-id');
             $.get("{{ url('tasks') }}/" + task + "/children/create", {}, function (task) {
@@ -183,7 +171,7 @@
             });
         });
 
-        // ajouter tache root
+        // Add a root task
         $('.taskroot').click(function () {
             var task = this.getAttribute('data-id');
             $.get("{{ url('project') }}/" + task + "/tasks/create", {}, function (task) {
@@ -195,7 +183,7 @@
             });
         });
 
-        //Appeler view pour ajouter utilisateur à la tache
+        // Return the view to add a user for a task
         $('#app-layout').on('click', 'a.events', function () {
             var project = this.getAttribute('data-id');
             //alert(project);
@@ -212,7 +200,7 @@
             });
         });
 
-        // Appeler view pour ajouter utilisateur à la tache
+        // Call a view to add a user for a task
         $('#app-layout').on('click', 'button.taskuser', function () {
             var task = this.getAttribute('data-id');
             $.ajax({
@@ -228,7 +216,7 @@
             });
         });
 
-        // supprimer la tache
+        // Delete a task
         $('button.taskdestroy').click(function () {
             var task = this.getAttribute('data-id');
             bootbox.confirm("Vous allez supprimer cette tâches ? ", function (result) {
@@ -251,7 +239,7 @@
 
         });
 
-        // supprimer un utilisateur du projet
+        // Delete user of project
         $('button.userprojectdestroy').click(function () {
             var id = this.getAttribute('data-id');
             var projectid = this.getAttribute('data-projectid');
@@ -272,8 +260,7 @@
 
         });
 
-
-        // inviter un utilisateur
+        // Invit a user
         $('a.invitation').click(function () {
             var projectid = this.getAttribute('data-projectid');
             $.get("{{ url('project') }}/" + projectid + "/invitations", function (projectid) {
@@ -284,7 +271,7 @@
             });
         });
 
-        // Ajouter un objectif
+        // Add a target
         $('#app-layout').on('click', 'a.target', function () {
             var projectid = this.getAttribute('data-projectid');
             $.ajax({
@@ -299,7 +286,7 @@
             });
         });
 
-        // voir les invitations en cours
+        // See ongoing inviations
         $('a.invitationwait').click(function () {
             var projectid = this.getAttribute('data-projectid');
             $.get("{{ url('project') }}/" + projectid + "/invitations/wait", function (projectid) {
@@ -310,11 +297,7 @@
             });
         });
 
-        /* $('#main_body').on("click", "#but", function () {
-         alert("bla bla");
-         });*/
-
-        // lancer un rush sur la tache
+        // Begin a rush for a task
         $('#app-layout').on('click', 'button.taskplay', function () {
             var usertaskid = this.getAttribute('data-usertaskid');
             $.ajax({
@@ -338,7 +321,8 @@
                 }
             });
         });
-        // stopper un rush sur la tache
+
+        // Stop a rush for a task
         $('#app-layout').on('click', 'button.taskstop', function () {
             var duration = this.getAttribute('data-duration');
             $.ajax({
@@ -355,11 +339,10 @@
             });
         });
 
-        // Appeler les invitations en wait
+        // Call invitations with a status "Wait"
         $('a.invitations').click(function () {
             callinvitation();
         });
-
         function callinvitation() {
             $.get("{{ url('invitations') }}", {}, function (invitations) {
                 bootbox.dialog({
@@ -369,17 +352,13 @@
             });
         }
 
-
+        // Create a event
         function callEvents(project) {
             $.ajax({
                 url: "{{ route('project.events', '@') }}".replace('@', project),
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {
-
-                    //var content = $('#events');
-                    //$('#events').html(data);
-                    //console.log(data);
 
                     var content = ("<table class='table'><thead><tr><th>Qui</th><th>Description</th><th>Created_at</th></tr></thead>");
                     $.each(data, function (key, data) {
@@ -400,7 +379,7 @@
             });
         }
 
-
+        // Accept a invitation
         $('#app-layout').on('click', 'button.invitationaccept', function () {
             var invitation = this.getAttribute('data-invitation');
             $.ajax({
@@ -413,6 +392,7 @@
             });
         });
 
+        // Refuse a inviation
         $('#app-layout').on('click', 'button.invitationrefuse', function () {
             var invitation = this.getAttribute('data-invitation');
             $.ajax({
@@ -425,7 +405,7 @@
             });
         });
 
-        // Suppression usertask
+        // Delete a user for a task
         $('#app-layout').on('click', 'button.usertaskdestroy', function () {
             var usertaskdestroy = this.getAttribute('data-id');
             $.ajax({
@@ -445,7 +425,7 @@
         });
 
 
-        // valider task
+        // Validate a task
         $('#app-layout').on('click', 'button.validate', function () {
             var taskvalidate = this.getAttribute('data-task');
             bootbox.confirm("Voulez-vous valider cette tâche ? ", function (result) {
@@ -468,7 +448,7 @@
             });
         });
 
-        // valider target
+        // Validate a target
         $('#app-layout').on('click', 'button.validetarget', function () {
             var validetarget = this.getAttribute('data-targetid');
             bootbox.confirm("Voulez-vous valider cet objectif ? ", function (result) {
@@ -481,7 +461,8 @@
                 });
             });
         });
-        // Supprimer fichier
+
+        // Delete a file
         $('#app-layout').on('click', 'button.filedestroy', function () {
             var file = this.getAttribute('data-id');
             var project = this.getAttribute('data-project');
@@ -499,7 +480,6 @@
             });
         });
         @yield('script')
-
 
     });
 </script>

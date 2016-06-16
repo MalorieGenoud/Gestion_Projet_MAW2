@@ -13,44 +13,44 @@ use App\Models\User;
 class InvitationController extends Controller
 {
     // Return the invitation view to the user connected
-    public function show(Request $request)
+    public function show(Request $request, Project $project)
     {
-        return view('invitation.show', ['project' => $request->projectid, 'hostid' => Auth::user()->id]);
+        // Recover users in the current porject
+        $usersInProject = $project->users()->select('users.id')->get()->toArray();
+
+        // Recover all invitations for all users, except if the users refuse the invation
+        $inviteUsers = $project->invitations()->select('invitations.guest_id')->whereNotIn('status', ['refuse'])->get()->toArray();
+
+        $usersDontNeed = [];
+
+        foreach ($usersInProject as $user){
+             array_push($usersDontNeed,$user['id']);
+        }
+        foreach ($inviteUsers as $guestId){
+            if(!in_array($guestId['guest_id'], $usersDontNeed)){
+                array_push($usersDontNeed, $guestId['guest_id']);
+            }
+        }
+        $users = User::whereNotIn('users.id', $usersDontNeed)->select('users.id', 'avatar', 'mail', 'firstname', 'lastname')->join('roles', 'users.role_id', '=', 'roles.id')->where('roles.name', '!=', 'Prof')->get();
+        return view('invitation.show', ['project' => $project, 'users' => $users]);
     }
 
     // Create an invitation
-    public function store(Request $request)
-    {
-        if (User::find($request->input('guest_id'))) { //Verify if the user id exists
+    public function store(Request $request, Project $project)
+   {
+       if($request->input('user')) {
+           foreach ($request->input('user') as $key => $value) {
+               $invitation = new Invitation;
+               $invitation->guest_id = $key;
+               $invitation->host_id = Auth::user()->id;
+               $invitation->project_id = $project->id;
+               $invitation->status = "Wait";
+               $invitation->save();
+           }
+       }
 
-            $project = Project::find($request->input('project_id')); // Recover the id of projet in the variable $project
-            $checkinvite = Invitation::where('project_id', '=', $request->input('project_id'))->where('guest_id', '=', $request->input('guest_id'))->get(); // Recover the information stored in the form
+       return redirect('project/' . $project->id);
 
-            if ($checkinvite->isEmpty()) { //Verify if
-                foreach ($project->users as $user) {
-                    if ($user->id != $request->input('guest_id')) {
-
-                        // Create and spend a invitation to guest user in status "Wait"
-                        $invitation = new Invitation;
-                        $invitation->guest_id = $request->input('guest_id');
-                        $invitation->host_id = $request->input('host_id');
-                        $invitation->project_id = $request->input('project_id');
-                        $invitation->status = "Wait";
-                        $invitation->save();
-
-                        (new EventController())->store($request->input('project_id'), "Inviter un utilisateur");
-
-                        return redirect('project/' . $request->input('project_id'));
-                    } else { // Return a error message if the user is already exists
-                        return "Utilisateur déja dans le projet";
-                    }
-                }
-            } else { // Return a error message if the user is invited
-                return "Utilisateur déja invité";
-            }
-        } else { // Return a error message if the id user doesn't exists
-            return "Utilisateur non trouvé";
-        }
     }
 
     // Return the view about the waiting invitations

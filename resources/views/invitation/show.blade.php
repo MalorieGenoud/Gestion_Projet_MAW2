@@ -1,36 +1,23 @@
 
-<form class="form-horizontal" role="form" method="POST" action="{{ url('project/'.$project.'/invitations') }}">
+<form class="form-horizontal" role="form" method="POST" action="{{ route('invitation.store', $project->id) }}">
     {!! csrf_field() !!}
-
-    <div class="form-group">
-        <label class="col-md-4 control-label">l'id de l'utilisateur à inviter</label>
-
-        <div class="col-md-6">
-            <input type="text" class="form-control" name="guest_id" value="" required>
+        <div class="checkbox">
+            @foreach($users as $user)
+                    <!-- Display all users which aren't in the project and didn't invite -->
+                    <label>
+                        <input type="checkbox" name="user[{{$user->id}}]">
+                        @include('user.avatar', ['user' => $user])
+                    </label>
+            @endforeach
         </div>
-    </div>
-
-    <div class="form-group">
-
-        <div class="col-md-6">
-            <input type="hidden" class="form-control" name="project_id" value="{{$project}}" required>
+        <br>
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-btn fa-plus"></i>Ajouter un/des utilisateur(s)
+                </button>
+            </div>
         </div>
-    </div>
+    </form>
 
-    <div class="form-group">
-
-        <div class="col-md-6">
-            <input type="hidden" class="form-control" name="host_id" value="{{$hostid}}" required>
-        </div>
-    </div>
-
-
-    <div class="form-group">
-        <div class="col-md-6 col-md-offset-4">
-            <button type="submit" class="btn btn-primary">
-                <i class="fa fa-btn fa-sign-in"></i>Créer
-            </button>
-
-        </div>
-    </div>
 </form>
