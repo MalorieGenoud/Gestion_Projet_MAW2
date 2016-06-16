@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 14 Juin 2016 à 13:40
+-- Généré le :  Jeu 16 Juin 2016 à 11:01
 -- Version du serveur :  10.1.9-MariaDB
 -- Version de PHP :  5.6.15
 
@@ -131,47 +131,17 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `projects`
+-- Structure de la table `targets`
 --
 
-CREATE TABLE `projects` (
+CREATE TABLE `targets` (
   `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Contenu de la table `projects`
---
-
-INSERT INTO `projects` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'Web Framework', 'Projet semestriel de framework 2016', '2016-03-10 22:00:00', '2016-03-10 22:00:00'),
-(2, 'Graphisme 2', 'Projet semestriel graphisme s2', '2016-01-31 22:00:00', '2016-01-31 22:00:00');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `projects_users`
---
-
-CREATE TABLE `projects_users` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
   `project_id` int(10) UNSIGNED NOT NULL,
+  `description` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `status` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Contenu de la table `projects_users`
---
-
-INSERT INTO `projects_users` (`id`, `user_id`, `project_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '2016-03-10 22:00:00', '2016-03-10 22:00:00'),
-(2, 2, 1, '2016-03-10 22:00:00', '2016-03-10 22:00:00'),
-(3, 3, 2, '2016-01-31 22:00:00', '2016-01-31 22:00:00');
 
 -- --------------------------------------------------------
 
@@ -197,17 +167,54 @@ INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `targets`
+-- Structure de la table `users`
 --
 
-CREATE TABLE `targets` (
+CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
-  `project_id` int(10) UNSIGNED NOT NULL,
-  `description` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `status` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `firstname` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `lastname` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `mail` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `role_id` int(10) UNSIGNED NOT NULL,
+  `password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `remember_token` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `avatar` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `users`
+--
+
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `mail`, `role_id`, `password`, `remember_token`, `avatar`, `created_at`, `updated_at`) VALUES
+(1, 'Mickael', 'Lacombe', 'lacombe@cpnv.ch', 1, '$2y$10$uDGjD2Pn7mCyEmYzHiL2Q.AlSuOdZlXhvRsat3Q.b2Ml4X.CNJBAK', '9epV5kIvB2MUUxdoPoKuCmPOwJculmQWyDbCf7WDLB6NLYiYTkL5jcEwqZsW', '451443dbcd5da1f4aa1ef42f299b0fd0.jpg', NULL, NULL),
+(2, 'Aida', 'Sejmenovic', 'sejmenovic@cpnv.ch', 1, '$2y$10$pyGUmqJ3B7O8XyS/liSGvunTLgJa17bd0LLRPaWkZXDoyff0/0hCK', 'vGyTiTsDwSXtzsMHTXNmf8UtJ5GQBVDWsif7jqTpg7uF0', '', NULL, NULL),
+(3, 'Malorie', 'Genoud', 'genoud@cpnv.ch', 1, '$2y$10$q8uc/qM6uqxPYRZO8aFJ8.Cnlz9wN8t3LMlREF36mSxiXVAg6fX1m', 'LAJfktKsO6glZzPappmyaIKTNdKEXbFu6wmJNdGtN9ot2AhEJCityW2oe3uO', '', NULL, NULL),
+(4, 'Pascal', 'Hurni', 'hurni@cpnv.ch', 2, '$2y$10$d1Fx3qQgWq0SnMPCGKwmtuYma.oZpm0jfvWbJ6vDOeCdT6dtDUS9G', '8ChcMIzgL5uHBccEVZcqpz4nnCPF6FZGUxYL8fb1pgaCWPGb9r560wMRRAsB', '', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `projects`
+--
+
+CREATE TABLE `projects` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `startDate` datetime NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `projects`
+--
+
+INSERT INTO `projects` (`id`, `name`, `description`, `startDate`, `created_at`, `updated_at`) VALUES
+(1, 'Web Framework', 'Projet semestriel de framework 2016', '2016-03-10 22:00:00', '2016-03-10 22:00:00', '2016-03-10 22:00:00'),
+(2, 'Graphisme 2', 'Projet semestriel graphisme s2', '2016-01-31 22:00:00', '2016-01-31 22:00:00', '2016-01-31 22:00:00');
 
 -- --------------------------------------------------------
 
@@ -233,50 +240,22 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `name`, `duration`, `date_jalon`, `status`, `priority`, `project_id`, `parent_id`, `created_at`, `updated_at`) VALUES
-(1, 'Analyse', 1, '2016-06-13 00:00:00', 'en cours', 1, 1, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'Conception', 2, '0000-00-00 00:00:00', 'en cours', 1, 1, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'Rendu', 1, '0000-00-00 00:00:00', '', 1, 1, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(1, 'Analyse', 1, '2016-02-13 00:00:00', 'en cours', 1, 1, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 'Conception', 2, '2016-03-02 00:00:00', 'en cours', 1, 1, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 'Rendu', 1, '2016-05-24 00:00:00', '', 1, 1, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (4, 'Analyse marketing', 5, '2016-04-26 00:00:00', 'en cours', 1, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 'Analyse 1 concurent', 10, '0000-00-00 00:00:00', 'en cours', 1, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 'Analyse 2ème concurent', 12, '0000-00-00 00:00:00', '', 1, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(7, 'Conception maquettes', 1, '0000-00-00 00:00:00', '', 2, 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 'Conception maquette accueil', 8, '0000-00-00 00:00:00', '', 2, 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(9, 'Conception maquette articles', 14, '0000-00-00 00:00:00', '', 2, 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(10, 'Conception logo', 9, '0000-00-00 00:00:00', '', 3, 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(11, 'Conception Controllers/Models', 15, '0000-00-00 00:00:00', '', 1, 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(12, 'Conception Routes', 2, '0000-00-00 00:00:00', '', 1, 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(13, 'Conception view accueil', 1, '0000-00-00 00:00:00', '', 1, 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(14, 'Conception view articles', 1, '0000-00-00 00:00:00', '', 1, 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(15, 'Tests divers utilisation', 6, '0000-00-00 00:00:00', '', 3, 1, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 'Analyse 1 concurent', 10, '2016-02-14 00:00:00', 'en cours', 1, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, 'Analyse 2ème concurent', 12, '2016-01-31 00:00:00', '', 1, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, 'Conception maquettes', 1, '2016-02-19 00:00:00', '', 2, 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(8, 'Conception maquette accueil', 8, '2016-05-01 00:00:00', '', 2, 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(9, 'Conception maquette articles', 14, '2016-06-13 00:00:00', '', 2, 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(10, 'Conception logo', 9, '2016-03-20 00:00:00', '', 3, 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(11, 'Conception Controllers/Models', 15, '2016-02-13 00:00:00', '', 1, 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(12, 'Conception Routes', 2, '2016-04-23 00:00:00', '', 1, 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(13, 'Conception view accueil', 1, '2016-06-13 00:00:00', '', 1, 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(14, 'Conception view articles', 1, '2016-06-13 00:00:00', '', 1, 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(15, 'Tests divers utilisation', 6, '2016-06-13 00:00:00', '', 3, 1, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (16, 'bmhm', 56, '2016-05-04 00:00:00', '', 0, 1, NULL, '2016-06-08 07:43:03', '2016-06-08 07:43:03');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `users`
---
-
-CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `firstname` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `lastname` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `mail` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `role_id` int(10) UNSIGNED NOT NULL,
-  `password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `remember_token` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `avatar` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Contenu de la table `users`
---
-
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `mail`, `role_id`, `password`, `remember_token`, `avatar`, `created_at`, `updated_at`) VALUES
-(1, 'Mickael', 'Lacombe', 'lacombe@cpnv.ch', 1, '$2y$10$uDGjD2Pn7mCyEmYzHiL2Q.AlSuOdZlXhvRsat3Q.b2Ml4X.CNJBAK', '96VVElBbfO8qoLknm2bkvKpcssvpa9PVKOfhNPo228qaK', '451443dbcd5da1f4aa1ef42f299b0fd0.jpg', NULL, NULL),
-(2, 'Aida', 'Sejmenovic', 'sejmenovic@cpnv.ch', 1, '$2y$10$pyGUmqJ3B7O8XyS/liSGvunTLgJa17bd0LLRPaWkZXDoyff0/0hCK', 'vGyTiTsDwSXtzsMHTXNmf8UtJ5GQBVDWsif7jqTpg7uF0', '', NULL, NULL),
-(3, 'Malorie', 'Genoud', 'genoud@cpnv.ch', 1, '$2y$10$q8uc/qM6uqxPYRZO8aFJ8.Cnlz9wN8t3LMlREF36mSxiXVAg6fX1m', 'gKzsUWewDcGFKyKjAjVF4jMzhd1qdzpG13mmceXmjvXfz', '', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -314,6 +293,32 @@ INSERT INTO `users_tasks` (`id`, `user_id`, `task_id`, `created_at`, `updated_at
 (15, 2, 14, NULL, NULL),
 (16, 1, 15, NULL, NULL),
 (17, 2, 15, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `projects_users`
+--
+
+CREATE TABLE `projects_users` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `project_id` int(10) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `projects_users`
+--
+
+INSERT INTO `projects_users` (`id`, `user_id`, `project_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2016-03-10 22:00:00', '2016-03-10 22:00:00'),
+(2, 2, 1, '2016-03-10 22:00:00', '2016-03-10 22:00:00'),
+(3, 3, 2, '2016-01-31 22:00:00', '2016-01-31 22:00:00'),
+(4, 3, 3, '2016-06-15 09:34:55', '2016-06-15 09:34:55');
+
+
 
 --
 -- Index pour les tables exportées
@@ -433,7 +438,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT pour la table `durations_tasks`
 --
 ALTER TABLE `durations_tasks`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `events`
 --
@@ -443,7 +448,7 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT pour la table `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `invitations`
 --
@@ -453,12 +458,12 @@ ALTER TABLE `invitations`
 -- AUTO_INCREMENT pour la table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `projects_users`
 --
 ALTER TABLE `projects_users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `roles`
 --
@@ -478,7 +483,7 @@ ALTER TABLE `tasks`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `users_tasks`
 --
